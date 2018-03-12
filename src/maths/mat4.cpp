@@ -134,7 +134,7 @@ mat4 mat4::Perspective(float fov, float aspectRatio, float near, float far)
 {
 	mat4 result;
 
-	float q = 1.0f / tanf(radians(0.5f * fov));
+	float q = 1.0f / tanf(Maths::Radians(0.5f * fov));
 	float zRange = near - far;
 	//float fmn = far - near;		// (f)ar (m)inus (n)ear
 	//float fpn = far + near;		// (f)ar (p)lus (n)ear
@@ -154,9 +154,9 @@ mat4 mat4::Perspective(float fov, float aspectRatio, float near, float far)
 
 mat4 mat4::LookAt(Vec3<float> eye, const Vec3<float> &target, const Vec3<float> &up)
 {
-	Vec3<float> zaxis = normalise(eye - target);
-	Vec3<float> xaxis = normalise(cross(up, zaxis));
-	Vec3<float> yaxis = cross(zaxis, xaxis);
+	Vec3<float> zaxis = Maths::Normalise(eye - target);
+	Vec3<float> xaxis = Maths::Normalise(Maths::Cross(up, zaxis));
+	Vec3<float> yaxis = Maths::Cross(zaxis, xaxis);
 
 	mat4 result(1.0f);
 
@@ -172,9 +172,9 @@ mat4 mat4::LookAt(Vec3<float> eye, const Vec3<float> &target, const Vec3<float> 
 	result.elements[2][1] = yaxis.z;
 	result.elements[2][2] = zaxis.z;
 
-	result.elements[3][0] = -dot(xaxis, eye);
-	result.elements[3][1] = -dot(yaxis, eye);
-	result.elements[3][2] = -dot(zaxis, eye);
+	result.elements[3][0] = -Maths::Dot(xaxis, eye);
+	result.elements[3][1] = -Maths::Dot(yaxis, eye);
+	result.elements[3][2] = -Maths::Dot(zaxis, eye);
 
 	return result;
 }
@@ -194,7 +194,7 @@ mat4 mat4::Rotation(float angle, const Vec3<float> &axis)
 {
 	mat4 result(1.0f);
 
-	float r = radians(angle);
+	float r = Maths::Radians(angle);
 	float c = cos(r);
 	float s = sin(r);
 	float omc = 1.0f - c;	// (o)ne (m)inus (c)osine

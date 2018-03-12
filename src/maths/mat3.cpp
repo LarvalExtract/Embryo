@@ -93,7 +93,7 @@ mat3 mat3::Rotation(float angle)
 {
 	mat3 result(1.0f);
 
-	float r = radians(angle);
+	float r = Maths::Radians(angle);
 
 	result.elements[0][0] = cos(r);
 	result.elements[0][1] = sin(r);

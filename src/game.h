@@ -14,19 +14,23 @@ public:
 	Game();
 	~Game();
 
+	bool Initialise();
 	void Start();
 
 private:
-	bool Initialise();
+	// Process user input
 	void ProcessInput();
+
+	// Update the game's states and conditions
 	void Update();
+
+	// Draw frame to the window
 	void Draw();
 
-	Window *window;
-
-	Embryo::Scene *scene;
+	Window window;
+	Scene scene;
 	Shape2D::Quad *testQuad;
-	Sprite *sprite;
+	Sprite *pCrosshair;
 
 	mat4 proj;
 

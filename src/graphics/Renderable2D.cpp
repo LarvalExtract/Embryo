@@ -58,8 +58,6 @@ void Renderable2D::Draw()
 	vao.DrawElements(renderMode);
 }
 
-
-
 Sprite::Sprite(const std::string& texturePath) :
 	Renderable2D(GL_QUADS)
 {

@@ -24,7 +24,7 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 	}
 
 	// Process camera inputs only if camera input is enabled
-	if (bEnableCamera == true)
+	if (bEnableCamera)
 	{
 		glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	// Hides the mouse cursor (Should I call this every frame?)
 
@@ -37,7 +37,7 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 		lookAngle.x += sensitivity * float(screenCentre.x - xpos);
 		lookAngle.y += sensitivity * float(screenCentre.y - ypos);
 
-		clamp(lookAngle.y, -1.5f, 1.5f);		// Prevents camera from inverting
+		lookAngle.y = Maths::Clamp(lookAngle.y, -1.5f, 1.5f);		// Prevents camera from inverting
 
 		camera.SetForward(
 			cos(lookAngle.y) * sin(lookAngle.x),
@@ -49,7 +49,7 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 			0,
 			cos(lookAngle.x - (3.14159f / 2.0f)));
 
-		Vec3<float> upVector(cross(rightVector, camera.GetForward()));
+		Vec3<float> upVector(Maths::Cross(rightVector, camera.GetForward()));
 
 		camera.SetUpward(upVector.x, upVector.y, upVector.z);
 

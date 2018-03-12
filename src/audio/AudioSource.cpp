@@ -3,6 +3,8 @@
 //// AudioSource base class
 AudioSource::~AudioSource()
 {
+	Stop();
+
 	alDeleteSources(1, &leftChannel);
 	alDeleteSources(1, &rightChannel);
 }
@@ -84,8 +86,8 @@ void AudioSourceLocal::Attenuate()
 
 	//alGetSource3f(leftChannel, AL_POSITION, &soundPos.x, &soundPos.y, &soundPos.z);
 
-	alSourcef(leftChannel, AL_GAIN, AL_REFERENCE_DISTANCE / (AL_REFERENCE_DISTANCE + AL_ROLLOFF_FACTOR * (distance(listenerPos, soundPos))));
-	alSourcef(rightChannel, AL_GAIN, AL_REFERENCE_DISTANCE / (AL_REFERENCE_DISTANCE + AL_ROLLOFF_FACTOR * (distance(listenerPos, soundPos))));
+	alSourcef(leftChannel, AL_GAIN, AL_REFERENCE_DISTANCE / (AL_REFERENCE_DISTANCE + AL_ROLLOFF_FACTOR * (Maths::Distance(listenerPos, soundPos))));
+	alSourcef(rightChannel, AL_GAIN, AL_REFERENCE_DISTANCE / (AL_REFERENCE_DISTANCE + AL_ROLLOFF_FACTOR * (Maths::Distance(listenerPos, soundPos))));
 }
 
 void AudioSourceLocal::SetPosition(float x, float y, float z)
