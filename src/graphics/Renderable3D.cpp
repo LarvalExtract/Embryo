@@ -323,25 +323,25 @@ Primitive::Sphere::Sphere(unsigned char segments, float radius, const Vec4<float
 	{
 		positions.push_back(
 			Vec3<float>(0.0f,							// X
-				radius * sin(radians(i)),		// Y	   
-				radius * cos(radians(i))));		// Z
+				radius * sin(Maths::Radians(i)),		// Y	   
+				radius * cos(Maths::Radians(i))));		// Z
 	}
 
 	// Generate Y-aligned circle co-ordinates
 	for (float i = 0; i < 360.0f; i += 360.0f / segments)
 	{
 		positions.push_back(
-			Vec3<float>(radius * sin(radians(i)),		// X
+			Vec3<float>(radius * sin(Maths::Radians(i)),		// X
 				 0.0f,							// Y	   
-				 radius * cos(radians(i))));	// Z
+				 radius * cos(Maths::Radians(i))));	// Z
 	}
 
 	// Generate Z-aligned circle co-ordinates
 	for (float i = 0; i < 360.0f; i += 360.0f / segments)
 	{
 		positions.push_back(
-			Vec3<float>(radius * sin(radians(i)),		// X
-				 radius * cos(radians(i)),		// Y	   
+			Vec3<float>(radius * sin(Maths::Radians(i)),		// X
+				 radius * cos(Maths::Radians(i)),		// Y	   
 				 0.0f));						// Z
 	}
 

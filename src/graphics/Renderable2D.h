@@ -71,8 +71,6 @@ private:
 	float height;
 };
 
-
-
 namespace Shape2D
 {
 	class Shape2D : public Renderable2D

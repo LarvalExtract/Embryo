@@ -5,7 +5,6 @@
 #include <string>
 #include <iostream>
 
-
 Game::Game() : 
 	bInitialised(false),
 	counter(0.0f)
@@ -14,67 +13,77 @@ Game::Game() :
 
 Game::~Game()
 {
-	delete window;
-	delete scene;
-	
-	std::cout << std::endl;
-	std::cin.get();
 }
 
 void Game::Start()
 {
-	// Return if initialisation failed (don't start game loop)
-	if (!Initialise())
-		return;
+	if (!bInitialised)
+	{
+		//std::cerr << "The game is not initialised! Attempting to initialise...\n\n";
+		
+		// Attempt to initialise the game
+		if (!Initialise())
+		{
+			std::cerr << "Could not initialise!" << std::endl;
+			return;
+		}
+	}
 
 	// GAME LOOP
-	while (!window->Close())
+	while (glfwWindowShouldClose(window.m_Window) == GLFW_FALSE)
 	{
 		ProcessInput();
 		Update();
 		Draw();
 	}
+
+	// Exit game
+	glfwTerminate();
+	bInitialised = false;
 }
 
 bool Game::Initialise()
 {
-	Timer initTimer;
 	// Return if already initialised
 	if (bInitialised)
 		return false;
 
-	window = new Window("Embryo", 1280, 720);
+	Timer initTimer;
+
+	// Abort game initialisation if the window failed to initialise
+	if (!window.Init("Embryo", 1280, 720))
+		return false;
+
 	//window->SetColour(0.1f, 0.3f, 0.6f, 1.0f);
 
+	// Print OpenGL and OpenAL version info
 	std::cout << "OpenGL " << glGetString(GL_VERSION) << ", " << glGetString(GL_VENDOR) << ", " << glGetString(GL_RENDERER) << "\n"
 			  << "OpenAL " << alGetString(AL_VERSION) << ", " << alGetString(AL_VENDOR) << ", " << alGetString(AL_RENDERER) << "\n"
 			  << std::endl;
 
 	std::cout << "Press Z to enable camera controls" << "\n" << std::endl;
 
-	scene = new Embryo::Scene("Scene1");
+	scene.SetSkybox("skybox_ocean.tga");
 
-	scene->SetSkybox("skybox_ocean.tga");
+	Camera *pCamera = new Camera(Vec3<float>(0.0f, 1.0f, -3.0f), 60.0f, (float)window.GetWidth() / (float)window.GetHeight(), 0.1f, 1000.0f);
+	scene.AddCamera(pCamera);
 
-	Camera* camera = new Camera(Vec3<float>(0.0f, 1.0f, -3.0f), 60.0f, (float)window->GetWidth() / (float)window->GetHeight(), 0.1f, 1000.0f);
-	scene->AddCamera(camera);
-
-	Shader* shader = new Shader("basicPhong");
-	scene->AddShader(shader);
+	Shader *pShader = new Shader("basicPhong");
+	scene.AddShader(pShader);
 
 	Model3D *pFloor = new Model3D("floor.mmf");
 	pFloor->SetPos(0.0f, -1.0f, 0.0f);
 	pFloor->SetTexture("models/floor.tga");
-	pFloor->SetShader(shader);
-	scene->AddRenderable(pFloor);
+	pFloor->SetShader(pShader);
+	scene.AddRenderable(pFloor);
 
 	Model3D *pCube = new Model3D("cube.mmf");
 	pCube->SetScale(0.2f, 0.2f, 0.2f);
 	pCube->SetTexture("models/cube.tga");
 	pCube->SetSpecularity(0.2f);
 	pCube->SetGlossiness(20.0f);
-	pCube->SetShader(shader);
-	scene->AddRenderable(pCube);
+	pCube->SetShader(pShader);
+	scene.AddRenderable(pCube);
 
 	Model3D *pTeapot = new Model3D("teapot.mmf");
 	pTeapot->SetPos(1.2f, 0.0f, 0.0f);
@@ -82,8 +91,8 @@ bool Game::Initialise()
 	pTeapot->SetTexture("models/test.tga");
 	pTeapot->SetSpecularity(2.0f);
 	pTeapot->SetGlossiness(100.0f);
-	pTeapot->SetShader(shader);
-	scene->AddRenderable(pTeapot);
+	pTeapot->SetShader(pShader);
+	scene.AddRenderable(pTeapot);
 
 	Model3D *pClone = new Model3D("poo.mmf");
 	pClone->SetPos(-1.0f, 0.0f, 0.0f);
@@ -92,53 +101,54 @@ bool Game::Initialise()
 	pClone->SetTexture("models/clone.tga");
 	pClone->SetSpecularity(0.5f);
 	pClone->SetGlossiness(30.0f);
-	pClone->SetShader(shader);
-	scene->AddRenderable(pClone);
+	pClone->SetShader(pShader);
+	scene.AddRenderable(pClone);
 
 	Sprite2D *pSprite = new Sprite2D("sprites/sprite_test3.tga");
 	pSprite->SetPos(1.7f, 0.0f, -1.0f);
-	pSprite->SetShader(shader);
-	scene->AddRenderable(pSprite);
+	pSprite->SetShader(pShader);
+	scene.AddRenderable(pSprite);
 
 	Primitive::Sphere *pSphere = new Primitive::Sphere(24, 2.0f, Vec4<float>(1.0f, 1.0f, 0.0f, 1.0f));
 	pSphere->SetPos(-5, 2, 3);
-	scene->AddRenderable(pSphere);
+	scene.AddRenderable(pSphere);
 
 	Primitive::Box *pBox = new Primitive::Box(2, 3, 3, Vec4<float>(1.0f, 0.0f, 1.0f, 1.0f));
 	pBox->SetPos(13.3f, 3.0f, 5.0f);
 	pBox->SetRot(0.0f, 23.0f, 0.0f);
-	scene->AddRenderable(pBox);
+	scene.AddRenderable(pBox);
 
 	Primitive::Pivot *pPivot = new Primitive::Pivot();
 	pPivot->SetPos(0.0f, 2.0f, 0.0f);
-	scene->AddRenderable(pPivot);
+	scene.AddRenderable(pPivot);
 
-	AudioSourceGlobal *wind = new AudioSourceGlobal("sandtrap_wind_loop.wav");
-	wind->SetGain(0.3f);
-	wind->SetLoop(true);
-	scene->AddSound(wind);
+	AudioSourceGlobal *pWind = new AudioSourceGlobal("sandtrap_wind_loop.wav");
+	pWind->SetGain(0.3f);
+	pWind->SetLoop(true);
+	scene.AddSound(pWind);
 
-	AudioSourceLocal *computer = new AudioSourceLocal("alien_generator.wav");
-	computer->SetGain(0.55f);
-	computer->SetLoop(true);
-	scene->AddSound(computer);
+	AudioSourceLocal *pComputer = new AudioSourceLocal("alien_generator.wav");
+	pComputer->SetGain(0.55f);
+	pComputer->SetLoop(true);
+	scene.AddSound(pComputer);
 
-	LightOmni *light = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
-	scene->AddLight(light);
+	LightOmni *pLight = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
+	scene.AddLight(pLight);
 
-	LightOmni *redLight = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
+	//LightOmni *pRedLight = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
 	//scene->AddLight(redLight);
 
 	testQuad = new Shape2D::Quad(250.0f, 250.0f);
-	sprite = new Sprite("sprites/crosshair.tga");
-	sprite->CenterOrigin();
-	sprite->SetPosition(window->GetWidth() / 2, window->GetHeight() / 2);
-	//sprite->SetPosition(0.0f, 0.0f);
+	pCrosshair = new Sprite("sprites/crosshair.tga");
+	//pCrosshair->CenterOrigin();
+	pCrosshair->SetPosition(window.GetWidth() / 2, window.GetHeight() / 2);
 
-	proj = mat4::Orthographic(0.0f, window->GetWidth(), 0.0f, window->GetHeight(), -1.0f, 1.0f);
+	//pCrosshair->SetPosition(0.0f, 0.0f);
+
+	proj = mat4::Orthographic(0.0f, window.GetWidth(), 0.0f, window.GetHeight(), -1.0f, 1.0f);
 	
 	// Initialise the scene
-	if (scene->InitialiseScene() == false)
+	if (scene.InitialiseScene("Scene1") == false)
 		return false;
 
 	//scene->PrintRenderableList();
@@ -153,15 +163,12 @@ bool Game::Initialise()
 	return bInitialised = true;
 }
 
-// Process game inputs
+
 void Game::ProcessInput()
 {
-
-
-	MatricesFromInputs(*window, scene->GetActiveCamera(), deltaTime);
+	MatricesFromInputs(window, scene.GetActiveCamera(), deltaTime);
 }
 
-// Update the game's states and conditions
 void Game::Update()
 {
 	currentTime = glfwGetTime();
@@ -169,39 +176,37 @@ void Game::Update()
 	lastTime = currentTime;
 
 	// Display frame time/frame rate
-	std::cerr << "Frame time: " << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime) << "fps" << "                   \r";
+	std::cerr << "Frame time: " << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
 	
 	counter += 1.0f * deltaTime;
 
-	scene->GetRenderable("teapot")->SetRot(sin(counter * 10), 0.0f, cos(counter * 20));
-	scene->GetLight("light_omni")->SetPosition(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
+	scene.GetRenderable("teapot")->SetRot(sin(counter * 10), 0.0f, cos(counter * 20));
+	scene.GetLight("light_omni")->SetPosition(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
 	//scene->GetLight("light_omni")->SetPower(sin(counter * 2) * 3);
 
-	sprite->SetRotation(counter * 15.0f);
+	pCrosshair->SetRotation(counter * 15.0f);
 	//sprite->SetScale(cos(counter), cos(counter));
 
-	scene->UpdateScene();
-	
+	scene.UpdateScene();
 }
 
-// Output frame
 void Game::Draw()
 {
 	// Clear the current buffer
-	window->Clear();
+	window.Clear();
 
 	// Draw everything in the scene
-	scene->DrawScene();
+	scene.DrawScene();
 
-	testQuad->GetShader().Bind();
-	testQuad->GetShader().SetUniformMat4("projectionMatrix", proj);
+	//testQuad->GetShader().Bind();
+	//testQuad->GetShader().SetUniformMat4("projectionMatrix", proj);
 	//testQuad->Draw();
-	sprite->GetShader().Bind();
-	sprite->GetShader().SetUniformMat4("projectionMatrix", proj);
-	sprite->GetShader().SetUniformMat4("mpMatrix", sprite->GetTransformMatrix() * proj);
-	sprite->Draw();
 
+	pCrosshair->GetShader().Bind();
+	pCrosshair->GetShader().SetUniformMat4("projectionMatrix", proj);
+	pCrosshair->GetShader().SetUniformMat4("mpMatrix", pCrosshair->GetTransformMatrix() * proj);
+	pCrosshair->Draw();
 
 	// Update the window with the next frame
-	window->Update();
+	window.Update();
 }

@@ -4,35 +4,42 @@
 
 void Resize(GLFWwindow*, int width, int height);
 
-Window::Window(const char* title, int width, int height) :
-	lastKey(0)
+Window::Window() :
+	lastKey(0),
+	m_alcDevice(nullptr),
+	m_alcContext(nullptr)
 {
-	Init(title, width, height);
 }
 
 Window::~Window()
 {
 	glfwTerminate();
-	alcMakeContextCurrent(NULL);
-	alcDestroyContext(m_alcContext);
-	alcCloseDevice(m_alcDevice);
+
+	alcMakeContextCurrent(nullptr);
+
+	if (m_alcContext != nullptr)
+		alcDestroyContext(m_alcContext);
+
+	if (m_alcDevice != nullptr)
+		alcCloseDevice(m_alcDevice);
 }
 
-bool Window::Init(const char* title, int width, int height)
+bool Window::Init(std::string title, int width, int height)
 {
-	m_Title = title;
-	m_Width = width;
-	m_Height = height;
+	this->title = title;
+	this->width = width;
+	this->height = height;
 
 	// Initialise GLFW
-	if (!glfwInit())
+	if (glfwInit() != GLFW_TRUE)
 	{
 		std::cout << "Failed to initialise GLFW!" << std::endl;
 		return false;
 	}
 
 	// Create GLFW window
-	m_Window = glfwCreateWindow(m_Width, m_Height, m_Title, NULL, NULL);
+	m_Window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+
 	if (!m_Window)
 	{
 		std::cout << "Failed to create GLFW window!" << std::endl;
@@ -94,15 +101,6 @@ void Window::Update()
 	glfwSwapBuffers(m_Window);
 
 	glfwPollEvents();
-}
-
-bool Window::Close()
-{
-	if (glfwWindowShouldClose(m_Window))
-	{
-		glfwTerminate();
-		return true;
-	}
 }
 
 void Resize(GLFWwindow*, int width, int height)
