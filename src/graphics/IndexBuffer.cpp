@@ -17,7 +17,7 @@ IndexBuffer::~IndexBuffer()
 	glDeleteBuffers(1, &ibo);
 }
 
-void IndexBuffer::AddData(const void* data, const unsigned int& count)
+void IndexBuffer::AddData(const void* data, unsigned int count)
 {
 	m_Count = count;
 	glGenBuffers(1, &ibo);
@@ -25,7 +25,7 @@ void IndexBuffer::AddData(const void* data, const unsigned int& count)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(count), data, GL_STATIC_DRAW);
 }
 
-void IndexBuffer::DrawElements(const unsigned int& renderMode)
+void IndexBuffer::DrawElements(unsigned int renderMode)
 {
 	glDrawElements(renderMode, m_Count, GL_UNSIGNED_SHORT, nullptr);
 }

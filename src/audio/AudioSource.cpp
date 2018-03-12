@@ -30,13 +30,13 @@ void AudioSource::SetName(const std::string& name)
 	this->name = name;
 }
 
-void AudioSource::SetGain(const float& value)
+void AudioSource::SetGain(float value)
 {
 	alSourcef(leftChannel, AL_GAIN, value);
 	alSourcef(rightChannel, AL_GAIN, value);
 }
 
-void AudioSource::SetPitch(const float& value)
+void AudioSource::SetPitch(float value)
 {
 	alSourcef(leftChannel, AL_PITCH, value);
 	alSourcef(rightChannel, AL_PITCH, value);
@@ -88,7 +88,7 @@ void AudioSourceLocal::Attenuate()
 	alSourcef(rightChannel, AL_GAIN, AL_REFERENCE_DISTANCE / (AL_REFERENCE_DISTANCE + AL_ROLLOFF_FACTOR * (distance(listenerPos, soundPos))));
 }
 
-void AudioSourceLocal::SetPosition(const float& x, const float& y, const float& z)
+void AudioSourceLocal::SetPosition(float x, float y, float z)
 {
 	alSource3f(leftChannel, AL_POSITION, x, y, z);
 	alSource3f(rightChannel, AL_POSITION, x, y, z);

@@ -79,7 +79,7 @@ mat3& mat3::operator*=(const mat3& right)
 	return Multiply(right);
 }
 
-mat3 mat3::Translation(const vec2& translate)
+mat3 mat3::Translation(const Vec2<float> &translate)
 {
 	mat3 result(1.0f);
 
@@ -89,7 +89,7 @@ mat3 mat3::Translation(const vec2& translate)
 	return result;
 }
 
-mat3 mat3::Rotation(const float& angle)
+mat3 mat3::Rotation(float angle)
 {
 	mat3 result(1.0f);
 
@@ -104,7 +104,7 @@ mat3 mat3::Rotation(const float& angle)
 	return result;
 }
 
-mat3 mat3::Scale(const vec2& scale)
+mat3 mat3::Scale(const Vec2<float> &scale)
 {
 	mat3 result(1.0f);
 

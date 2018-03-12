@@ -1,6 +1,6 @@
 #pragma once
 #include <maths/_maths.h>
-#include "vec2.h"
+#include "Vec2.h"
 #include <iostream>
 
 struct mat3
@@ -16,16 +16,16 @@ struct mat3
 	
 	static mat3 Identity();
 
-	static mat3 Translation(const vec2& translate);
-	static mat3 Rotation(const float& angle);
-	static mat3 Scale(const vec2& scale);
+	static mat3 Translation(const Vec2<float> &translate);
+	static mat3 Rotation(float angle);
+	static mat3 Scale(const Vec2<float> &scale);
 
-	friend std::ostream& operator<<(std::ostream& output, const mat3& matrix);
+	friend std::ostream& operator<<(std::ostream &output, const mat3 &matrix);
 
 	//mat3 operator=(const mat4& matrix4);
 
-	friend mat3 operator*(mat3 left, const mat3& right);
-	mat3& operator*=(const mat3& right);
+	friend mat3 operator*(mat3 left, const mat3 &right);
+	mat3& operator*=(const mat3 &right);
 
 private:
 	mat3& Multiply(const mat3& other);

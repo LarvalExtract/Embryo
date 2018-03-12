@@ -1,6 +1,6 @@
 #include "Renderable2D.h"
 
-Renderable2D::Renderable2D(const unsigned int& renderMode) :
+Renderable2D::Renderable2D(unsigned int renderMode) :
 	position(0, 0, 0),
 	rotation(0, 0, 1),
 	scale(1, 1, 1),
@@ -24,7 +24,7 @@ Shader& Renderable2D::GetShader()
 	return *shader;
 }
 
-void Renderable2D::SetPosition(const float& x, const float& y)
+void Renderable2D::SetPosition(float x, float y)
 {
 	position.x = x;// -origin.x;
 	position.y = y;// -origin.y;
@@ -32,12 +32,12 @@ void Renderable2D::SetPosition(const float& x, const float& y)
 	translateMatrix = mat4::Translation(position);// *mat4::Translation(origin);
 }
 
-void Renderable2D::SetRotation(const float& z)
+void Renderable2D::SetRotation(float z)
 {	
 	rotateMatrix = mat4::Rotation(z, rotation);
 }
 	 
-void Renderable2D::SetScale(const float& x, const float& y)
+void Renderable2D::SetScale(float x, float y)
 {
 	scale.x = x;
 	scale.y = y;
@@ -45,7 +45,7 @@ void Renderable2D::SetScale(const float& x, const float& y)
 	scaleMatrix = mat4::Scale(scale);
 }
 
-void Renderable2D::SetOrigin(const float& x, const float& y)
+void Renderable2D::SetOrigin(float x, float y)
 {
 	origin.x = x;
 	origin.y = y;
@@ -124,14 +124,14 @@ void Sprite::Draw()
 
 
 
-Shape2D::Shape2D::Shape2D(const unsigned int& renderMode) :
+Shape2D::Shape2D::Shape2D(unsigned int renderMode) :
 	Renderable2D::Renderable2D(renderMode),
 	colour(1, 1, 1, 1)
 {
 	shader = new Shader("basic2D");
 }
 
-void Shape2D::Shape2D::SetColour(const float& r, const float& g, const float& b, const float& a)
+void Shape2D::Shape2D::SetColour(float r, float g, float b, float a)
 {
 	colour.x = r;
 	colour.y = g;
@@ -144,7 +144,7 @@ void Shape2D::Shape2D::SetColour(const float& r, const float& g, const float& b,
 
 
 
-Shape2D::Quad::Quad(const float& width, const float& height) :
+Shape2D::Quad::Quad(float width, float height) :
 	Shape2D::Shape2D(GL_QUADS),
 	width(width),
 	height(height)	
@@ -173,7 +173,7 @@ Shape2D::Quad::Quad(const float& width, const float& height) :
 
 
 
-Shape2D::Triangle::Triangle(const float& size) :
+Shape2D::Triangle::Triangle(float size) :
 	Shape2D::Shape2D(GL_TRIANGLES)
 {
 	float positions[] = {

@@ -2,12 +2,12 @@
 
 #include <string>
 #include <vector>
-#include <maths/vec3.h>
-#include <maths/vec2.h>
+#include <maths/Vec3.h>
+#include <maths/Vec2.h>
 
 void ImportModel(
 	const std::string& filePath, 
-	std::vector<vec3>& in_positions, 
-	std::vector<vec3>& in_normals, 
-	std::vector<vec2>& in_texCoords, 
-	std::vector<unsigned short>& indices);
+	std::vector<Vec3<float>> &in_positions, 
+	std::vector<Vec3<float>> &in_normals, 
+	std::vector<Vec2<float>> &in_texCoords, 
+	std::vector<unsigned short> &indices);

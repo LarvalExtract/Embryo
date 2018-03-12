@@ -56,7 +56,7 @@ bool Game::Initialise()
 
 	scene->SetSkybox("skybox_ocean.tga");
 
-	Camera* camera = new Camera(vec3(0.0f, 1.0f, -3.0f), 60.0f, (float)window->GetWidth() / (float)window->GetHeight(), 0.1f, 1000.0f);
+	Camera* camera = new Camera(Vec3<float>(0.0f, 1.0f, -3.0f), 60.0f, (float)window->GetWidth() / (float)window->GetHeight(), 0.1f, 1000.0f);
 	scene->AddCamera(camera);
 
 	Shader* shader = new Shader("basicPhong");
@@ -100,11 +100,11 @@ bool Game::Initialise()
 	pSprite->SetShader(shader);
 	scene->AddRenderable(pSprite);
 
-	Primitive::Sphere *pSphere = new Primitive::Sphere(24, 2.0f, vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	Primitive::Sphere *pSphere = new Primitive::Sphere(24, 2.0f, Vec4<float>(1.0f, 1.0f, 0.0f, 1.0f));
 	pSphere->SetPos(-5, 2, 3);
 	scene->AddRenderable(pSphere);
 
-	Primitive::Box *pBox = new Primitive::Box(2, 3, 3, vec4(1.0f, 0.0f, 1.0f, 1.0f));
+	Primitive::Box *pBox = new Primitive::Box(2, 3, 3, Vec4<float>(1.0f, 0.0f, 1.0f, 1.0f));
 	pBox->SetPos(13.3f, 3.0f, 5.0f);
 	pBox->SetRot(0.0f, 23.0f, 0.0f);
 	scene->AddRenderable(pBox);
@@ -123,10 +123,10 @@ bool Game::Initialise()
 	computer->SetLoop(true);
 	scene->AddSound(computer);
 
-	LightOmni *light = new LightOmni(vec3(0.0f, 2.0f, 0.0f), vec3(1.0f, 1.0f, 1.0f), 1.0f);
+	LightOmni *light = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
 	scene->AddLight(light);
 
-	LightOmni *redLight = new LightOmni(vec3(0.0f, 2.0f, 0.0f), vec3(1.0f, 1.0f, 1.0f), 1.0f);
+	LightOmni *redLight = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
 	//scene->AddLight(redLight);
 
 	testQuad = new Shape2D::Quad(250.0f, 250.0f);

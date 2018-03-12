@@ -5,7 +5,7 @@
 //// Base class methods
 // Base constructor
 // This constructor is called by child classes to initialise inherited variables
-Renderable3D::Renderable3D(const unsigned int& renderMode) :
+Renderable3D::Renderable3D(unsigned int renderMode) :
 	position(0, 0, 0),
 	rotation(0, 0, 0),
 	scale(1, 1, 1),
@@ -29,7 +29,7 @@ Renderable3D::~Renderable3D()
 	//	delete shader;
 }
 
-void Renderable3D::SetPos(const float& x, const float& y, const float& z)
+void Renderable3D::SetPos(float x, float y, float z)
 {
 	position.x = x;
 	position.y = y;
@@ -38,16 +38,17 @@ void Renderable3D::SetPos(const float& x, const float& y, const float& z)
 	translationMatrix = mat4::Translation(position);
 }
 
-void Renderable3D::SetRot(const float& x, const float& y, const float& z)
+void Renderable3D::SetRot(float x, float y, float z)
 {
 	rotation.x = x;
 	rotation.y = y;
 	rotation.z = z;
 
-	rotationMatrix = mat4::Rotation(rotation.z, vec3(0.0f, 0.0f, 1.0f)) * mat4::Rotation(rotation.y, vec3(0.0f, 1.0f, 0.0f)) * mat4::Rotation(rotation.x, vec3(1.0f, 0.0f, 0.0f));
+	rotationMatrix = mat4::Rotation(rotation.z, 
+		Vec3<float>(0.0f, 0.0f, 1.0f)) * mat4::Rotation(rotation.y, Vec3<float>(0.0f, 1.0f, 0.0f)) * mat4::Rotation(rotation.x, Vec3<float>(1.0f, 0.0f, 0.0f));
 }
 
-void Renderable3D::SetScale(const float& x, const float& y, const float& z)
+void Renderable3D::SetScale(float x, float y, float z)
 {
 	scale.x = x;
 	scale.y = y;
@@ -61,17 +62,17 @@ void Renderable3D::SetShader(Shader *pShader)
 	shader = pShader;
 }
 
-void Renderable3D::SetRenderMode(const unsigned int& mode)
+void Renderable3D::SetRenderMode(unsigned int mode)
 {
 	renderMode = mode;
 }
 
-void Renderable3D::SetSpecularity(const float& value)
+void Renderable3D::SetSpecularity(float value)
 {
 	specularity = value;
 }
 
-void Renderable3D::SetGlossiness(const float& value)
+void Renderable3D::SetGlossiness(float value)
 {
 	glossiness = value;
 }
@@ -80,17 +81,17 @@ void Renderable3D::SetName(const std::string& name)
 	this->name = name;
 }
 
-vec3 Renderable3D::GetPos()
+Vec3<float> Renderable3D::GetPos()
 {
 	return position;
 }
 
-vec3 Renderable3D::GetRot()
+Vec3<float> Renderable3D::GetRot()
 {
 	return rotation;
 }
 
-vec3 Renderable3D::GetScale()
+Vec3<float> Renderable3D::GetScale()
 {
 	return scale;
 }
@@ -136,8 +137,8 @@ Model3D::Model3D(const std::string& filePath) :
 {
 	name = filePath.substr(0, filePath.rfind("."));
 
-	std::vector<vec3> positions, normals;
-	std::vector<vec2> texCoords;
+	std::vector<Vec3<float>> positions, normals;
+	std::vector<Vec2<float>> texCoords;
 	std::vector<unsigned short> indices;
 
 	ImportModel(filePath, positions, normals, texCoords, indices);
@@ -249,7 +250,7 @@ Skybox::Skybox(const std::string& skyboxName) :
 
 //// Primitive methods
 
-void Primitive::Primitive::SetColour(const float& red, const float& green, const float& blue, const float& alpha)
+void Primitive::Primitive::SetColour(float red, float green, float blue, float alpha)
 {
 	colour.x = red;
 	colour.y = green;
@@ -269,7 +270,7 @@ void Primitive::Primitive::Draw()
 
 // Box methods
 // Inherits from Primitive base class
-Primitive::Box::Box(const float& width, const float& height, const float& depth, const vec4& colour) :
+Primitive::Box::Box(float width, float height, float depth, const Vec4<float> &colour) :
 	Primitive(GL_LINES, colour)
 {
 	name = "Box";
@@ -302,12 +303,12 @@ Primitive::Box::Box(const float& width, const float& height, const float& depth,
 
 // Sphere methods
 // Inherits from Primitive base class
-Primitive::Sphere::Sphere(unsigned char segments, const float& radius, const vec4& colour) :
+Primitive::Sphere::Sphere(unsigned char segments, float radius, const Vec4<float> &colour) :
 	Primitive(GL_LINES, colour)
 {
 	name = "Sphere";
 
-	std::vector<vec3> positions;
+	std::vector<Vec3<float>> positions;
 	std::vector<unsigned short> indices;
 
 	// Algorithm doesn't currently work with odd numbered segments. This converts segments to even
@@ -321,7 +322,7 @@ Primitive::Sphere::Sphere(unsigned char segments, const float& radius, const vec
 	for (float i = 0; i < 360.0f; i += 360.0f / segments)
 	{
 		positions.push_back(
-			vec3(0.0f,							// X
+			Vec3<float>(0.0f,							// X
 				radius * sin(radians(i)),		// Y	   
 				radius * cos(radians(i))));		// Z
 	}
@@ -330,7 +331,7 @@ Primitive::Sphere::Sphere(unsigned char segments, const float& radius, const vec
 	for (float i = 0; i < 360.0f; i += 360.0f / segments)
 	{
 		positions.push_back(
-			vec3(radius * sin(radians(i)),		// X
+			Vec3<float>(radius * sin(radians(i)),		// X
 				 0.0f,							// Y	   
 				 radius * cos(radians(i))));	// Z
 	}
@@ -339,7 +340,7 @@ Primitive::Sphere::Sphere(unsigned char segments, const float& radius, const vec
 	for (float i = 0; i < 360.0f; i += 360.0f / segments)
 	{
 		positions.push_back(
-			vec3(radius * sin(radians(i)),		// X
+			Vec3<float>(radius * sin(radians(i)),		// X
 				 radius * cos(radians(i)),		// Y	   
 				 0.0f));						// Z
 	}
@@ -373,7 +374,7 @@ Primitive::Sphere::Sphere(unsigned char segments, const float& radius, const vec
 // Pivot sub-class methods
 // Inherits from Primitive base class
 Primitive::Pivot::Pivot() :
-	Primitive(GL_LINES, vec4(1, 1, 1, 1))
+	Primitive(GL_LINES, Vec4<float>(1, 1, 1, 1))
 {
 	name = "Pivot";
 

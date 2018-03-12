@@ -9,8 +9,8 @@ public:
 	IndexBuffer(const void* data, unsigned int count);
 	~IndexBuffer();
 
-	void AddData(const void* data, const unsigned int& count);
-	void DrawElements(const unsigned int& renderMode);
+	void AddData(const void* data, unsigned int count);
+	void DrawElements(unsigned int renderMode);
 
 	void Bind();
 	void Unbind();

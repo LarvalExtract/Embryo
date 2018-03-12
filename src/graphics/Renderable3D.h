@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <maths/vec3.h>
+#include <maths/Vec3.h>
 #include <maths/mat4.h>
 
 #include "VertexArray.h"
@@ -28,34 +28,34 @@ public:
 	float GetSpecularity();
 	float GetGlossiness();
 
-	vec3 GetPos();
-	vec3 GetRot();
-	vec3 GetScale();
+	Vec3<float> GetPos();
+	Vec3<float> GetRot();
+	Vec3<float> GetScale();
 
 	std::string GetName();
 
-	void SetPos(const float& x, const float& y, const float& z);
-	void SetRot(const float& x, const float& y, const float& z);
-	void SetScale(const float& x, const float& y, const float& z);
+	void SetPos(float x, float y, float z);
+	void SetRot(float x, float y, float z);
+	void SetScale(float x, float y, float z);
 
 	void SetShader(Shader *pShader);
-	void SetRenderMode(const unsigned int& mode);
+	void SetRenderMode(unsigned int mode);
 
-	void SetSpecularity(const float& value);
-	void SetGlossiness(const float& value);
+	void SetSpecularity(float value);
+	void SetGlossiness(float value);
 
-	void SetName(const std::string& name);
+	void SetName(const std::string &name);
 
 	virtual void Draw();
 
 protected:
 	// Base constructor
 	// This constructor is called by child classes to initialise inherited variables
-	Renderable3D(const unsigned int& renderMode);
+	Renderable3D(unsigned int renderMode);
 
-	vec3 position;
-	vec3 rotation;
-	vec3 scale;
+	Vec3<float> position;
+	Vec3<float> rotation;
+	Vec3<float> scale;
 
 	mat4 translationMatrix;
 	mat4 rotationMatrix;
@@ -80,9 +80,9 @@ class Model3D : public Renderable3D
 public:
 	Model3D(const std::string& filePath);
 
-	void SetTexture(const std::string& filePath);
-	void SetNormalMap(const std::string& filePath);
-	void SetSpecularMap(const std::string& filePath);
+	void SetTexture(const std::string &filePath);
+	void SetNormalMap(const std::string &filePath);
+	void SetSpecularMap(const std::string &filePath);
 private:
 
 };
@@ -127,21 +127,21 @@ namespace Primitive
 	class Primitive : public Renderable3D
 	{
 	public:
-		void SetColour(const float& red, const float& green, const float& blue, const float& alpha);
+		void SetColour(float red, float green, float blue, float alpha);
 
 		void Draw() override;
 	protected:
-		Primitive(const unsigned int& renderMode, const vec4& colour) : 
+		Primitive(unsigned int renderMode, const Vec4<float> &colour) : 
 			Renderable3D(renderMode), colour(colour) {};
 
-		vec4 colour;
+		Vec4<float> colour;
 	};
 
 // Box
 	class Box : public Primitive
 	{
 	public:
-		Box(const float& width, const float& height, const float& depth, const vec4& colour);
+		Box(float width, float height, float depth, const Vec4<float> & olour);
 
 	private:
 
@@ -151,7 +151,7 @@ namespace Primitive
 	class Sphere : public Primitive
 	{
 	public:
-		Sphere(unsigned char segments, const float& radius, const vec4& colour);
+		Sphere(unsigned char segments, float radius, const Vec4<float> &colour);
 
 	private:
 

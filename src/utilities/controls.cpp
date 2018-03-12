@@ -4,8 +4,8 @@
 
 double xpos, ypos;
 
-vec2 lookAngle;
-vec2 screenCentre;
+Vec2<float> lookAngle;
+Vec2<float> screenCentre;
 
 float sensitivity = 0.002f;
 float movementSpeed;
@@ -44,12 +44,12 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 			sin(lookAngle.y),
 			cos(lookAngle.y) * cos(lookAngle.x));
 
-		vec3 rightVector(
+		Vec3<float> rightVector(
 			sin(lookAngle.x - (3.14159f / 2.0f)),
 			0,
 			cos(lookAngle.x - (3.14159f / 2.0f)));
 
-		vec3 upVector(cross(rightVector, camera.GetForward()));
+		Vec3<float> upVector(cross(rightVector, camera.GetForward()));
 
 		camera.SetUpward(upVector.x, upVector.y, upVector.z);
 
@@ -62,22 +62,22 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 
 		// Movement controls
 		if (window.IsKeyPressed(GLFW_KEY_W))
-			camera.position += camera.forward * movementSpeed * deltaTime;
+			camera.position += camera.forward * movementSpeed * static_cast<float>(deltaTime);
 
 		if (window.IsKeyPressed(GLFW_KEY_A))
-			camera.position -= rightVector * movementSpeed * deltaTime;
+			camera.position -= rightVector * movementSpeed * static_cast<float>(deltaTime);
 
 		if (window.IsKeyPressed(GLFW_KEY_S))
-			camera.position -= camera.forward * movementSpeed * deltaTime;
+			camera.position -= camera.forward * movementSpeed * static_cast<float>(deltaTime);
 
 		if (window.IsKeyPressed(GLFW_KEY_D))
-			camera.position += rightVector * movementSpeed * deltaTime;
+			camera.position += rightVector * movementSpeed * static_cast<float>(deltaTime);
 
 		if (window.IsKeyPressed(GLFW_KEY_SPACE))
-			camera.position += upVector * movementSpeed * deltaTime;
+			camera.position += upVector * movementSpeed * static_cast<float>(deltaTime);
 
 		if (window.IsKeyPressed(GLFW_KEY_LEFT_CONTROL))
-			camera.position.y -= movementSpeed * deltaTime;
+			camera.position.y -= movementSpeed * static_cast<float>(deltaTime);
 	}
 
 	// 

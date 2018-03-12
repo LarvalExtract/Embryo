@@ -79,7 +79,7 @@ bool Window::Init(const char* title, int width, int height)
 	return true;
 }
 
-void Window::SetColour(const float& r, const float& g, const float& b, const float& a)
+void Window::SetColour(float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
 }
@@ -170,8 +170,8 @@ void Window::mouse_cursor_position_callback(GLFWwindow* window, double x, double
 	win->ypos = y;
 }
 
-vec2 Window::GetCursorPosition()
+Vec2<float> Window::GetCursorPosition()
 { 
 	glfwGetCursorPos(m_Window, &xpos, &ypos); 
-	return vec2(xpos, ypos); 
+	return Vec2<float>(xpos, ypos);
 }
