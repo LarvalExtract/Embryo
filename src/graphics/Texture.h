@@ -11,8 +11,8 @@ public:
 	inline unsigned short GetHeight() { return height; }
 	inline unsigned char GetBitDepth() { return bpp; }
 
-	void SetSpecularity(const float& value);
-	void SetGlossiness(const float& value);
+	void SetSpecularity(float value);
+	void SetGlossiness(float value);
 
 	float GetSpecularity();
 	float GetGlossiness();
@@ -52,7 +52,7 @@ public:
 
 	void Init(const std::string& filePath);
 
-	void SetCubemapFace(const unsigned int& face, const char*& imageData);
+	void SetCubemapFace(unsigned int face, const char*& imageData);
 private:
 
 };

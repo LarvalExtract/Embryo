@@ -1,28 +1,28 @@
 #pragma once
 
-#include <maths/vec3.h>
-#include <maths/vec4.h>
+#include <maths/Vec3.h>
+#include <maths/Vec4.h>
 
 class LightSource
 {
 public:
-	vec3 GetPosition();
-	vec3 GetColour();
+	Vec3<float> GetPosition();
+	Vec3<float> GetColour();
 	float GetPower();
 
 	std::string GetName();
 
-	void SetPosition(const float& x, const float& y, const float& z);
-	void SetColour(const float& r, const float& g, const float& b);
-	void SetPower(const float& value);
+	void SetPosition(float x, float y, float z);
+	void SetColour(float r, float g, float b);
+	void SetPower(float value);
 
 	void SetName(const std::string& name);
 
 protected:
-	LightSource(const vec3& position, const vec3& colour, const float& brightness);
+	LightSource(const Vec3<float> &position, const Vec3<float> &colour, float brightness);
 
-	vec3 position;
-	vec3 colour;
+	Vec3<float> position;
+	Vec3<float> colour;
 
 	std::string name;
 
@@ -32,7 +32,7 @@ protected:
 class LightOmni : public LightSource
 {
 public:
-	LightOmni(const vec3& position, const vec3& colour, const float& brightness);
+	LightOmni(const Vec3<float> &position, const Vec3<float> &colour, float brightness);
 
 private:
 

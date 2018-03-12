@@ -8,7 +8,7 @@ mat4::mat4()
 			elements[column][row] = 0;
 }
 
-mat4::mat4(const float& diagonal)
+mat4::mat4(float diagonal)
 {
 	for (int column = 0; column < MATRIX_SIZE; column++)
 		for (int row = 0; row < MATRIX_SIZE; row++)
@@ -152,11 +152,11 @@ mat4 mat4::Perspective(float fov, float aspectRatio, float near, float far)
 	return result;
 }
 
-mat4 mat4::LookAt(vec3 eye, const vec3& target, const vec3& up)
+mat4 mat4::LookAt(Vec3<float> eye, const Vec3<float> &target, const Vec3<float> &up)
 {
-	vec3 zaxis = normalise(eye - target);
-	vec3 xaxis = normalise(cross(up, zaxis));
-	vec3 yaxis = cross(zaxis, xaxis);
+	Vec3<float> zaxis = normalise(eye - target);
+	Vec3<float> xaxis = normalise(cross(up, zaxis));
+	Vec3<float> yaxis = cross(zaxis, xaxis);
 
 	mat4 result(1.0f);
 
@@ -179,7 +179,7 @@ mat4 mat4::LookAt(vec3 eye, const vec3& target, const vec3& up)
 	return result;
 }
 
-mat4 mat4::Translation(const vec3& translate)
+mat4 mat4::Translation(const Vec3<float> &translate)
 {
 	mat4 result(1.0f);
 
@@ -190,7 +190,7 @@ mat4 mat4::Translation(const vec3& translate)
 	return result;
 }
 
-mat4 mat4::Rotation(const float& angle, const vec3& axis)
+mat4 mat4::Rotation(float angle, const Vec3<float> &axis)
 {
 	mat4 result(1.0f);
 
@@ -218,7 +218,7 @@ mat4 mat4::Rotation(const float& angle, const vec3& axis)
 	return result;
 }
 
-mat4 mat4::Scale(const vec3& scale)
+mat4 mat4::Scale(const Vec3<float> &scale)
 {
 	mat4 result(1.0f);
 

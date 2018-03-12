@@ -5,8 +5,8 @@
 #include <AL/alc.h>
 #include <AL/al.h>
 
-#include <maths/vec2.h>
-#include <maths/vec4.h>
+#include <maths/Vec2.h>
+#include <maths/Vec4.h>
 
 //TODO: Implement key action functions, i.e. "OnKeyPress", "OnKeyRelease" etc.
 
@@ -27,7 +27,7 @@ public:
 
 	bool Init(const char* title, int width, int height);		// Initialise GLFW window
 
-	void SetColour(const float& r, const float& g, const float& b, const float& a);
+	void SetColour(float r, float g, float b, float a);
 
 	void Clear();		// Clears GLFW window
 	void Update();		// Updates GLFW window
@@ -64,6 +64,6 @@ public:
 	bool IsButtonPressed(unsigned int button);
 	inline void SetButtonState(unsigned int button, bool state) { m_Buttons[button] = state; };
 
-	vec2 GetCursorPosition();
-	inline void SetCursorPosition(const vec2& pos) { glfwSetCursorPos(m_Window, pos.x, pos.y); }
+	Vec2<float> GetCursorPosition();
+	inline void SetCursorPosition(const Vec2<float> &pos) { glfwSetCursorPos(m_Window, pos.x, pos.y); }
 };

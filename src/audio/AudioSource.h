@@ -18,19 +18,19 @@ public:
 
 	void SetName(const std::string& name);
 
-	void SetGain(const float& value);
-	void SetPitch(const float& value);
+	void SetGain(float value);
+	void SetPitch(float value);
 	void SetLoop(const bool& value);
 
-	vec3 GetPosition() { return soundPos; };
+	Vec3<float> GetPosition() { return soundPos; };
 
 	std::string GetName();
 
 protected:
 	ALuint leftChannel, rightChannel;
 
-	vec3 soundPos;
-	vec3 listenerPos;
+	Vec3<float> soundPos;
+	Vec3<float> listenerPos;
 
 	std::string name;
 };
@@ -43,7 +43,7 @@ public:
 
 	void Attenuate() override; // Calculate audio volume from listener position
 
-	void SetPosition(const float& x, const float& y, const float& z);
+	void SetPosition(float x, float y, float z);
 
 private:
 	

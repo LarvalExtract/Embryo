@@ -13,12 +13,12 @@ void Texture::Bind(unsigned int unit)
 	glBindTexture(target, hTexture);
 }
 
-void Texture::SetSpecularity(const float& value)
+void Texture::SetSpecularity(float value)
 {
 	specularity = value;
 }
 
-void Texture::SetGlossiness(const float& value)
+void Texture::SetGlossiness(float value)
 {
 	glossiness = value;
 }
@@ -166,7 +166,7 @@ void Cubemap::Init(const std::string& filePath)
 	glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 
-void Cubemap::SetCubemapFace(const unsigned int& face, const char*& imageData)
+void Cubemap::SetCubemapFace(unsigned int face, const char*& imageData)
 {
 	glTexImage2D(face, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, imageData);
 }

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <maths/vec3.h>
+#include <maths/Vec3.h>
 #include <maths/mat4.h>
 
 #include "VertexArray.h"
@@ -20,36 +20,36 @@ public:
 		return scaleMatrix * rotateMatrix * translateMatrix;
 	};
 
-	vec2 GetPosition();
-	vec2 GetRotation();
-	vec2 GetScale();
+	Vec2<float> GetPosition();
+	Vec2<float> GetRotation();
+	Vec2<float> GetScale();
 
 	Shader& GetShader();
 
-	void SetPosition(const float& x, const float& y);
-	void SetRotation(const float& z);
-	void SetScale(const float& x, const float& y);
-	void SetOrigin(const float& x, const float& y);
+	void SetPosition(float x, float y);
+	void SetRotation(float z);
+	void SetScale(float x, float y);
+	void SetOrigin(float x, float y);
 
 	void SetShader();
 
 	virtual void Draw();
 
 protected:
-	Renderable2D(const unsigned int& renderMode);
+	Renderable2D(unsigned int renderMode);
 
 	VertexArray vao;
 
-	vec3 position;
-	vec3 rotation;
-	vec3 scale;
-	vec3 origin;
+	Vec3<float> position;
+	Vec3<float> rotation;
+	Vec3<float> scale;
+	Vec3<float> origin;
 
 	mat4 translateMatrix;
 	mat4 rotateMatrix;
 	mat4 scaleMatrix;
 
-	Shader* shader;
+	Shader *shader;
 
 	unsigned int renderMode;
 };
@@ -57,17 +57,18 @@ protected:
 class Sprite : public Renderable2D
 {
 public:
-	Sprite(const std::string& texturePath);
+	Sprite(const std::string &texturePath);
 
-	void SetTexture(const std::string& texturePath);
+	void SetTexture(const std::string &texturePath);
 
 	void CenterOrigin();
 
 	void Draw() override;
 private:
-	Texture2D* texture;
+	Texture2D *texture;
 
-	float width, height;
+	float width;
+	float height;
 };
 
 
@@ -77,18 +78,18 @@ namespace Shape2D
 	class Shape2D : public Renderable2D
 	{
 	public:
-		void SetColour(const float& r, const float& g, const float& b, const float& a);
+		void SetColour(float r, float g, float b, float a);
 
 	protected:
-		Shape2D(const unsigned int& renderMode);
+		Shape2D(unsigned int renderMode);
 
-		vec4 colour;
+		Vec4<float> colour;
 	};
 
 	class Quad : public Shape2D
 	{
 	public:
-		Quad(const float& width, const float& height);
+		Quad(float width, float height);
 
 	private:
 		float width, height;
@@ -97,7 +98,7 @@ namespace Shape2D
 	class Triangle : public Shape2D
 	{
 	public:
-		Triangle(const float& size);
+		Triangle(float size);
 
 		void Draw() override;
 	};

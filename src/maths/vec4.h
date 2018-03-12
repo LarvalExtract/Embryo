@@ -2,30 +2,33 @@
 
 #include <iostream>
 
-struct vec4
+template <class T>
+class Vec4
 {
 public:
-	float x, y, z, w;
+	Vec4() : x(0), y(0), z(0), w(0) {}
+	Vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(0) {}
 
-	vec4();
-	vec4(const float& x, const float& y, const float& z, const float& w);
+	Vec4& operator+=(const Vec4 &rhs) { x += rhs.x; y += rhs.y; z += rhs.z; w += rhs.w; return *this; }
+	Vec4& operator-=(const Vec4 &rhs) { x -= rhs.x; y -= rhs.y; z -= rhs.z; w -= rhs.w; return *this; }
+	Vec4& operator*=(const Vec4 &rhs) { x *= rhs.x; y *= rhs.y; z *= rhs.z; w *= rhs.w; return *this; }
+	Vec4& operator/=(const Vec4 &rhs) { x /= rhs.x; y /= rhs.y; z /= rhs.z; w /= rhs.w; return *this; }
 
-	friend std::ostream& operator<<(std::ostream& output, const vec4& vector);
-
-	friend vec4& operator+(vec4& left, const vec4& right);
-	friend vec4& operator-(vec4& left, const vec4& right);
-	friend vec4& operator*(vec4& left, const vec4& right);
-	friend vec4& operator/(vec4& left, const vec4& right);
-
-	void operator+=(const vec4& right);
-	void operator-=(const vec4& right);
-	void operator*=(const vec4& right);
-	void operator/=(const vec4& right);
-
-private:
-	vec4& Add(const vec4& other);
-	vec4& Subtract(const vec4& other);
-	vec4& Multiply(const vec4& other);
-	vec4& Divide(const vec4& other);
-
+	T x;
+	T y;
+	T z;
+	T w;
 };
+
+template <class T>
+std::ostream& operator<<(std::ostream &output, const Vec4<T> &vector) { return output << "(" << vector.x << ", " << vector.y << ", " << vector.z << ", " << vector.w << ")"; }
+
+template <class T> Vec4<T> operator+(Vec4<T> lhs, const Vec4<T> &rhs) { return lhs += rhs; }
+template <class T> Vec4<T> operator-(Vec4<T> lhs, const Vec4<T> &rhs) { return lhs -= rhs; }
+template <class T> Vec4<T> operator*(Vec4<T> lhs, const Vec4<T> &rhs) { return lhs *= rhs; }
+template <class T> Vec4<T> operator/(Vec4<T> lhs, const Vec4<T> &rhs) { return lhs /= rhs; }
+
+template <class T> Vec4<T> operator+(Vec4<T> lhs, const T &rhs) { lhs.x += rhs; lhs.y += rhs; lhs.z += rhs; lhs.w += rhs; return lhs; }
+template <class T> Vec4<T> operator-(Vec4<T> lhs, const T &rhs) { lhs.x -= rhs; lhs.y -= rhs; lhs.z -= rhs; lhs.w -= rhs; return lhs; }
+template <class T> Vec4<T> operator*(Vec4<T> lhs, const T &rhs) { lhs.x *= rhs; lhs.y *= rhs; lhs.z *= rhs; lhs.w *= rhs; return lhs; }
+template <class T> Vec4<T> operator/(Vec4<T> lhs, const T &rhs) { lhs.x /= rhs; lhs.y /= rhs; lhs.z /= rhs; lhs.w /= rhs; return lhs; }

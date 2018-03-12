@@ -14,11 +14,11 @@ public:
 	void Bind();
 	void Unbind();
 
-	void AddBuffers(const void* data, unsigned int size, const unsigned int& attribIndex, const unsigned int& attribCount);
-	void AddIndices(const void* data, const unsigned int& count);
+	void AddBuffers(const void* data, unsigned int size, unsigned int attribIndex, unsigned int attribCount);
+	void AddIndices(const void* data, unsigned int count);
 
-	void DrawArrays(const unsigned int& renderMode);
-	void DrawElements(const unsigned int& renderMode);
+	void DrawArrays(unsigned int renderMode);
+	void DrawElements(unsigned int renderMode);
 private:
 	GLuint vao;
 

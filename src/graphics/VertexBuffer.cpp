@@ -24,7 +24,7 @@ void VertexBuffer::AddData(const void* data, unsigned int size)
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 
-void VertexBuffer::DrawArray(const unsigned int& renderMode)
+void VertexBuffer::DrawArray(unsigned int renderMode)
 {
 	glDrawArrays(renderMode, 0, m_Size / sizeof(float));
 }

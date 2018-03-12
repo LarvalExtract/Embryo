@@ -27,7 +27,7 @@ void VertexArray::Unbind()
 	glBindVertexArray(0);
 }
 
-void VertexArray::AddBuffers(const void* data, unsigned int size, const unsigned int& attribIndex, const unsigned int& attribCount)
+void VertexArray::AddBuffers(const void* data, unsigned int size, unsigned int attribIndex, unsigned int attribCount)
 {
 	VertexBuffer* buffer = new VertexBuffer;
 	buffer->AddData(data, size);
@@ -37,19 +37,19 @@ void VertexArray::AddBuffers(const void* data, unsigned int size, const unsigned
 	glEnableVertexAttribArray(attribIndex);
 }
 
-void VertexArray::AddIndices(const void* data, const unsigned int& count)
+void VertexArray::AddIndices(const void* data, unsigned int count)
 {
 	IndexBuffer* indices = new IndexBuffer;
 	indices->AddData(data, count);
 	indexBuffers.push_back(indices);
 }
 
-void VertexArray::DrawArrays(const unsigned int& renderMode)
+void VertexArray::DrawArrays(unsigned int renderMode)
 {
 	vertexBuffers[0]->DrawArray(renderMode);
 }
 
-void VertexArray::DrawElements(const unsigned int& renderMode)
+void VertexArray::DrawElements(unsigned int renderMode)
 {
 	for (char i = 0; i < indexBuffers.size(); i++)
 		indexBuffers[i]->DrawElements(renderMode);

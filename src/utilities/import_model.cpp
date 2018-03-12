@@ -4,10 +4,10 @@
 #include <fstream>
 #include <iostream>
 
-void GetVertex(std::ifstream& file, std::vector<vec3>& vertex, const unsigned int& count)
+void GetVertex(std::ifstream &file, std::vector<Vec3<float>> &vertex, unsigned int count)
 {
 	char test[4];
-	vec3 currentVertex;
+	Vec3<float> currentVertex;
 
 	for (unsigned int i = 0; i < count; i++)
 	{
@@ -21,10 +21,10 @@ void GetVertex(std::ifstream& file, std::vector<vec3>& vertex, const unsigned in
 	}
 }
 
-void GetUVs(std::ifstream& file, std::vector<vec2>& uv, const unsigned int& count)
+void GetUVs(std::ifstream& file, std::vector<Vec2<float>> &uv, unsigned int count)
 {
 	char test[4];
-	vec2 currentUV;
+	Vec2<float> currentUV;
 
 	for (unsigned int i = 0; i < count; i++)
 	{
@@ -36,7 +36,7 @@ void GetUVs(std::ifstream& file, std::vector<vec2>& uv, const unsigned int& coun
 	}
 }
 
-void GetIndices(std::ifstream& file, std::vector<unsigned short>& index, const unsigned int& count)
+void GetIndices(std::ifstream &file, std::vector<unsigned short> &index, unsigned int count)
 {
 	char test[2];
 	unsigned short currentIndex;
@@ -51,10 +51,10 @@ void GetIndices(std::ifstream& file, std::vector<unsigned short>& index, const u
 
 void ImportModel(
 	const std::string& filePath, 
-	std::vector<vec3>& in_positions, 
-	std::vector<vec3>& in_normals, 
-	std::vector<vec2>& in_texCoords, 
-	std::vector<unsigned short>& indices)
+	std::vector<Vec3<float>> &in_positions,
+	std::vector<Vec3<float>> &in_normals,
+	std::vector<Vec2<float>> &in_texCoords,
+	std::vector<unsigned short> &indices)
 {
 	std::ifstream file("res/models/" + filePath, std::ios::binary);
 	std::string fileName = filePath.substr(filePath.rfind("/") + 1, filePath.length());

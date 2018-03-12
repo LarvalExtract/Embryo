@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 
-char* CopyFileChunk(char* pMemBlock, std::ifstream& file, const unsigned int& offset, const unsigned int& size)
+char* CopyFileChunk(char* pMemBlock, std::ifstream& file, unsigned int offset, unsigned int size)
 {
 	file.seekg(offset, std::ios::beg);
 	file.read(pMemBlock, size);
@@ -12,7 +12,7 @@ char* CopyFileChunk(char* pMemBlock, std::ifstream& file, const unsigned int& of
 	return pMemBlock;
 }
 
-unsigned int GetSubchunkOffset(const std::string& subchunkId, std::ifstream& file, unsigned int offset, const unsigned int& fileSize)
+unsigned int GetSubchunkOffset(const std::string& subchunkId, std::ifstream& file, unsigned int offset, unsigned int fileSize)
 {
 	unsigned short memblockSize = 100;
 	unsigned int curByteOffset = offset;

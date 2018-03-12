@@ -10,7 +10,7 @@ public:
 	~VertexBuffer();
 
 	void AddData(const void* data, unsigned int size);
-	void DrawArray(const unsigned int& renderMode);
+	void DrawArray(unsigned int renderMode);
 
 	void Bind();
 	void Unbind();

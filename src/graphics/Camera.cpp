@@ -7,7 +7,7 @@ Camera::Camera() :
 {
 }
 
-Camera::Camera(const vec3& pos, float fov, float aspectRatio, float zNear, float zFar) :
+Camera::Camera(const Vec3<float> &pos, float fov, float aspectRatio, float zNear, float zFar) :
 	position(pos),
 	forward(0, 0, 1),
 	upward(0, 1, 0),
@@ -20,7 +20,7 @@ Camera::Camera(const vec3& pos, float fov, float aspectRatio, float zNear, float
 	viewMatrix = mat4::LookAt(position, position + forward, upward);
 }
 
-void Camera::Init(const vec3& pos, float fov, float aspectRatio, float zNear, float zFar)
+void Camera::Init(const Vec3<float> &pos, float fov, float aspectRatio, float zNear, float zFar)
 {
 	projectionMatrix = mat4::Perspective(fov, aspectRatio, zNear, zFar);
 	viewMatrix = mat4::LookAt(position, position + forward, upward);
@@ -36,17 +36,17 @@ mat4 Camera::GetViewMatrix()
 	return viewMatrix;
 }
 
-vec3 Camera::GetPos()
+Vec3<float> Camera::GetPos()
 {
 	return position;
 }
 
-vec3 Camera::GetForward()
+Vec3<float> Camera::GetForward()
 {
 	return forward;
 }
 
-vec3 Camera::GetUpward()
+Vec3<float> Camera::GetUpward()
 {
 	return upward;
 }
@@ -61,34 +61,34 @@ float Camera::GetAspectRatio()
 	return aspectRatio;
 }
 
-void Camera::SetPosition(const float& x, const float& y, const float& z)
+void Camera::SetPosition(float x, float y, float z)
 {
 	position.x = x;
 	position.y = y;
 	position.z = z;
 }
 
-void Camera::SetForward(const float& x, const float& y, const float& z)
+void Camera::SetForward(float x, float y, float z)
 {
 	forward.x = x;
 	forward.y = y;
 	forward.z = z;
 }
 
-void Camera::SetUpward(const float& x, const float& y, const float& z)
+void Camera::SetUpward(float x, float y, float z)
 {
 	upward.x = x;
 	upward.y = y;
 	upward.z = z;
 }
 
-void Camera::SetFOV(const float& fov)
+void Camera::SetFOV(float fov)
 {
 	this->fov = fov;
 	projectionMatrix = mat4::Perspective(fov, aspectRatio, clipNear, clipFar);
 }
 
-void Camera::SetAspectRatio(const float& aspectRatio)
+void Camera::SetAspectRatio(float aspectRatio)
 {
 	this->aspectRatio = aspectRatio;
 	projectionMatrix = mat4::Perspective(fov, aspectRatio, clipNear, clipFar);

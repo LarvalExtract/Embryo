@@ -2,30 +2,31 @@
 
 #include <iostream>
 
-struct vec2
+template <class T>
+class Vec2
 {
 public:
-	float x, y;
+	Vec2() : x(0), y(0) {}
+	Vec2(T x, T y) : x(x), y(y) {}
 
-	vec2();
-	vec2(const float& x, const float& y);
+	Vec2& operator+=(const Vec2 &rhs) { x += rhs.x; y += rhs.y; return *this; }
+	Vec2& operator-=(const Vec2 &rhs) { x -= rhs.x; y -= rhs.y; return *this; }
+	Vec2& operator*=(const Vec2 &rhs) { x *= rhs.x; y *= rhs.y; return *this; }
+	Vec2& operator/=(const Vec2 &rhs) { x /= rhs.x; y /= rhs.y; return *this; }
 
-	friend std::ostream& operator<<(std::ostream& output, const vec2& vector);
-
-	friend vec2& operator+(vec2& left, const vec2& right);
-	friend vec2& operator-(vec2& left, const vec2& right);
-	friend vec2& operator*(vec2& left, const vec2& right);
-	friend vec2& operator/(vec2& left, const vec2& right);
-
-	void operator+=(const vec2& right);
-	void operator-=(const vec2& right);
-	void operator*=(const vec2& right);
-	void operator/=(const vec2& right);
-
-private:
-	vec2& Add(const vec2& other);
-	vec2& Subtract(const vec2& other);
-	vec2& Multiply(const vec2& other);
-	vec2& Divide(const vec2& other);
-
+	T x;
+	T y;
 };
+
+template <class T>
+std::ostream& operator<<(std::ostream &output, const Vec2<T> &vector) { return output << "(" << vector.x << ", " << vector.y << ")"; }
+
+template <class T> Vec2<T> operator+(Vec2<T> lhs, const Vec2<T> &rhs) { return lhs += rhs; }
+template <class T> Vec2<T> operator-(Vec2<T> lhs, const Vec2<T> &rhs) { return lhs -= rhs; }
+template <class T> Vec2<T> operator*(Vec2<T> lhs, const Vec2<T> &rhs) { return lhs *= rhs; }
+template <class T> Vec2<T> operator/(Vec2<T> lhs, const Vec2<T> &rhs) { return lhs /= rhs; }
+
+template <class T> Vec2<T> operator+(Vec2<T> lhs, const T &rhs) { lhs.x += rhs; lhs.y += rhs; return lhs; } 
+template <class T> Vec2<T> operator-(Vec2<T> lhs, const T &rhs) { lhs.x -= rhs; lhs.y -= rhs; return lhs; }
+template <class T> Vec2<T> operator*(Vec2<T> lhs, const T &rhs) { lhs.x *= rhs; lhs.y *= rhs; return lhs; }
+template <class T> Vec2<T> operator/(Vec2<T> lhs, const T &rhs) { lhs.x /= rhs; lhs.y /= rhs; return lhs; }
