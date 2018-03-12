@@ -298,3 +298,5 @@ tools
 *.odx.cs
 *.xsd.cs
 
+# Miscellaneous
+enc_temp_folder
