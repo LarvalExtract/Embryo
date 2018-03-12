@@ -23,7 +23,7 @@
     <ProjectGuid>{0286375D-92CC-4379-BFB9-4C84F99659D6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Embryo</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -176,9 +176,6 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\maths\mat3.cpp" />
     <ClCompile Include="src\maths\mat4.cpp" />
-    <ClCompile Include="src\maths\vec2.cpp" />
-    <ClCompile Include="src\maths\vec3.cpp" />
-    <ClCompile Include="src\maths\vec4.cpp" />
     <ClCompile Include="src\screen.cpp" />
     <ClCompile Include="src\utilities\controls.cpp" />
     <ClCompile Include="src\utilities\file.cpp" />
