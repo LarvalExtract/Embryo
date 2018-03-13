@@ -15,7 +15,7 @@ public:
 	virtual ~Renderable2D();
 
 	// S * R * T for global, T * R * S for local
-	inline mat4 GetTransformMatrix()
+	inline Matrix4x4 GetTransformMatrix()
 	{
 		return scaleMatrix * originMatrix * rotateMatrix * translateMatrix;
 	};
@@ -45,10 +45,10 @@ protected:
 	Vec3<float> scale;
 	Vec3<float> origin;
 
-	mat4 translateMatrix;
-	mat4 rotateMatrix;
-	mat4 scaleMatrix;
-	mat4 originMatrix;
+	Matrix4x4 translateMatrix;
+	Matrix4x4 rotateMatrix;
+	Matrix4x4 scaleMatrix;
+	Matrix4x4 originMatrix;
 
 	Shader *shader;
 

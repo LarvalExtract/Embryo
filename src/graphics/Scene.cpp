@@ -110,7 +110,10 @@ void Scene::DrawScene()
 	// Draw scene's skybox
 	if (pSceneSky != nullptr)
 	{
-		sceneCameras[activeCameraID]->viewMatrix.NullTranslate();	// Remove translations from camera view matrix to prevent skybox from moving against camera
+		// Remove translations from camera view matrix to prevent skybox from moving against camera
+		sceneCameras[activeCameraID]->viewMatrix.elements[3][0] = 0.0f;	
+		sceneCameras[activeCameraID]->viewMatrix.elements[3][1] = 0.0f;
+		sceneCameras[activeCameraID]->viewMatrix.elements[3][2] = 0.0f;
 
 		pSceneSky->GetShader().Bind();
 		pSceneSky->GetShader().SetUniformMat4("mvpMatrix", pSceneSky->GetModelMatrix() * sceneCameras[activeCameraID]->GetViewMatrix() * sceneCameras[activeCameraID]->GetProjectionMatrix());

@@ -32,7 +32,7 @@ private:
 	Shape2D::Quad *testQuad;
 	Sprite *pCrosshair;
 
-	mat4 proj;
+	Matrix4x4 proj;
 
 	// Delta time
 	double lastTime;

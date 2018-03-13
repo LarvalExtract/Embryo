@@ -215,8 +215,6 @@
     <ClInclude Include="src\utilities\import_bitmap.h" />
     <ClInclude Include="src\utilities\import_model.h" />
     <ClInclude Include="src\utilities\timer.h" />
-    <ClInclude Include="src\utilities\_utilities.h" />
-    <ClInclude Include="src\graphics\_graphics.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\basiccolour.frag" />

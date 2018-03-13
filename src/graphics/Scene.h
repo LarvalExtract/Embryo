@@ -69,5 +69,5 @@ private:
 
 	Skybox *pSceneSky;
 
-	mat4 vpMatrix;
+	Matrix4x4 vpMatrix;
 };

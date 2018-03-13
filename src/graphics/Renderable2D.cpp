@@ -5,10 +5,10 @@ Renderable2D::Renderable2D(unsigned int renderMode) :
 	rotation(0, 0, 1),
 	scale(1, 1, 1),
 	origin(0, 0, 0),
-	translateMatrix(mat4::Translation(position)),
-	rotateMatrix(mat4::Rotation(0, rotation)),
-	scaleMatrix(mat4::Scale(scale)),
-	originMatrix(mat4::Identity()),
+	translateMatrix(Matrix4x4(1.0f)),
+	rotateMatrix(Matrix4x4(0.0f)),
+	scaleMatrix(Matrix4x4(1.0f)),
+	originMatrix(Matrix4x4(1.0f)),
 	renderMode(renderMode),
 	shader(nullptr)
 {
@@ -30,12 +30,12 @@ void Renderable2D::SetPosition(float x, float y)
 	position.x = x;// -origin.x;
 	position.y = y;// -origin.y;
 
-	translateMatrix = mat4::Translation(position);// *mat4::Translation(origin);
+	translateMatrix.Translate(position);// *mat4::Translation(origin);
 }
 
 void Renderable2D::SetRotation(float z)
 {	
-	rotateMatrix = mat4::Rotation(z, rotation);
+	rotateMatrix.Rotate(z, rotation);
 }
 	 
 void Renderable2D::SetScale(float x, float y)
@@ -43,7 +43,7 @@ void Renderable2D::SetScale(float x, float y)
 	scale.x = x;
 	scale.y = y;
 
-	scaleMatrix = mat4::Scale(scale);
+	scaleMatrix.Scale(scale);
 }
 
 void Renderable2D::SetOrigin(float x, float y)

@@ -94,5 +94,5 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 		camera.SetForward(0.0f, 0.0f, 0.1f);
 	}
 
-	camera.viewMatrix = mat4::LookAt(camera.position, camera.position + camera.forward, camera.upward);
+	camera.viewMatrix.LookAt(camera.position, camera.position + camera.forward, camera.upward);
 }

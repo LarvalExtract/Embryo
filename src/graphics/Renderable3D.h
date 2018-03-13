@@ -17,9 +17,9 @@ public:
 	// Base destructor
 	virtual ~Renderable3D();
 
-	virtual inline mat4 GetModelMatrix() const
+	virtual inline Matrix4x4 GetModelMatrix()
 	{
-		return scaleMatrix * rotationMatrix * translationMatrix;
+		return scaleMatrix * originMatrix * rotationMatrix * translationMatrix;
 	}
 
 	Texture& GetTexture();
@@ -37,6 +37,7 @@ public:
 	void SetPos(float x, float y, float z);
 	void SetRot(float x, float y, float z);
 	void SetScale(float x, float y, float z);
+	void SetOrigin(float x, float y, float z);
 
 	void SetShader(Shader *pShader);
 	void SetRenderMode(unsigned int mode);
@@ -56,10 +57,12 @@ protected:
 	Vec3<float> position;
 	Vec3<float> rotation;
 	Vec3<float> scale;
+	Vec3<float> origin;
 
-	mat4 translationMatrix;
-	mat4 rotationMatrix;
-	mat4 scaleMatrix;
+	Matrix4x4 translationMatrix;
+	Matrix4x4 rotationMatrix;
+	Matrix4x4 scaleMatrix;
+	Matrix4x4 originMatrix;
 
 	std::string name;
 
@@ -108,7 +111,7 @@ public:
 
 	// Overrides base class GetModelMatrix() function
 	// The skybox must not calculate position or scale matrices, therefore it must have its own version
-	inline mat4 GetModelMatrix() const override 
+	inline Matrix4x4 GetModelMatrix() override 
 	{
 		return rotationMatrix;
 	};

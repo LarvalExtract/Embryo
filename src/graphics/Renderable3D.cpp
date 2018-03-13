@@ -9,9 +9,11 @@ Renderable3D::Renderable3D(unsigned int renderMode) :
 	position(0, 0, 0),
 	rotation(0, 0, 0),
 	scale(1, 1, 1),
-	translationMatrix(mat4::Translation(position)),
-	rotationMatrix(mat4::Rotation(0, rotation)),
-	scaleMatrix(mat4::Scale(scale)),
+	origin(0, 0, 0),
+	translationMatrix(Matrix4x4(1.0f)),
+	rotationMatrix(Matrix4x4(1.0f)),
+	scaleMatrix(Matrix4x4(1.0f)),
+	originMatrix(Matrix4x4(1.0f)),
 	renderMode(renderMode),
 	specularity(0),
 	glossiness(1)
@@ -35,7 +37,7 @@ void Renderable3D::SetPos(float x, float y, float z)
 	position.y = y;
 	position.z = z;
 
-	translationMatrix = mat4::Translation(position);
+	translationMatrix.Translate(position);
 }
 
 void Renderable3D::SetRot(float x, float y, float z)
@@ -44,8 +46,14 @@ void Renderable3D::SetRot(float x, float y, float z)
 	rotation.y = y;
 	rotation.z = z;
 
-	rotationMatrix = mat4::Rotation(rotation.z, 
-		Vec3<float>(0.0f, 0.0f, 1.0f)) * mat4::Rotation(rotation.y, Vec3<float>(0.0f, 1.0f, 0.0f)) * mat4::Rotation(rotation.x, Vec3<float>(1.0f, 0.0f, 0.0f));
+	Matrix4x4 rotX;
+	rotX.Rotate(x, Vec3<float>(1.0f, 0.0f, 0.0f));
+	Matrix4x4 rotY;
+	rotY.Rotate(y, Vec3<float>(0.0f, 1.0f, 0.0f));
+	Matrix4x4 rotZ;
+	rotZ.Rotate(z, Vec3<float>(0.0f, 0.0f, 1.0f));
+
+	rotationMatrix = rotZ * rotY * rotX;
 }
 
 void Renderable3D::SetScale(float x, float y, float z)
@@ -54,7 +62,18 @@ void Renderable3D::SetScale(float x, float y, float z)
 	scale.y = y;
 	scale.z = z;
 
-	scaleMatrix = mat4::Scale(scale);
+	scaleMatrix.Scale(scale);
+}
+
+void Renderable3D::SetOrigin(float x, float y, float z)
+{
+	origin.x = x;
+	origin.y = y;
+	origin.z = z;
+
+	originMatrix.elements[3][0] = x;
+	originMatrix.elements[3][1] = y;
+	originMatrix.elements[3][2] = z;
 }
 
 void Renderable3D::SetShader(Shader *pShader)
