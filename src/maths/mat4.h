@@ -35,3 +35,42 @@ struct mat4
 private:
 	mat4& Multiply(const mat4 &other);
 };
+
+// New matrix class
+// NOT YET USED
+template <class T>
+class Matrix4x4
+{
+public:
+	Matrix4x4() : elements({ 0 }) {};
+
+	static Matrix4x4<float> Identity();
+	static Matrix4x4<float> Translation(const Vec3<float> &translate);
+	static Matrix4x4<float> Rotation(float angle, const Vec3<float> &axis);
+	static Matrix4x4<float> Scale(const Vec3<float> &scale);
+	static Matrix4x4<float> LookAt(Vec3<float> pos, const Vec3<float> &target, const Vec3<float> &up);
+	static Matrix4x4<float> Orthographic(float left, float right, float bottom, float top, float near, float far);
+	static Matrix4x4<float> Perspective(float fov, float aspectRatio, float near, float far);
+
+	Matrix4x4& operator+=(const Matrix4x4 &rhs) { return Add(rhs); }
+	Matrix4x4& operator-=(const Matrix4x4 &rhs) { return Subtract(rhs); }
+	Matrix4x4& operator*=(const Matrix4x4 &rhs) { return Multiply(rhs); }
+	//Matrix4x4& operator/=(const Matrix4x4 &rhs) { return Divide(rhs); }
+
+	T elements[COLUMN_SIZE][ROW_SIZE];
+
+private:
+	const char MATRIX_SIZE = 4;
+	const char COLUMN_SIZE = 4;
+	const char ROW_SIZE = 4;
+
+	Matrix4x4& Add(Matrix4x4<T> lhs, const Matrix4x4<T> &rhs);
+	Matrix4x4& Subtract(Matrix4x4<T> lhs, const Matrix4x4<T> &rhs);
+	Matrix4x4& Multiply(Matrix4x4<T> lhs, const Matrix4x4<T> &rhs);
+	//Matrix4x4& Divide(Matrix4x4<T> lhs, const Matrix4x4<T> &rhs);
+};
+
+template <class T> Matrix4x4<T> operator+(Matrix4x4<T> lhs, const Matrix4x4<T> &rhs) { return lhs.Add(rhs); }
+template <class T> Matrix4x4<T> operator-(Matrix4x4<T> lhs, const Matrix4x4<T> &rhs) { return lhs.Subtract(rhs); }
+template <class T> Matrix4x4<T> operator*(Matrix4x4<T> lhs, const Matrix4x4<T> &rhs) { return lhs.Multiply(rhs); }
+//template <class T> Matrix4x4<T> operator/(Matrix4x4<T> lhs, const Matrix4x4<T> &rhs) { return lhs.Divide(rhs); }
