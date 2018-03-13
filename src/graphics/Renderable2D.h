@@ -16,8 +16,8 @@ public:
 
 	// S * R * T for global, T * R * S for local
 	inline mat4 GetTransformMatrix()
-	{	
-		return scaleMatrix * rotateMatrix * translateMatrix;
+	{
+		return scaleMatrix * originMatrix * rotateMatrix * translateMatrix;
 	};
 
 	Vec2<float> GetPosition();
@@ -48,6 +48,7 @@ protected:
 	mat4 translateMatrix;
 	mat4 rotateMatrix;
 	mat4 scaleMatrix;
+	mat4 originMatrix;
 
 	Shader *shader;
 

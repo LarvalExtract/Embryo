@@ -140,7 +140,7 @@ bool Game::Initialise()
 
 	testQuad = new Shape2D::Quad(250.0f, 250.0f);
 	pCrosshair = new Sprite("sprites/crosshair.tga");
-	//pCrosshair->CenterOrigin();
+	pCrosshair->CenterOrigin();
 	pCrosshair->SetPosition(window.GetWidth() / 2, window.GetHeight() / 2);
 
 	//pCrosshair->SetPosition(0.0f, 0.0f);

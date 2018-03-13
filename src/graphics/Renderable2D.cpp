@@ -4,10 +4,11 @@ Renderable2D::Renderable2D(unsigned int renderMode) :
 	position(0, 0, 0),
 	rotation(0, 0, 1),
 	scale(1, 1, 1),
-	origin(0.0f, 0.0f, 0.0f),
+	origin(0, 0, 0),
 	translateMatrix(mat4::Translation(position)),
 	rotateMatrix(mat4::Rotation(0, rotation)),
 	scaleMatrix(mat4::Scale(scale)),
+	originMatrix(mat4::Identity()),
 	renderMode(renderMode),
 	shader(nullptr)
 {
@@ -49,6 +50,9 @@ void Renderable2D::SetOrigin(float x, float y)
 {
 	origin.x = x;
 	origin.y = y;
+
+	originMatrix.elements[3][0] = x;
+	originMatrix.elements[3][1] = y;
 }
 	 
 void Renderable2D::Draw()
@@ -105,6 +109,9 @@ void Sprite::CenterOrigin()
 {
 	origin.x = -width / 2.0f;
 	origin.y = -height / 2.0f;
+
+	originMatrix.elements[3][0] = -width / 2.0f;
+	originMatrix.elements[3][1] = -height / 2.0f;
 }
 
 void Sprite::Draw()

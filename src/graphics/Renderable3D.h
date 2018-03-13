@@ -141,7 +141,7 @@ namespace Primitive
 	class Box : public Primitive
 	{
 	public:
-		Box(float width, float height, float depth, const Vec4<float> & olour);
+		Box(float width, float height, float depth, const Vec4<float> & colour);
 
 	private:
 
