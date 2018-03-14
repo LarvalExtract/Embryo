@@ -1,5 +1,5 @@
 #pragma once
-#include <maths/_maths.h>
+#include <maths/maths.h>
 #include "Vec2.h"
 #include <iostream>
 

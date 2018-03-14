@@ -1,5 +1,5 @@
 #include "controls.h"
-#include <maths/_maths.h>
+#include <maths/maths.h>
 #include <math.h>
 
 double xpos, ypos;

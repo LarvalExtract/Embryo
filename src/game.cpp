@@ -1,5 +1,11 @@
 #include "game.h"
 
+#include "graphics/sprite2d.h"
+#include "graphics/sphere.h"
+#include "graphics/pivot.h"
+#include "graphics/model3d.h"
+#include "graphics/box.h"
+
 #include "utilities/controls.h"
 
 #include <string>
@@ -109,16 +115,16 @@ bool Game::Initialise()
 	pSprite->SetShader(pShader);
 	scene.AddRenderable(pSprite);
 
-	Primitive::Sphere *pSphere = new Primitive::Sphere(24, 2.0f, Vec4<float>(1.0f, 1.0f, 0.0f, 1.0f));
+	Sphere *pSphere = new Sphere(24, 2.0f, Vec4<float>(1.0f, 1.0f, 0.0f, 1.0f));
 	pSphere->SetPos(-5, 2, 3);
 	scene.AddRenderable(pSphere);
 
-	Primitive::Box *pBox = new Primitive::Box(2, 3, 3, Vec4<float>(1.0f, 0.0f, 1.0f, 1.0f));
+	Box *pBox = new Box(2, 3, 3, Vec4<float>(1.0f, 0.0f, 1.0f, 1.0f));
 	pBox->SetPos(13.3f, 3.0f, 5.0f);
 	pBox->SetRot(0.0f, 23.0f, 0.0f);
 	scene.AddRenderable(pBox);
 
-	Primitive::Pivot *pPivot = new Primitive::Pivot();
+	Pivot *pPivot = new Pivot();
 	pPivot->SetPos(0.0f, 2.0f, 0.0f);
 	scene.AddRenderable(pPivot);
 
