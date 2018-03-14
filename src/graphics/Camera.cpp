@@ -14,7 +14,8 @@ Camera::Camera(const Vec3<float> &pos, float fov, float aspectRatio, float zNear
 	fov(fov),
 	aspectRatio(aspectRatio),
 	clipNear(zNear),
-	clipFar(zFar)
+	clipFar(zFar),
+	viewMatrix(Matrix4x4(1.0f))
 {
 	projectionMatrix.Perspective(fov, aspectRatio, zNear, zFar);
 	viewMatrix.LookAt(position, position + forward, upward);
