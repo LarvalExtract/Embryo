@@ -2,6 +2,7 @@
 
 #include <chrono>
 
+// Timer used to measure elapsed time
 class Timer
 {
 public:
@@ -11,4 +12,5 @@ public:
 	double Elapsed() const;
 private:
 	std::chrono::time_point<std::chrono::high_resolution_clock> start;
+
 };

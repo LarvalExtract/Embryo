@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+// Generic 2D vector
 template <class T>
 class Vec2
 {

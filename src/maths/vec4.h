@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+// Generic 4D vector
 template <class T>
 class Vec4
 {

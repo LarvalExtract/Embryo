@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+// Generic 3D vector
 template <class T>
 class Vec3
 {
