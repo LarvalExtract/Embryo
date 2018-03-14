@@ -89,16 +89,15 @@ void Scene::UpdateScene()
 void Scene::DrawScene()
 {
 	// Pre-calculate the view * projection matrix so it doesn't need to be recalculated for every renderable
-	Camera *pCamera = sceneCameras[activeCameraID];
-	vpMatrix = pCamera->GetViewMatrix() * sceneCameras[activeCameraID]->GetProjectionMatrix();
+	vpMatrix = sceneCameras[activeCameraID]->GetViewMatrix() * sceneCameras[activeCameraID]->GetProjectionMatrix();
 
 	// Draw renderable objects in scene
 	for (renderable_it = sceneRenderables.begin(); renderable_it != sceneRenderables.end(); renderable_it++)
-		renderable_it->second->Draw(*pCamera, vpMatrix);
+		renderable_it->second->Draw(*sceneCameras[activeCameraID], vpMatrix);
 
 	// Draw scene's skybox
 	if (pSceneSky != nullptr)
-		pSceneSky->Draw(*pCamera, vpMatrix);
+		pSceneSky->Draw(*sceneCameras[activeCameraID], vpMatrix);
 }
 
 void Scene::AddRenderable(Renderable3D *pRenderable)
