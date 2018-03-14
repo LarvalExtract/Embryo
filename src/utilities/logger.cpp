@@ -2,6 +2,10 @@
 
 Logger* Logger::pLogger = nullptr;
 
+const char* Logger::strLog = "Log:";
+const char* Logger::strWarning = "Warning:";
+const char* Logger::strError = "Error:";
+
 Logger::Logger()
 {
 	hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -19,14 +23,14 @@ Logger& Logger::operator<<(ColourCode code)
 {
 	// Set text colour
 	GetConsoleScreenBufferInfo(hStdOut, &colourCsbi);
-	SetConsoleTextAttribute(hStdOut, static_cast<WORD>(code));
+	SetConsoleTextAttribute(hStdOut, static_cast<char>(code));
 
 	return Log();
 }
 
 Logger& Logger::operator<<(const char *pMessage)
 {
-	std::cout << pMessage;
+	std::cerr << pMessage;
 
 	// Restore console state to original
 	SetConsoleTextAttribute(hStdOut, csbi.wAttributes);
@@ -34,17 +38,34 @@ Logger& Logger::operator<<(const char *pMessage)
 	return Log();
 }
 
-Logger& Logger::Log()
+Logger& Logger::Log(LogType type)
 {
+	// Create an instance of pLogger if it doesn't already exist
 	if (pLogger == nullptr)
 		pLogger = new Logger();
+
+	// Appends a log type tag to the start of the message and colours the line
+	switch (type)
+	{
+	case LogType::Log:
+		std::cerr << strLog << ' ';
+		break;
+	case LogType::Warning:
+		*pLogger << ColourCode::BrightYellow;
+		std::cerr << strWarning << ' ';
+		break;
+	case LogType::Error:
+		*pLogger << ColourCode::BrightRed;
+		std::cerr << strError << ' ';
+		break;
+	default:
+		break;
+	}
 
 	return *pLogger;
 }
 
 ColourCode operator+(ColourCode lhs, const ColourCode &rhs)
 {
-	uint16_t a = static_cast<uint16_t>(lhs) | static_cast<uint16_t>(rhs) << 4;
-
-	return static_cast<ColourCode>(a);
+	return static_cast<ColourCode>(static_cast<char>(lhs) | static_cast<char>(rhs) << 4);;
 }
