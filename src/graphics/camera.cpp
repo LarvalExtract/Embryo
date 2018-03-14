@@ -12,26 +12,27 @@ Camera::Camera(const Vec3<float> &pos, float fov, float aspectRatio, float zNear
 	forward(0, 0, 1),
 	upward(0, 1, 0),
 	fov(fov),
+	viewMatrix(Mat4(1.0f)),
 	aspectRatio(aspectRatio),
 	clipNear(zNear),
 	clipFar(zFar)
 {
-	projectionMatrix = mat4::Perspective(fov, aspectRatio, zNear, zFar);
-	viewMatrix = mat4::LookAt(position, position + forward, upward);
+	projectionMatrix.Perspective(fov, aspectRatio, zNear, zFar);
+	viewMatrix.LookAt(position, position + forward, upward);
 }
 
 void Camera::Init(const Vec3<float> &pos, float fov, float aspectRatio, float zNear, float zFar)
 {
-	projectionMatrix = mat4::Perspective(fov, aspectRatio, zNear, zFar);
-	viewMatrix = mat4::LookAt(position, position + forward, upward);
+	projectionMatrix.Perspective(fov, aspectRatio, zNear, zFar);
+	viewMatrix.LookAt(position, position + forward, upward);
 }
 
-mat4 Camera::GetProjectionMatrix()
+Mat4 Camera::GetProjectionMatrix()
 {
 	return projectionMatrix;
 }
 
-mat4 Camera::GetViewMatrix()
+Mat4 Camera::GetViewMatrix()
 {
 	return viewMatrix;
 }
@@ -85,11 +86,11 @@ void Camera::SetUpward(float x, float y, float z)
 void Camera::SetFOV(float fov)
 {
 	this->fov = fov;
-	projectionMatrix = mat4::Perspective(fov, aspectRatio, clipNear, clipFar);
+	projectionMatrix.Perspective(fov, aspectRatio, clipNear, clipFar);
 }
 
 void Camera::SetAspectRatio(float aspectRatio)
 {
 	this->aspectRatio = aspectRatio;
-	projectionMatrix = mat4::Perspective(fov, aspectRatio, clipNear, clipFar);
+	projectionMatrix.Perspective(fov, aspectRatio, clipNear, clipFar);
 }

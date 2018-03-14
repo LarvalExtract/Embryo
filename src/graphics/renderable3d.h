@@ -3,12 +3,12 @@
 #include <string>
 #include <vector>
 
-#include <maths/Vec3.h>
+#include <maths/vec3.h>
 #include <maths/mat4.h>
 
-#include "VertexArray.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "vertexarray.h"
+#include "shader.h"
+#include "texture.h"
 
 #include "camera.h"
 
@@ -19,7 +19,7 @@ public:
 	Renderable3D(unsigned int renderMode);
 	virtual ~Renderable3D();
 
-	virtual inline mat4 GetModelMatrix() const
+	virtual inline Mat4 GetModelMatrix() const
 	{
 		return scaleMatrix * rotationMatrix * translationMatrix;
 	}
@@ -49,16 +49,16 @@ public:
 	void SetName(const std::string &name);
 
 	virtual void Draw();
-	virtual void Draw(Camera &camera, mat4 &vpMatrix);
+	virtual void Draw(Camera &camera, Mat4 &vpMatrix);
 
 protected:
 	Vec3<float> position;
 	Vec3<float> rotation;
 	Vec3<float> scale;
 
-	mat4 translationMatrix;
-	mat4 rotationMatrix;
-	mat4 scaleMatrix;
+	Mat4 translationMatrix;
+	Mat4 rotationMatrix;
+	Mat4 scaleMatrix;
 
 	std::string name;
 
@@ -71,9 +71,3 @@ protected:
 	float specularity;
 	float glossiness;
 };
-
-
-	
-
-
-// Pivot

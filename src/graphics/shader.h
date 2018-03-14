@@ -39,7 +39,7 @@ public:
 	void SetUniformVec4f(const std::string &name, const Vec4<float> &vector);
 
 	void SetUniformMat3(const std::string &name, const mat3& matrix);
-	void SetUniformMat4(const std::string &name, const mat4& matrix);
+	void SetUniformMat4(const std::string &name, const Mat4& matrix);
 
 private:
 	GLuint glsl_program;

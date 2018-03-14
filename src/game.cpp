@@ -151,7 +151,7 @@ bool Game::Initialise()
 
 	//pCrosshair->SetPosition(0.0f, 0.0f);
 
-	proj = mat4::Orthographic(0.0f, window.GetWidth(), 0.0f, window.GetHeight(), -1.0f, 1.0f);
+	proj.Orthographic(0.0f, window.GetWidth(), 0.0f, window.GetHeight(), -1.0f, 1.0f);
 	
 	// Initialise the scene
 	if (scene.InitialiseScene("Scene1") == false)

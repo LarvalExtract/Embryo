@@ -10,12 +10,12 @@ public:
 
 	// Overrides base class GetModelMatrix() function
 	// The skybox must not calculate position or scale matrices, therefore it must have its own version
-	inline mat4 GetModelMatrix() const override
+	inline Mat4 GetModelMatrix() const override
 	{
 		return rotationMatrix;
 	};
 
-	virtual void Draw(Camera &camera, mat4 &vpMatrix) override;
+	virtual void Draw(Camera &camera, Mat4 &vpMatrix) override;
 
 private:
 	float scale;
