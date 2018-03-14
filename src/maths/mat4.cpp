@@ -237,21 +237,21 @@ Matrix4x4::Matrix4x4(float scalar) :
 	elements{ 0 }
 {
 	for (char i = 0; i < COLUMN_SIZE; i++)
-		this->elements[i][i] = scalar;
+		elements[i][i] = scalar;
 }
 
 void Matrix4x4::Identity()
 {
 	for (char i = 0; i < COLUMN_SIZE; i++)
-		this->elements[i][i] = 1.0f;
+		elements[i][i] = 1.0f;
 }
 
 
 void Matrix4x4::Translate(const Vec3<float> &translate)
 {
-	this->elements[3][0] = translate.x;
-	this->elements[3][1] = translate.y;
-	this->elements[3][2] = translate.z;
+	elements[3][0] = translate.x;
+	elements[3][1] = translate.y;
+	elements[3][2] = translate.z;
 }
 
 
@@ -262,27 +262,27 @@ void Matrix4x4::Rotate(float angle, const Vec3<float> &axis)
 	float sinR = sin(R);
 	float omc = 1.0f - cosR;	// (o)ne (m)inus (c)osine
 
-	this->elements[0][0] = axis.x * omc + cosR;
-	this->elements[0][1] = axis.y * axis.x * omc + axis.z * sinR;
-	this->elements[0][2] = axis.x * axis.z * omc - axis.y * sinR;
+	elements[0][0] = axis.x * omc + cosR;
+	elements[0][1] = axis.y * axis.x * omc + axis.z * sinR;
+	elements[0][2] = axis.x * axis.z * omc - axis.y * sinR;
 
-	this->elements[1][0] = axis.x * axis.y * omc - axis.z * sinR;
-	this->elements[1][1] = axis.y * omc + cosR;
-	this->elements[1][2] = axis.y * axis.z * omc + axis.x * sinR;
+	elements[1][0] = axis.x * axis.y * omc - axis.z * sinR;
+	elements[1][1] = axis.y * omc + cosR;
+	elements[1][2] = axis.y * axis.z * omc + axis.x * sinR;
 
-	this->elements[2][0] = axis.z * axis.x * omc + axis.y * sinR;
-	this->elements[2][1] = axis.y * axis.z * omc - axis.x * sinR;
-	this->elements[2][2] = axis.z * omc + cosR;
+	elements[2][0] = axis.z * axis.x * omc + axis.y * sinR;
+	elements[2][1] = axis.y * axis.z * omc - axis.x * sinR;
+	elements[2][2] = axis.z * omc + cosR;
 }
 
 
 void Matrix4x4::Scale(const Vec3<float> &scale)
 {
-	this->elements[0][0] = scale.x;
+	elements[0][0] = scale.x;
 
-	this->elements[1][1] = scale.y;
+	elements[1][1] = scale.y;
 
-	this->elements[2][2] = scale.z;
+	elements[2][2] = scale.z;
 }
 
 
@@ -292,21 +292,21 @@ void Matrix4x4::LookAt(Vec3<float> pos, const Vec3<float> &target, const Vec3<fl
 	Vec3<float> xaxis = Maths::Normalise(Maths::Cross(up, zaxis));
 	Vec3<float> yaxis = Maths::Cross(zaxis, xaxis);
 
-	this->elements[0][0] = xaxis.x;
-	this->elements[0][1] = yaxis.x;
-	this->elements[0][2] = zaxis.x;
+	elements[0][0] = xaxis.x;
+	elements[0][1] = yaxis.x;
+	elements[0][2] = zaxis.x;
 	
-	this->elements[1][0] = xaxis.y;
-	this->elements[1][1] = yaxis.y;
-	this->elements[1][2] = zaxis.y;
+	elements[1][0] = xaxis.y;
+	elements[1][1] = yaxis.y;
+	elements[1][2] = zaxis.y;
 	
-	this->elements[2][0] = xaxis.z;
-	this->elements[2][1] = yaxis.z;
-	this->elements[2][2] = zaxis.z;
+	elements[2][0] = xaxis.z;
+	elements[2][1] = yaxis.z;
+	elements[2][2] = zaxis.z;
 	
-	this->elements[3][0] = -Maths::Dot(xaxis, pos);
-	this->elements[3][1] = -Maths::Dot(yaxis, pos);
-	this->elements[3][2] = -Maths::Dot(zaxis, pos);
+	elements[3][0] = -Maths::Dot(xaxis, pos);
+	elements[3][1] = -Maths::Dot(yaxis, pos);
+	elements[3][2] = -Maths::Dot(zaxis, pos);
 }
 
 
@@ -321,15 +321,15 @@ void Matrix4x4::Orthographic(float left, float right, float bottom, float top, f
 	float fpn = far + near;		// (f)ar (p)lus (n)ear
 
 	// See: www.safaribooksonline.com/library/view/opengl-es-2/9781941222560/images/AspectRatio/OrthographicMatrixDefinition.png
-	this->elements[0][0] = 2.0f / rml;
+	elements[0][0] = 2.0f / rml;
 
-	this->elements[1][1] = 2.0f / tmb;
+	elements[1][1] = 2.0f / tmb;
 
-	this->elements[2][2] = -2.0f / fmn;
+	elements[2][2] = -2.0f / fmn;
 
-	this->elements[3][0] = -(rpl / rml);
-	this->elements[3][1] = -(tpb / tmb);
-	this->elements[3][2] = -(fpn / fmn);
+	elements[3][0] = -(rpl / rml);
+	elements[3][1] = -(tpb / tmb);
+	elements[3][2] = -(fpn / fmn);
 }
 
 
@@ -339,14 +339,14 @@ void Matrix4x4::Perspective(float fov, float aspectRatio, float near, float far)
 	float zRange = near - far;
 
 	// See: i.stack.imgur.com/oesw9.jpg
-	this->elements[0][0] = q / aspectRatio;
+	elements[0][0] = q / aspectRatio;
 
-	this->elements[1][1] = q;
+	elements[1][1] = q;
 
-	this->elements[2][2] = (far + near) / zRange;
-	this->elements[2][3] = -1.0f;
+	elements[2][2] = (far + near) / zRange;
+	elements[2][3] = -1.0f;
 
-	this->elements[3][2] = 2 * (far * near) / zRange;
+	elements[3][2] = 2 * (far * near) / zRange;
 }
 
 // Operator overloads
@@ -354,7 +354,7 @@ Matrix4x4& Matrix4x4::operator=(const Matrix4x4 &rhs)
 {
 	for (char c = 0; c < COLUMN_SIZE; c++)
 		for (char r = 0; r < ROW_SIZE; r++)
-			this->elements[c][r] = rhs.elements[c][r];
+			elements[c][r] = rhs.elements[c][r];
 	return *this;
 }
 
@@ -362,7 +362,7 @@ Matrix4x4& Matrix4x4::operator+=(const Matrix4x4 &rhs)
 {
 	for (char c = 0; c < COLUMN_SIZE; c++)
 		for (char r = 0; r < ROW_SIZE; r++)
-			this->elements[c][r] += rhs.elements[c][r];
+			elements[c][r] += rhs.elements[c][r];
 	return *this;
 }
 
@@ -370,7 +370,7 @@ Matrix4x4& Matrix4x4::operator-=(const Matrix4x4 &rhs)
 {
 	for (char c = 0; c < COLUMN_SIZE; c++)
 		for (char r = 0; r < ROW_SIZE; r++)
-			this->elements[c][r] -= rhs.elements[c][r];
+			elements[c][r] -= rhs.elements[c][r];
 	return *this;
 }
 
@@ -379,7 +379,7 @@ Matrix4x4& Matrix4x4::operator*=(const Matrix4x4 &rhs)
 	for (char m = 0; m < COLUMN_SIZE; m++)
 		for (char c = 0; c < COLUMN_SIZE; c++)
 			for (char r = 0; r < ROW_SIZE; r++)
-				this->elements[m][c] += rhs.elements[m][r] * rhs.elements[r][c];
+				elements[m][c] += rhs.elements[m][r] * rhs.elements[r][c];
 	return *this;
 }
 
@@ -404,10 +404,12 @@ Matrix4x4 operator-(Matrix4x4 lhs, const Matrix4x4 &rhs)
 
 Matrix4x4 operator*(Matrix4x4 lhs, const Matrix4x4 &rhs)
 {
+	Matrix4x4 result(0.0f);
+
 	for (char m = 0; m < 4; m++)
 		for (char c = 0; c < 4; c++)
 			for (char r = 0; r < 4; r++)
-				lhs.elements[m][c] += rhs.elements[m][r] * rhs.elements[r][c];
+				result.elements[m][c] += lhs.elements[m][r] * rhs.elements[r][c];
 
-	return lhs;
+	return result;
 }
