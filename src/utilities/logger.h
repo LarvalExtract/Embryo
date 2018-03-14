@@ -47,7 +47,16 @@ public:
 	Logger& operator<<(ColourCode code);
 	
 	// Print a message with the current colour and reset the colour
-	Logger& operator<<(const char *pMessage);
+	template<class T>
+	Logger& operator<<(T message)
+	{
+		std::cerr << message;
+
+		// Restore console state to original
+		//SetConsoleTextAttribute(hStdOut, csbi.wAttributes);
+
+		return *this;
+	}
 	
 	// Returns singleton logger
 	static Logger& Log(LogType type = LogType::None);
@@ -60,7 +69,7 @@ private:
 
 	static Logger *pLogger;
 
-	HANDLE hStdOut;
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	CONSOLE_SCREEN_BUFFER_INFO colourCsbi;
+	static HANDLE hStdOut;
+	//CONSOLE_SCREEN_BUFFER_INFO csbi;
+	//CONSOLE_SCREEN_BUFFER_INFO colourCsbi;
 };

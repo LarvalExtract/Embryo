@@ -3,6 +3,8 @@
 #include <audio/AudioBuffer.h>
 #include <maths/maths.h>
 
+#include <utilities/logger.h>
+
 class AudioSource
 {
 public:
@@ -10,7 +12,7 @@ public:
 
 	virtual ~AudioSource();
 
-	virtual void Attenuate() { std::cout << "Not attenuating!" << std::endl; };
+	virtual void Attenuate() { Logger::Log(LogType::Warning) << "Not attenuating!\n"; };
 
 	void Play();
 	void Pause();

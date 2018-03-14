@@ -30,7 +30,7 @@ void Game::Start()
 		// Attempt to initialise the game
 		if (!Initialise())
 		{
-			std::cerr << "Could not initialise!" << std::endl;
+			Logger::Log(LogType::Error) << "Could not initialise!\n";
 			return;
 		}
 	}
@@ -63,11 +63,10 @@ bool Game::Initialise()
 	//window->SetColour(0.1f, 0.3f, 0.6f, 1.0f);
 
 	// Print OpenGL and OpenAL version info
-	std::cout << "OpenGL " << glGetString(GL_VERSION) << ", " << glGetString(GL_VENDOR) << ", " << glGetString(GL_RENDERER) << "\n"
-			  << "OpenAL " << alGetString(AL_VERSION) << ", " << alGetString(AL_VENDOR) << ", " << alGetString(AL_RENDERER) << "\n"
-			  << std::endl;
+	Logger::Log() << "OpenGL " << glGetString(GL_VERSION) << ", " << glGetString(GL_VENDOR) << ", " << glGetString(GL_RENDERER) << "\n"
+		<< "OpenAL " << alGetString(AL_VERSION) << ", " << alGetString(AL_VENDOR) << ", " << alGetString(AL_RENDERER) << "\n\n";
 
-	std::cout << "Press Z to enable camera controls" << "\n" << std::endl;
+	Logger::Log() << "Press Z to enable camera controls" << "\n\n";
 
 	scene.SetSkybox("skybox_ocean.tga");
 
@@ -162,7 +161,7 @@ bool Game::Initialise()
 	//scene->PrintSoundList();
 	//scene->PrintCameraList();
 
-	std::cout << "Initialisation time: " << initTimer.Elapsed() << " seconds" << "\n" << std::endl;
+	Logger::Log() << "Initialisation time: " << initTimer.Elapsed() << " seconds" << "\n\n";
 
 	lastTime = glfwGetTime();
 
@@ -182,10 +181,11 @@ void Game::Update()
 	lastTime = currentTime;
 
 	// Display frame time/frame rate
-	std::cerr << "Frame time: " << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
+	Logger::Log() << "Frame time: " << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
 	
 	counter += 1.0f * deltaTime;
 
+	// BUG: Crashes if the scene cannot find a renderable or light
 	scene.GetRenderable("teapot")->SetRot(sin(counter * 10), 0.0f, cos(counter * 20));
 	scene.GetLight("light_omni")->SetPosition(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
 	//scene->GetLight("light_omni")->SetPower(sin(counter * 2) * 3);
