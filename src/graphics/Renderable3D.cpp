@@ -46,11 +46,11 @@ void Renderable3D::SetRot(float x, float y, float z)
 	rotation.y = y;
 	rotation.z = z;
 
-	Matrix4x4 rotX;
+	Matrix4x4 rotX(1.0f);
 	rotX.Rotate(x, Vec3<float>(1.0f, 0.0f, 0.0f));
-	Matrix4x4 rotY;
+	Matrix4x4 rotY(1.0f);
 	rotY.Rotate(y, Vec3<float>(0.0f, 1.0f, 0.0f));
-	Matrix4x4 rotZ;
+	Matrix4x4 rotZ(1.0f);
 	rotZ.Rotate(z, Vec3<float>(0.0f, 0.0f, 1.0f));
 
 	rotationMatrix = rotZ * rotY * rotX;
