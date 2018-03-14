@@ -52,9 +52,9 @@ public:
 	// Returns singleton logger
 	static Logger& Log(LogType type = LogType::None);
 
-	static const char* strLog;
-	static const char* strWarning;
-	static const char* strError;
+	static char* const strLog;
+	static char* const strWarning;
+	static char* const strError;
 private:
 	Logger();
 

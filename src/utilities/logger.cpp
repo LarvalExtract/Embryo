@@ -2,14 +2,13 @@
 
 Logger* Logger::pLogger = nullptr;
 
-const char* Logger::strLog = "Log:";
-const char* Logger::strWarning = "Warning:";
-const char* Logger::strError = "Error:";
+char* const Logger::strLog = "Log:";
+char* const Logger::strWarning = "Warning:";
+char* const Logger::strError = "Error:";
 
 Logger::Logger()
 {
 	hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
 	// Store console state
 	GetConsoleScreenBufferInfo(hStdOut, &csbi);
 }
