@@ -40,10 +40,12 @@ Skybox::Skybox(const std::string& skyboxName) :
 	texture = new Cubemap("sky/" + skyboxName);
 }
 
-void Skybox::Draw(Camera &camera, mat4 &vpMatrix)
+void Skybox::Draw(Camera &camera, Mat4 &vpMatrix)
 {
 	// Remove translations from camera view matrix to prevent skybox from moving against camera
-	camera.viewMatrix.NullTranslate();
+	camera.viewMatrix.elements[3][0] = 0.0f;
+	camera.viewMatrix.elements[3][1] = 0.0f;
+	camera.viewMatrix.elements[3][2] = 0.0f;
 
 	GetShader().Bind();
 	GetShader().SetUniformMat4("mvpMatrix", GetModelMatrix() * camera.GetViewMatrix() * camera.GetProjectionMatrix());

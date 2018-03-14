@@ -3,8 +3,6 @@
 #include <./maths/Vec3.h>
 #include <./maths/mat4.h>
 
-#include <AL/al.h>
-
 class Camera
 {
 public:
@@ -13,8 +11,8 @@ public:
 
 	void Init(const Vec3<float> &pos, float fov, float aspectRatio, float zNear, float zFar);
 
-	mat4 GetProjectionMatrix();
-	mat4 GetViewMatrix();
+	Mat4 GetProjectionMatrix();
+	Mat4 GetViewMatrix();
 
 	Vec3<float> GetPos();
 	Vec3<float> GetForward();
@@ -33,8 +31,8 @@ public:
 	Vec3<float> forward;
 	Vec3<float> upward;
 
-	mat4 projectionMatrix;
-	mat4 viewMatrix;
+	Mat4 projectionMatrix;
+	Mat4 viewMatrix;
 
 	float fov;
 	float aspectRatio;
