@@ -46,7 +46,7 @@ public:
 	// Set the colour of the next message
 	Logger& operator<<(ColourCode code);
 	
-	// Print a message with the current colour and reset the colour
+	// Print a message with the current colour
 	template<class T>
 	Logger& operator<<(T message)
 	{
