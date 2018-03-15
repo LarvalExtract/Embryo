@@ -1,13 +1,18 @@
 #include "logger.h"
 
 Logger* Logger::pLogger = nullptr;
+HANDLE Logger::hStdOut = nullptr;
+
+char* const Logger::strLog = "Log:";
+char* const Logger::strWarning = "Warning:";
+char* const Logger::strError = "Error:";
 
 Logger::Logger()
 {
 	hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	// Store console state
-	GetConsoleScreenBufferInfo(hStdOut, &csbi);
+	//GetConsoleScreenBufferInfo(hStdOut, &csbi);
 }
 
 Logger::~Logger()
@@ -18,33 +23,41 @@ Logger::~Logger()
 Logger& Logger::operator<<(ColourCode code)
 {
 	// Set text colour
-	GetConsoleScreenBufferInfo(hStdOut, &colourCsbi);
-	SetConsoleTextAttribute(hStdOut, static_cast<WORD>(code));
+	SetConsoleTextAttribute(hStdOut, static_cast<char>(code));
 
 	return Log();
 }
 
-Logger& Logger::operator<<(const char *pMessage)
+Logger& Logger::Log(LogType type)
 {
-	std::cout << pMessage;
-
-	// Restore console state to original
-	SetConsoleTextAttribute(hStdOut, csbi.wAttributes);
-
-	return Log();
-}
-
-Logger& Logger::Log()
-{
+	// Create an instance of pLogger if it doesn't already exist
 	if (pLogger == nullptr)
 		pLogger = new Logger();
+
+	// Appends a log type tag to the start of the message and colours the line
+	switch (type)
+	{
+	case LogType::Log:
+		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::White));
+		std::cerr << strLog << ' ';
+		break;
+	case LogType::Warning:
+		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::BrightYellow));
+		std::cerr << strWarning << ' ';
+		break;
+	case LogType::Error:
+		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::BrightRed));
+		std::cerr << strError << ' ';
+		break;
+	default:
+		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::White));
+		break;
+	}
 
 	return *pLogger;
 }
 
 ColourCode operator+(ColourCode lhs, const ColourCode &rhs)
 {
-	uint16_t a = static_cast<uint16_t>(lhs) | static_cast<uint16_t>(rhs) << 4;
-
-	return static_cast<ColourCode>(a);
+	return static_cast<ColourCode>(static_cast<char>(lhs) | static_cast<char>(rhs) << 4);;
 }

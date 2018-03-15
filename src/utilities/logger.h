@@ -5,7 +5,7 @@
 #include "windows.h"
 
 // Colour codes used to colour text in console
-enum class ColourCode : uint16_t
+enum class ColourCode : char
 {
 	Black = 0x00,
 	Blue = 0x01,
@@ -25,6 +25,15 @@ enum class ColourCode : uint16_t
 	BrightWhite = 0x0F
 };
 
+// Log type used to determine how to print a message
+enum class LogType
+{
+	None,
+	Log,
+	Warning,
+	Error
+};
+
 // Adds two colour codes to make the console text foreground/background colour
 ColourCode operator+(ColourCode lhs, const ColourCode &rhs);
 
@@ -37,19 +46,30 @@ public:
 	// Set the colour of the next message
 	Logger& operator<<(ColourCode code);
 	
-	// Print a message with the current colour and reset the colour
-	Logger& operator<<(const char *pMessage);
+	// Print a message with the current colour
+	template<class T>
+	Logger& operator<<(T message)
+	{
+		std::cerr << message;
+
+		// Restore console state to original
+		//SetConsoleTextAttribute(hStdOut, csbi.wAttributes);
+
+		return *this;
+	}
 	
 	// Returns singleton logger
-	static Logger& Log();
+	static Logger& Log(LogType type = LogType::None);
 
+	static char* const strLog;
+	static char* const strWarning;
+	static char* const strError;
 private:
 	Logger();
 
 	static Logger *pLogger;
 
-	HANDLE hStdOut;
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	CONSOLE_SCREEN_BUFFER_INFO colourCsbi;
-
+	static HANDLE hStdOut;
+	//CONSOLE_SCREEN_BUFFER_INFO csbi;
+	//CONSOLE_SCREEN_BUFFER_INFO colourCsbi;
 };

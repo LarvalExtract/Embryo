@@ -1,6 +1,8 @@
 #include "import_audio_wav.h"
 #include "file.h"
 
+#include "logger.h"
+
 #include <fstream>
 #include <iostream>
 
@@ -89,7 +91,7 @@ void ImportWAV(
 
 	if (!file.is_open())
 	{
-		std::cout << "Error: Couldn't open " << filePath << std::endl;
+		Logger::Log(LogType::Error) << "Couldn't open " << filePath << "\n";
 		return;
 	}
 
@@ -153,7 +155,7 @@ void ImportWAV(
 
 	else
 	{
-		std::cout << "Error: Couldn't find format subchunk in specified file. Please ensure the file you specified is a valid WAV file." << std::endl;
+		Logger::Log(LogType::Error) << "Couldn't find format subchunk in specified file. Please ensure the file you specified is a valid WAV file.\n";
 	}
 
 	file.close();
