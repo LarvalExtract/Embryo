@@ -1,6 +1,8 @@
+#include <iostream>
+
 #include "window.h"
 
-#include <iostream>
+#include <utilities/logger.h>
 
 void Resize(GLFWwindow*, int width, int height);
 
@@ -33,7 +35,7 @@ bool Window::Init(std::string title, int width, int height)
 	// Initialise GLFW
 	if (glfwInit() != GLFW_TRUE)
 	{
-		std::cout << "Failed to initialise GLFW!" << std::endl;
+		Logger::Log(LogType::Error) << "Failed to initialise GLFW!\n";
 		return false;
 	}
 
@@ -42,7 +44,7 @@ bool Window::Init(std::string title, int width, int height)
 
 	if (!m_Window)
 	{
-		std::cout << "Failed to create GLFW window!" << std::endl;
+		Logger::Log(LogType::Error) << "Failed to create GLFW window!\n";
 		return false;
 	}
 
@@ -68,7 +70,7 @@ bool Window::Init(std::string title, int width, int height)
 
 	if (glewInit() != GLEW_OK)
 	{
-		std::cout << "Failed to initialise GLEW!" << std::endl;
+		Logger::Log(LogType::Error) << "Failed to initialise GLEW!\n";
 		return false;
 	}
 

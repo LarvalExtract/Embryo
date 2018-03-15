@@ -1,5 +1,7 @@
 #include "import_bitmap.h"
 
+#include "logger.h"
+
 #include <iostream>
 
 void ImportBitmap(
@@ -14,7 +16,7 @@ void ImportBitmap(
 
 	if (!file.is_open())
 	{
-		std::cout << "Error: Couldn't open " << filePath << "\n" << std::endl;
+		Logger::Log(LogType::Error) << "Couldn't open " << filePath << "\n";
 		return;
 	}
 	

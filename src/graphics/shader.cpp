@@ -2,6 +2,7 @@
 #include <iostream>
 #include <utilities/file.h>
 
+#include <utilities/logger.h>
 
 static GLuint CreateShader(const std::string& shaderSource, GLenum shaderType);
 static void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage);
@@ -44,10 +45,10 @@ void Shader::Init(const std::string& shaderPath)
 	glBindAttribLocation(glsl_program, 3, "in_colour");		// Vertex colour attribute
 
 	glLinkProgram(glsl_program);
-	CheckShaderError(glsl_program, GL_LINK_STATUS, true, "Error: Shader program linking failed: ");
+	CheckShaderError(glsl_program, GL_LINK_STATUS, true, "Shader program linking failed: ");
 
 	glValidateProgram(glsl_program);
-	CheckShaderError(glsl_program, GL_VALIDATE_STATUS, true, "Error: Invalid shader program: ");
+	CheckShaderError(glsl_program, GL_VALIDATE_STATUS, true, "Invalid shader program: ");
 }
 
 void Shader::Bind()
@@ -139,8 +140,9 @@ static GLuint CreateShader(const std::string &source, GLenum shaderType)
 {
 	GLuint shader = glCreateShader(shaderType);
 
+	// TO-DO: Handle error
 	if (shader == 0)
-		std::cerr << "Error: Couldn't create shader!" << std::endl;
+		Logger::Log(LogType::Error) << "Couldn't create shader!\n";
 
 	const GLchar* shaderSource = source.c_str();
 	const GLint shaderSourceLength = source.length();
@@ -148,7 +150,7 @@ static GLuint CreateShader(const std::string &source, GLenum shaderType)
 	glShaderSource(shader, 1, &shaderSource, &shaderSourceLength);
 	glCompileShader(shader);
 
-	CheckShaderError(shader, GL_COMPILE_STATUS, false, "Error: Shader compilation failed: ");
+	CheckShaderError(shader, GL_COMPILE_STATUS, false, "Shader compilation failed: ");
 
 	return shader;
 }
@@ -172,6 +174,6 @@ static void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const s
 		else
 			glGetShaderInfoLog(shader, sizeof(error), NULL, error);
 
-		std::cerr << errorMessage << ": " << error << std::endl;
+		Logger::Log(LogType::Error) << errorMessage << ": " << error << "\n";
 	}
 }
