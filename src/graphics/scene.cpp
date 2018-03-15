@@ -68,7 +68,7 @@ bool Scene::InitialiseScene(std::string name)
 
 void Scene::UpdateScene()
 {
-	alListener3f(AL_POSITION, sceneCameras[activeCameraID]->GetPos().x, sceneCameras[activeCameraID]->GetPos().y, sceneCameras[activeCameraID]->GetPos().z);
+	alListener3f(AL_POSITION, sceneCameras[activeCameraID]->position.x, sceneCameras[activeCameraID]->position.y, sceneCameras[activeCameraID]->position.z);
 
 	// Attenuate sounds in scene
 	for (sound_it = sceneSounds.begin(); sound_it != sceneSounds.end(); sound_it++)
@@ -91,7 +91,7 @@ void Scene::UpdateScene()
 void Scene::DrawScene()
 {
 	// Pre-calculate the view * projection matrix so it doesn't need to be recalculated for every renderable
-	vpMatrix = sceneCameras[activeCameraID]->GetViewMatrix() * sceneCameras[activeCameraID]->GetProjectionMatrix();
+	vpMatrix = sceneCameras[activeCameraID]->viewMatrix * sceneCameras[activeCameraID]->projectionMatrix;
 
 	// Draw renderable objects in scene
 	for (renderable_it = sceneRenderables.begin(); renderable_it != sceneRenderables.end(); renderable_it++)

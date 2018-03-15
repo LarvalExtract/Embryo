@@ -10,7 +10,8 @@
 #include "LightSource.h"
 #include "lightomni.h"
 
-#include "Camera.h"
+#include "cameraperspective.h"
+#include "cameraortho.h"
 #include "Shader.h"
 #include <audio/AudioSource.h>
 

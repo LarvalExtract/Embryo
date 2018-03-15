@@ -170,7 +170,7 @@ void Model3D::Draw(Camera &camera, Mat4 &vpMatrix)
 
 	shader->Bind();
 	shader->SetUniformMat4("transformMatrix", GetModelMatrix());
-	shader->SetUniformMat4("viewMatrix", camera.GetViewMatrix());
+	shader->SetUniformMat4("viewMatrix", camera.viewMatrix);
 	shader->SetUniformMat4("mvpMatrix", GetModelMatrix() * vpMatrix);
 
 	// Update shader lighting components
