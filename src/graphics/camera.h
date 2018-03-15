@@ -8,7 +8,7 @@ class Camera
 public:
 	virtual ~Camera() {}
 
-	void SetPosition(float x, float y, float z) { position.x = x, position.y = y, position.z = z, viewMatrix.LookAt(position, position + forwardVector, upwardVector); }
+	virtual void SetPosition(float x, float y, float z) { position.x = x, position.y = y, position.z = z, viewMatrix.LookAt(position, position + forwardVector, upwardVector); }
 
 	Vec3<float> position;
 	Vec3<float> forwardVector;
