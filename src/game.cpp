@@ -70,7 +70,7 @@ bool Game::Initialise()
 
 	scene.SetSkybox("skybox_ocean.tga");
 
-	Camera *pCamera = new CamPerspective(60.0f, static_cast<float>(window.GetWidth()) / static_cast<float>(window.GetHeight()), 0.01f, 1000.0f);
+	Camera *pCamera = new CamPersp(60.0f, static_cast<float>(window.GetWidth()) / static_cast<float>(window.GetHeight()), 0.01f, 1000.0f);
 	pCamera->SetPosition(0.0f, 1.0f, -3.0f);
 	scene.AddCamera(pCamera);
 
@@ -147,7 +147,7 @@ bool Game::Initialise()
 	testQuad = new Shape2D::Quad(250.0f, 250.0f);
 	pCrosshair = new Sprite("sprites/crosshair.tga");
 	pCrosshair->CenterOrigin();
-	pCrosshair->SetPosition(window.GetWidth() / 2, window.GetHeight() / 2);
+	pCrosshair->SetPosition(window.GetWidth() / 2.0f, window.GetHeight() / 2.0f);
 
 	//pCrosshair->SetPosition(0.0f, 0.0f);
 
@@ -184,7 +184,7 @@ void Game::Update()
 	// Display frame time/frame rate
 	Logger::Log() << "Frame time: " << ColourCode::BrightGreen << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
 	
-	counter += 1.0f * deltaTime;
+	counter += 1.0f * static_cast<float>(deltaTime);
 
 	// BUG: Crashes if the scene cannot find a renderable or light
 	scene.GetRenderable("teapot")->SetRotation(sin(counter * 10), 0.0f, cos(counter * 20));
