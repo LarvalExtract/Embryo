@@ -25,7 +25,8 @@ Logger& Logger::operator<<(ColourCode code)
 	// Set text colour
 	SetConsoleTextAttribute(hStdOut, static_cast<char>(code));
 
-	return Log();
+	// Return a singleton pointer (should never be nullptr)
+	return *pLogger;
 }
 
 Logger& Logger::Log(LogType type)
@@ -59,5 +60,5 @@ Logger& Logger::Log(LogType type)
 
 ColourCode operator+(ColourCode lhs, const ColourCode &rhs)
 {
-	return static_cast<ColourCode>(static_cast<char>(lhs) | static_cast<char>(rhs) << 4);;
+	return static_cast<ColourCode>(static_cast<char>(lhs) | static_cast<char>(rhs) << 4);
 }
