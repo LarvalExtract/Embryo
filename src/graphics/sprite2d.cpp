@@ -10,8 +10,8 @@ Sprite2D::Sprite2D(const std::string& filePath) :
 
 	float positions[] = {
 		-(texture->GetWidth() / 2) * 0.01f,  0.0f,							0.0f,
-		(texture->GetWidth() / 2) * 0.01f,  0.0f,							0.0f,
-		(texture->GetWidth() / 2) * 0.01f,  texture->GetHeight() * 0.01f,	0.0f,
+		 (texture->GetWidth() / 2) * 0.01f,  0.0f,							0.0f,
+		 (texture->GetWidth() / 2) * 0.01f,  texture->GetHeight() * 0.01f,	0.0f,
 		-(texture->GetWidth() / 2) * 0.01f,  texture->GetHeight() * 0.01f,	0.0f
 	};
 
@@ -39,7 +39,10 @@ void Sprite2D::Draw()
 
 	glDisable(GL_CULL_FACE);
 
-	Renderable3D::Draw();
+	vao.Bind();
+	shader->Bind();
+	texture->Bind(0);
+	vao.DrawElements(renderMode);
 
 	glDisable(GL_BLEND);
 	glEnable(GL_CULL_FACE);

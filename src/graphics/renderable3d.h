@@ -21,53 +21,37 @@ public:
 
 	virtual inline Mat4 GetModelMatrix() const
 	{
-		return scaleMatrix * rotationMatrix * translationMatrix;
+		return scaleMatrix * originMatrix * rotationMatrix * translationMatrix;
 	}
 
-	Texture& GetTexture();
+	std::string GetName();
 	Shader& GetShader();
 
-	float GetSpecularity();
-	float GetGlossiness();
-
-	Vec3<float> GetPos();
-	Vec3<float> GetRot();
-	Vec3<float> GetScale();
-
-	std::string GetName();
-
-	void SetPos(float x, float y, float z);
-	void SetRot(float x, float y, float z);
-	void SetScale(float x, float y, float z);
-
-	void SetShader(Shader *pShader);
-	void SetRenderMode(unsigned int mode);
-
-	void SetSpecularity(float value);
-	void SetGlossiness(float value);
-
 	void SetName(const std::string &name);
+	void SetRenderMode(unsigned int mode);
+	void SetPosition(float x, float y, float z);
+	void SetRotation(float x, float y, float z);
+	void SetScale(float x, float y, float z);
+	void SetOrigin(float x, float y, float z);
+	void SetShader(Shader *pShader);
 
 	virtual void Draw();
 	virtual void Draw(Camera &camera, Mat4 &vpMatrix);
 
 protected:
+	std::string name;
+	unsigned int renderMode;
+
 	Vec3<float> position;
 	Vec3<float> rotation;
 	Vec3<float> scale;
+	Vec3<float> origin;
 
 	Mat4 translationMatrix;
 	Mat4 rotationMatrix;
 	Mat4 scaleMatrix;
-
-	std::string name;
-
-	unsigned int renderMode;
+	Mat4 originMatrix;
 
 	VertexArray  vao;
-	Texture		 *texture;
 	Shader		 *shader;
-
-	float specularity;
-	float glossiness;
 };

@@ -24,14 +24,34 @@ Model3D::Model3D(const std::string& filePath) :
 	vao.AddIndices(&indices[0], indices.size());
 }
 
+Texture2D& Model3D::GetTexture()
+{
+	return *texture;
+}
+
+float Model3D::GetSpecularity()
+{
+	return specularity;
+}
+
+float Model3D::GetGlossiness()
+{
+	return glossiness;
+}
+
 void Model3D::SetTexture(const std::string& filePath)
 {
 	texture = new Texture2D(filePath);
 }
 
-void Model3D::Draw()
+void Model3D::SetSpecularity(float value)
 {
-	Renderable3D::Draw();
+	specularity = value;
+}
+
+void Model3D::SetGlossiness(float value)
+{
+	glossiness = value;
 }
 
 bool Model3D::ImportModel(
@@ -140,4 +160,21 @@ void Model3D::GetVertex(std::ifstream &file, std::vector<Vec3<float>> &vertex, u
 		memcpy(&currentVertex.z, &test[0], sizeof(float));
 		vertex.push_back(currentVertex);
 	}
+}
+
+void Model3D::Draw(Camera &camera, Mat4 &vpMatrix)
+{
+	vao.Bind();
+
+	shader->Bind();
+	shader->SetUniformMat4("transformMatrix", GetModelMatrix());
+	shader->SetUniformMat4("viewMatrix", camera.GetViewMatrix());
+	shader->SetUniformMat4("mvpMatrix", GetModelMatrix() * vpMatrix);
+
+	// Update shader lighting components
+	shader->SetUniformFloat("specularity", specularity);
+	shader->SetUniformFloat("glossiness", glossiness);
+
+	texture->Bind(0);
+	vao.DrawElements(renderMode);
 }

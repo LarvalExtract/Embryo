@@ -19,11 +19,18 @@ public:
 	static void GetUVs(std::ifstream& file, std::vector<Vec2<float>> &uv, unsigned int count);
 	static void GetVertex(std::ifstream &file, std::vector<Vec3<float>> &vertex, unsigned int count);
 
+	Texture2D& GetTexture();
+	float GetSpecularity();
+	float GetGlossiness();
+
 	void SetTexture(const std::string &filePath);
-	void SetNormalMap(const std::string &filePath);
-	void SetSpecularMap(const std::string &filePath);
+	void SetSpecularity(float value);
+	void SetGlossiness(float value);
 
-	virtual void Draw();
+	void Draw(Camera &camera, Mat4 &vpMatrix) override;
 private:
+	float specularity;
+	float glossiness;
 
+	Texture2D *texture;
 };
