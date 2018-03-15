@@ -3,9 +3,9 @@
 Logger* Logger::pLogger = nullptr;
 HANDLE Logger::hStdOut = nullptr;
 
-char* const Logger::strLog = "Log:";
-char* const Logger::strWarning = "Warning:";
-char* const Logger::strError = "Error:";
+char* const Logger::strLog = "Log";
+char* const Logger::strWarning = "Warning";
+char* const Logger::strError = "Error";
 
 Logger::Logger()
 {
@@ -34,21 +34,21 @@ Logger& Logger::Log(LogType type)
 	// Create an instance of pLogger if it doesn't already exist
 	if (pLogger == nullptr)
 		pLogger = new Logger();
-
+	char a;
 	// Appends a log type tag to the start of the message and colours the line
 	switch (type)
 	{
 	case LogType::Log:
 		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::White));
-		std::cerr << strLog << ' ';
+		std::cerr << strLog << ":\t ";
 		break;
 	case LogType::Warning:
 		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::BrightYellow));
-		std::cerr << strWarning << ' ';
+		std::cerr << strWarning << ": ";
 		break;
 	case LogType::Error:
 		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::BrightRed));
-		std::cerr << strError << ' ';
+		std::cerr << strError << ":\t ";
 		break;
 	default:
 		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::White));

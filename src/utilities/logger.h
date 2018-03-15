@@ -59,7 +59,7 @@ public:
 	}
 	
 	// Returns singleton logger
-	static Logger& Log(LogType type = LogType::None);
+	static Logger& Log(LogType type = LogType::Log);
 
 	static char* const strLog;
 	static char* const strWarning;
