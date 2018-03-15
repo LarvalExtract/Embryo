@@ -63,10 +63,10 @@ bool Game::Initialise()
 	//window->SetColour(0.1f, 0.3f, 0.6f, 1.0f);
 
 	// Print OpenGL and OpenAL version info
-	Logger::Log() << "OpenGL " << glGetString(GL_VERSION) << ", " << glGetString(GL_VENDOR) << ", " << glGetString(GL_RENDERER) << "\n"
-		<< "OpenAL " << alGetString(AL_VERSION) << ", " << alGetString(AL_VENDOR) << ", " << alGetString(AL_RENDERER) << "\n\n";
+	Logger::Log(LogType::None) << "OpenGL " << ColourCode::BrightYellow << glGetString(GL_VERSION) << ColourCode::White << ", " << glGetString(GL_VENDOR) << ", " << glGetString(GL_RENDERER) << "\n";
+	Logger::Log(LogType::None) << "OpenAL " << ColourCode::BrightYellow << alGetString(AL_VERSION) << ColourCode::White << ", " << alGetString(AL_VENDOR) << ", " << alGetString(AL_RENDERER) << "\n\n";
 
-	Logger::Log() << "Press Z to enable camera controls" << "\n\n";
+	Logger::Log(LogType::None) << "Press Z to enable camera controls" << "\n\n";
 
 	scene.SetSkybox("skybox_ocean.tga");
 
@@ -181,7 +181,7 @@ void Game::Update()
 	lastTime = currentTime;
 
 	// Display frame time/frame rate
-	Logger::Log() << "Frame time: " << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
+	Logger::Log() << "Frame time: " << ColourCode::BrightGreen << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
 	
 	counter += 1.0f * deltaTime;
 
