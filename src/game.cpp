@@ -78,7 +78,7 @@ bool Game::Initialise()
 	scene.AddShader(pShader);
 
 	Model3D *pFloor = new Model3D("floor.mmf");
-	pFloor->SetPos(0.0f, -1.0f, 0.0f);
+	pFloor->SetPosition(0.0f, -1.0f, 0.0f);
 	pFloor->SetTexture("models/floor.tga");
 	pFloor->SetShader(pShader);
 	scene.AddRenderable(pFloor);
@@ -92,7 +92,7 @@ bool Game::Initialise()
 	scene.AddRenderable(pCube);
 
 	Model3D *pTeapot = new Model3D("teapot.mmf");
-	pTeapot->SetPos(1.2f, 0.0f, 0.0f);
+	pTeapot->SetPosition(1.2f, 0.0f, 0.0f);
 	pTeapot->SetScale(0.02f, 0.02f, 0.02f);
 	pTeapot->SetTexture("models/test.tga");
 	pTeapot->SetSpecularity(2.0f);
@@ -101,8 +101,8 @@ bool Game::Initialise()
 	scene.AddRenderable(pTeapot);
 
 	Model3D *pClone = new Model3D("poo.mmf");
-	pClone->SetPos(-1.0f, 0.0f, 0.0f);
-	pClone->SetRot(0.0f, 180.0f, 0.0f);
+	pClone->SetPosition(-1.0f, 0.0f, 0.0f);
+	pClone->SetRotation(0.0f, 180.0f, 0.0f);
 	pClone->SetScale(0.02f, 0.02f, 0.02f);
 	pClone->SetTexture("models/clone.tga");
 	pClone->SetSpecularity(0.5f);
@@ -111,21 +111,21 @@ bool Game::Initialise()
 	scene.AddRenderable(pClone);
 
 	Sprite2D *pSprite = new Sprite2D("sprites/sprite_test3.tga");
-	pSprite->SetPos(1.7f, 0.0f, -1.0f);
+	pSprite->SetPosition(1.7f, 0.0f, -1.0f);
 	pSprite->SetShader(pShader);
 	scene.AddRenderable(pSprite);
 
 	Sphere *pSphere = new Sphere(24, 2.0f, Vec4<float>(1.0f, 1.0f, 0.0f, 1.0f));
-	pSphere->SetPos(-5, 2, 3);
+	pSphere->SetPosition(-5, 2, 3);
 	scene.AddRenderable(pSphere);
 
 	Box *pBox = new Box(2, 3, 3, Vec4<float>(1.0f, 0.0f, 1.0f, 1.0f));
-	pBox->SetPos(13.3f, 3.0f, 5.0f);
-	pBox->SetRot(0.0f, 23.0f, 0.0f);
+	pBox->SetPosition(13.3f, 3.0f, 5.0f);
+	pBox->SetRotation(0.0f, 23.0f, 0.0f);
 	scene.AddRenderable(pBox);
 
 	Pivot *pPivot = new Pivot();
-	pPivot->SetPos(0.0f, 2.0f, 0.0f);
+	pPivot->SetPosition(0.0f, 2.0f, 0.0f);
 	scene.AddRenderable(pPivot);
 
 	AudioSourceGlobal *pWind = new AudioSourceGlobal("sandtrap_wind_loop.wav");
@@ -186,7 +186,7 @@ void Game::Update()
 	
 	counter += 1.0f * deltaTime;
 
-	scene.GetRenderable("teapot")->SetRot(sin(counter * 10), 0.0f, cos(counter * 20));
+	scene.GetRenderable("teapot")->SetRotation(sin(counter * 10), 0.0f, cos(counter * 20));
 	scene.GetLight("light_omni")->SetPosition(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
 	//scene->GetLight("light_omni")->SetPower(sin(counter * 2) * 3);
 

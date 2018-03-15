@@ -15,6 +15,8 @@ public:
 	void Orthographic(float left, float right, float bottom, float top, float near, float far);
 	void Perspective(float fov, float aspectRatio, float near, float far);
 
+	void NullTranslate();
+
 	Mat4& operator= (const Mat4 &rhs);
 	Mat4& operator+=(const Mat4 &rhs);
 	Mat4& operator-=(const Mat4 &rhs);

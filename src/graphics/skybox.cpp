@@ -37,18 +37,20 @@ Skybox::Skybox(const std::string& skyboxName) :
 	shader = new Shader("sky");
 
 	// Apply cubemap texture to skybox
-	texture = new Cubemap("sky/" + skyboxName);
+	skyTexture = new Cubemap("sky/" + skyboxName);
 }
 
+// Doesn't need to pass vpMatrix
 void Skybox::Draw(Camera &camera, Mat4 &vpMatrix)
 {
+	vao.Bind();
+	shader->Bind();
+
 	// Remove translations from camera view matrix to prevent skybox from moving against camera
-	camera.viewMatrix.elements[3][0] = 0.0f;
-	camera.viewMatrix.elements[3][1] = 0.0f;
-	camera.viewMatrix.elements[3][2] = 0.0f;
+	camera.viewMatrix.NullTranslate();
 
-	GetShader().Bind();
-	GetShader().SetUniformMat4("mvpMatrix", GetModelMatrix() * camera.GetViewMatrix() * camera.GetProjectionMatrix());
+	shader->SetUniformMat4("mvpMatrix", GetModelMatrix() * camera.GetViewMatrix() * camera.GetProjectionMatrix());
 
-	Renderable3D::Draw(camera, vpMatrix);
+	skyTexture->Bind(0);
+	vao.DrawElements(renderMode);
 }

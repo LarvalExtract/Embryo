@@ -7,12 +7,12 @@ Renderable3D::Renderable3D(unsigned int renderMode) :
 	position(0, 0, 0),
 	rotation(0, 0, 0),
 	scale(1, 1, 1),
+	origin(0, 0, 0),
 	translationMatrix(Mat4(1.0f)),
 	rotationMatrix(Mat4(1.0f)),
 	scaleMatrix(Mat4(1.0f)),
-	renderMode(renderMode),
-	specularity(0),
-	glossiness(1)
+	originMatrix(Mat4(1.0f)),
+	renderMode(renderMode)
 {
 	//shader = new Shader("test");						// Change this so that default shader/texture reuse the same pointer for each Renderable3D object,
 	//texture = new Texture2D("./resources/bitmaps/missingtexture2.tga");		// rather than creating a new shader/texture
@@ -27,7 +27,7 @@ Renderable3D::~Renderable3D()
 	//	delete shader;
 }
 
-void Renderable3D::SetPos(float x, float y, float z)
+void Renderable3D::SetPosition(float x, float y, float z)
 {
 	position.x = x;
 	position.y = y;
@@ -36,7 +36,7 @@ void Renderable3D::SetPos(float x, float y, float z)
 	translationMatrix.Translate(position);
 }
 
-void Renderable3D::SetRot(float x, float y, float z)
+void Renderable3D::SetRotation(float x, float y, float z)
 {
 	rotation.x = x;
 	rotation.y = y;
@@ -61,6 +61,17 @@ void Renderable3D::SetScale(float x, float y, float z)
 	scaleMatrix.Scale(scale);
 }
 
+void Renderable3D::SetOrigin(float x, float y, float z)
+{
+	origin.x = x;
+	origin.y = y;
+	origin.z = z;
+
+	originMatrix.elements[3][0] = x;
+	originMatrix.elements[3][1] = y;
+	originMatrix.elements[3][2] = z;
+}
+
 void Renderable3D::SetShader(Shader *pShader)
 {
 	shader = pShader;
@@ -71,33 +82,9 @@ void Renderable3D::SetRenderMode(unsigned int mode)
 	renderMode = mode;
 }
 
-void Renderable3D::SetSpecularity(float value)
-{
-	specularity = value;
-}
-
-void Renderable3D::SetGlossiness(float value)
-{
-	glossiness = value;
-}
 void Renderable3D::SetName(const std::string& name)
 {
 	this->name = name;
-}
-
-Vec3<float> Renderable3D::GetPos()
-{
-	return position;
-}
-
-Vec3<float> Renderable3D::GetRot()
-{
-	return rotation;
-}
-
-Vec3<float> Renderable3D::GetScale()
-{
-	return scale;
 }
 
 std::string Renderable3D::GetName()
@@ -105,31 +92,15 @@ std::string Renderable3D::GetName()
 	return name;
 }
 
-Texture& Renderable3D::GetTexture()
-{
-	return *texture;
-}
-
 Shader& Renderable3D::GetShader()
 {
 	return *shader;
-}
-
-float Renderable3D::GetSpecularity()
-{
-	return specularity;
-}
-
-float Renderable3D::GetGlossiness()
-{
-	return glossiness;
 }
 
 void Renderable3D::Draw()
 {
 	vao.Bind();
 	shader->Bind();
-	texture->Bind(0);
 	vao.DrawElements(renderMode);
 }
 
@@ -140,10 +111,6 @@ void Renderable3D::Draw(Camera &camera, Mat4 &vpMatrix)
 	GetShader().SetUniformMat4("transformMatrix", GetModelMatrix());
 	GetShader().SetUniformMat4("viewMatrix", camera.GetViewMatrix());
 	GetShader().SetUniformMat4("mvpMatrix", GetModelMatrix() * vpMatrix);
-
-	// Update shader lighting components
-	GetShader().SetUniformFloat("specularity", GetSpecularity());
-	GetShader().SetUniformFloat("glossiness", GetGlossiness());
 
 	Draw();
 }
