@@ -109,7 +109,7 @@ void Renderable3D::Draw(Camera &camera, Mat4 &vpMatrix)
 	// Update shader matrices
 	GetShader().Bind();
 	GetShader().SetUniformMat4("transformMatrix", GetModelMatrix());
-	GetShader().SetUniformMat4("viewMatrix", camera.GetViewMatrix());
+	GetShader().SetUniformMat4("viewMatrix", camera.viewMatrix);
 	GetShader().SetUniformMat4("mvpMatrix", GetModelMatrix() * vpMatrix);
 
 	Draw();

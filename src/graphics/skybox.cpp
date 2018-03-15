@@ -49,7 +49,7 @@ void Skybox::Draw(Camera &camera, Mat4 &vpMatrix)
 	// Remove translations from camera view matrix to prevent skybox from moving against camera
 	camera.viewMatrix.NullTranslate();
 
-	shader->SetUniformMat4("mvpMatrix", GetModelMatrix() * camera.GetViewMatrix() * camera.GetProjectionMatrix());
+	shader->SetUniformMat4("mvpMatrix", GetModelMatrix() * camera.viewMatrix * camera.projectionMatrix);
 
 	skyTexture->Bind(0);
 	vao.DrawElements(renderMode);

@@ -71,7 +71,8 @@ bool Game::Initialise()
 
 	scene.SetSkybox("skybox_ocean.tga");
 
-	Camera *pCamera = new Camera(Vec3<float>(0.0f, 1.0f, -3.0f), 60.0f, (float)window.GetWidth() / (float)window.GetHeight(), 0.1f, 1000.0f);
+	Camera *pCamera = new CamPerspective(60.0f, static_cast<float>(window.GetWidth()) / static_cast<float>(window.GetHeight()), 0.01f, 1000.0f);
+	pCamera->SetPosition(0.0f, 1.0f, -3.0f);
 	scene.AddCamera(pCamera);
 
 	Shader *pShader = new Shader("basicPhong");

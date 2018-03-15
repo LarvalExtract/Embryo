@@ -17,6 +17,7 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 	screenCentre.x = window.GetWidth() / 2;
 	screenCentre.y = window.GetHeight() / 2;
 
+	// Toggle camera mode
 	if (window.OnKeyPress(GLFW_KEY_Z))
 	{
 		bEnableCamera = !bEnableCamera;
@@ -39,36 +40,35 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 
 		lookAngle.y = Maths::Clamp(lookAngle.y, -1.5f, 1.5f);		// Prevents camera from inverting
 
-		camera.SetForward(
-			cos(lookAngle.y) * sin(lookAngle.x),
-			sin(lookAngle.y),
-			cos(lookAngle.y) * cos(lookAngle.x));
+		camera.forwardVector.x = cos(lookAngle.y) * sin(lookAngle.x);
+		camera.forwardVector.y = sin(lookAngle.y);
+		camera.forwardVector.z = cos(lookAngle.y) * cos(lookAngle.x);
 
 		Vec3<float> rightVector(
 			sin(lookAngle.x - (3.14159f / 2.0f)),
 			0,
 			cos(lookAngle.x - (3.14159f / 2.0f)));
 
-		Vec3<float> upVector(Maths::Cross(rightVector, camera.GetForward()));
+		Vec3<float> upVector(Maths::Cross(rightVector, camera.forwardVector));
 
-		camera.SetUpward(upVector.x, upVector.y, upVector.z);
+		camera.upwardVector.x = upVector.x;
+		camera.upwardVector.y = upVector.y;
+		camera.upwardVector.z = upVector.z;
 
 
-		//// Keyboard controls ////
-		
-		
+		//// Keyboard controls ////		
 		// Increases camera movement speed if shift is held
 		(window.IsKeyPressed(GLFW_KEY_LEFT_SHIFT)) ? movementSpeed = 10.0f : movementSpeed = 4.0f;
 
 		// Movement controls
 		if (window.IsKeyPressed(GLFW_KEY_W))
-			camera.position += camera.forward * movementSpeed * static_cast<float>(deltaTime);
+			camera.position += camera.forwardVector * movementSpeed * static_cast<float>(deltaTime);
 
 		if (window.IsKeyPressed(GLFW_KEY_A))
 			camera.position -= rightVector * movementSpeed * static_cast<float>(deltaTime);
 
 		if (window.IsKeyPressed(GLFW_KEY_S))
-			camera.position -= camera.forward * movementSpeed * static_cast<float>(deltaTime);
+			camera.position -= camera.forwardVector * movementSpeed * static_cast<float>(deltaTime);
 
 		if (window.IsKeyPressed(GLFW_KEY_D))
 			camera.position += rightVector * movementSpeed * static_cast<float>(deltaTime);
@@ -80,7 +80,7 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 			camera.position.y -= movementSpeed * static_cast<float>(deltaTime);
 	}
 
-	// 
+	// Give control of the mouse cursor back to the user once camera mode is disabled
 	else
 	{
 		glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);		// Reveals the mouse cursor (Should I call this every frame?)
@@ -89,10 +89,10 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 	// Returns camera to home position
 	if (window.IsKeyPressed(GLFW_KEY_H))
 	{
-		camera.SetPosition(0.0f, 1.0f, -3.0f);
-		camera.SetUpward(0.0f, 1.0f, 0.0f);
-		camera.SetForward(0.0f, 0.0f, 0.1f);
+		camera.position = Vec3<float>(0.0f, 1.0f, -3.0f);
+		camera.upwardVector = Vec3<float>(0.0f, 1.0f, 0.0f);
+		camera.forwardVector = Vec3<float>(0.0f, 0.0f, 0.1f);
 	}
 
-	camera.viewMatrix.LookAt(camera.position, camera.position + camera.forward, camera.upward);
+	camera.viewMatrix.LookAt(camera.position, camera.position + camera.forwardVector, camera.upwardVector);
 }
