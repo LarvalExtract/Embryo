@@ -75,8 +75,9 @@ void Scene::UpdateScene()
 		sound_it->second->Attenuate();
 
 	sceneShaders["basicPhong"]->Bind();
-	sceneShaders["basicPhong"]->SetUniformFloat("ambience", 0.5f);
+	sceneShaders["basicPhong"]->SetUniformFloat("ambience", 0.4f);
 
+	// Update lights in shader
 	for (light_it = sceneLights.begin(); light_it != sceneLights.end(); light_it++)
 	{
 		sceneShaders["basicPhong"]->Bind();

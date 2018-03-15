@@ -11,5 +11,5 @@ public:
 	void Draw() override;
 
 private:
-
+	Texture2D *texture;
 };

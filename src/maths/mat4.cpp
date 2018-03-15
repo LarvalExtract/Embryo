@@ -118,6 +118,13 @@ void Mat4::Perspective(float fov, float aspectRatio, float near, float far)
 	elements[3][2] = 2 * (far * near) / zRange;
 }
 
+void Mat4::NullTranslate()
+{
+	elements[3][0] = 0.0f;
+	elements[3][1] = 0.0f;
+	elements[3][2] = 0.0f;
+}
+
 // Operator overloads
 Mat4& Mat4::operator=(const Mat4 &rhs)
 {
