@@ -64,7 +64,6 @@ public:
 	static char* const strLog;
 	static char* const strWarning;
 	static char* const strError;
-	static char* const strFatal;
 private:
 	Logger();
 
