@@ -88,6 +88,12 @@ bool Game::Initialise()
 	pCamera->SetPosition(0.0f, 1.0f, -3.0f);
 	scene.AddCamera(pCamera);
 
+	Camera *pOrtho = new CamOrtho(0.0f, window.GetWidth(), 0.0f, window.GetHeight(), -1.0f, 1.0f);
+	pOrtho->SetPosition(0.0f, 1.0f, -3.0f);
+	scene.AddCamera(pOrtho);
+
+	scene.SetActiveCamera(0);
+
 	Shader *pShader = new Shader("basicPhong");
 	scene.AddShader(pShader);
 
@@ -159,6 +165,7 @@ bool Game::Initialise()
 	//scene->AddLight(redLight);
 
 	testQuad = new Shape2D::Quad(250.0f, 250.0f);
+
 	pCrosshair = new Sprite("sprites/crosshair.tga");
 	pCrosshair->CenterOrigin();
 	pCrosshair->SetPosition(window.GetWidth() / 2, window.GetHeight() / 2);
