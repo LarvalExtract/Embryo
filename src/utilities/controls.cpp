@@ -21,14 +21,19 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 	if (window.OnKeyPress(GLFW_KEY_Z))
 	{
 		bEnableCamera = !bEnableCamera;
+
+		if (bEnableCamera == true)
+			glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+		else
+			glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
 		window.SetCursorPosition(screenCentre);
 	}
 
 	// Process camera inputs only if camera input is enabled
 	if (bEnableCamera)
 	{
-		glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	// Hides the mouse cursor (Should I call this every frame?)
-
 		//// Mouse controls ////
 		xpos = window.GetCursorPosition().x;
 		ypos = window.GetCursorPosition().y;
@@ -78,12 +83,6 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 
 		if (window.IsKeyPressed(GLFW_KEY_LEFT_CONTROL))
 			camera.position.y -= movementSpeed * static_cast<float>(deltaTime);
-	}
-
-	// Give control of the mouse cursor back to the user once camera mode is disabled
-	else
-	{
-		glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);		// Reveals the mouse cursor (Should I call this every frame?)
 	}
 
 	// Returns camera to home position

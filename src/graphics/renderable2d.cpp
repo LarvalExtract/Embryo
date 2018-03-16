@@ -120,8 +120,8 @@ void Sprite::Draw()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	vao.Bind();
-	texture->Bind(0);
 	shader->Bind();
+	texture->Bind(0);
 	vao.DrawElements(renderMode);
 
 	glDisable(GL_BLEND);

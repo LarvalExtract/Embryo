@@ -44,7 +44,7 @@ bool Scene::InitialiseScene()
 		return false;
 	}
 
-	activeCameraID = 0;
+	//activeCameraID = 0;
 
 	// Print a warning if the skybox does not exist
 	if (pSceneSky == nullptr)

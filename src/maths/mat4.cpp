@@ -99,6 +99,7 @@ void Mat4::Orthographic(float left, float right, float bottom, float top, float 
 	elements[3][0] = -(rpl / rml);
 	elements[3][1] = -(tpb / tmb);
 	elements[3][2] = -(fpn / fmn);
+	elements[3][3] = 1.0f;
 }
 
 
