@@ -167,7 +167,7 @@ void Console::ConsoleLoop()
 	bIsRunning = true;
 
 	HANDLE hConsoleBuf = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, CONSOLE_TEXTMODE_BUFFER, nullptr);
-	SetConsoleMode(hConsoleBuf, ENABLE_QUICK_EDIT_MODE | ENABLE_EXTENDED_FLAGS);
+	//SetConsoleMode(hConsoleBuf, ENABLE_QUICK_EDIT_MODE | ENABLE_EXTENDED_FLAGS);
 	HANDLE hStdIn = GetStdHandle(STD_INPUT_HANDLE);
 
 	HWND hConsole = GetConsoleWindow();
@@ -187,11 +187,10 @@ void Console::ConsoleLoop()
 		{
 			if (inputRecord.EventType == KEY_EVENT && inputRecord.Event.KeyEvent.bKeyDown)
 			{
-				// Process console input if any key other than backspace or any of the modifier keys was pressed
+				// Process console input if any key other than backspace is pressed and if the key is text
+				// (does not process modifiers unless held when an ASCII key is pressed)
 				if (inputRecord.Event.KeyEvent.uChar.AsciiChar != VK_BACK &&
-					!(inputRecord.Event.KeyEvent.dwControlKeyState & (LEFT_ALT_PRESSED | LEFT_CTRL_PRESSED 
-						| RIGHT_CTRL_PRESSED | RIGHT_ALT_PRESSED | SHIFT_PRESSED)))
-
+					inputRecord.Event.KeyEvent.uChar.AsciiChar != 0)
 				{
 					// Delete console input
 					//FlushConsoleInputBuffer(hStdIn);

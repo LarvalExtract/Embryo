@@ -40,7 +40,6 @@ enum class LogType
 // Adds two colour codes to make the console text foreground/background colour
 ColourCode operator+(ColourCode lhs, const ColourCode &rhs);
 
-
 // Console command/variable typedefs
 typedef void(*FuncPtrS)(std::string s);
 
