@@ -1,18 +1,18 @@
-#include "logger.h"
+#include "console.h"
 
 #include <algorithm>
 #include <chrono>
 
-Logger* Logger::pLogger = nullptr;
-HANDLE Logger::hStdOut = nullptr;
+Console* Console::pConsole = nullptr;
+HANDLE Console::hStdOut = nullptr;
 
-char* const Logger::strWarning = "Warning: ";
-char* const Logger::strError = "Error: ";
-bool Logger::bIsRunning = false;
-ConCmds Logger::conCmds = {};
-ConVars Logger::conVars = {};
+char* const Console::strWarning = "Warning: ";
+char* const Console::strError = "Error: ";
+bool Console::bIsRunning = false;
+ConCmds Console::conCmds = {};
+ConVars Console::conVars = {};
 
-Logger::Logger()
+Console::Console()
 {
 	hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -20,37 +20,42 @@ Logger::Logger()
 	//GetConsoleScreenBufferInfo(hStdOut, &csbi);
 }
 
-Logger::~Logger()
+Console::~Console()
 {
-	delete pLogger;
+	delete pConsole;
 }
 
-Logger& Logger::operator<<(ColourCode code)
+Console& Console::operator<<(ColourCode code)
 {
 	// Set text colour
 	SetConsoleTextAttribute(hStdOut, static_cast<char>(code));
 
 	// Return a singleton pointer (should never be nullptr)
-	return *pLogger;
+	return *pConsole;
 }
 
-Logger& Logger::Log(LogType type)
+Console& Console::Log(LogType type)
 {
-	// Create an instance of pLogger if it doesn't already exist
-	if (pLogger == nullptr)
-		pLogger = new Logger();
+	// Create an instance of pConsole if it doesn't already exist
+	if (pConsole == nullptr)
+		pConsole = new Console();
 
-	// Print timestamp
+	// Print timestamp if the line continuation log type has not been chosen
 	// TO-DO: Move this into a function
-	tm *timeInfo;
-	char buffer[80];
-	time_t rawTime;
-	time(&rawTime);
-	timeInfo = localtime(&rawTime);
+	// TO-DO: Replace literals with consts
+	if (type != LogType::None)
+	{
+		char buffer[12];
+		tm timeInfo;
+		time_t rawTime;
+		time(&rawTime);
+		localtime_s(&timeInfo, &rawTime);
 
-	SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::White));
-	strftime(buffer, 80, "[%H:%M:%S] ", timeInfo);
-	std::cerr << buffer;
+		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::White));
+		strftime(buffer, 12, "[%H:%M:%S] ", &timeInfo);
+
+		std::cerr << buffer;
+	}
 
 	// Appends a log type tag to the start of the message and colours the line
 	switch (type)
@@ -69,10 +74,10 @@ Logger& Logger::Log(LogType type)
 		break;
 	}
 
-	return *pLogger;
+	return *pConsole;
 }
 
-bool Logger::AddCommand(std::string cmdName, FuncPtrS funcPtr)
+bool Console::AddCommand(std::string cmdName, FuncPtrS funcPtr)
 {
 	// Convert command name to lowercase
 	std::transform(cmdName.begin(), cmdName.end(), cmdName.begin(), tolower);
@@ -91,7 +96,7 @@ bool Logger::AddCommand(std::string cmdName, FuncPtrS funcPtr)
 // TO-DO: MOVE THIS ELSEWHERE!!
 bool BothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
 
-void Logger::CleanArgument(std::string &argument)
+void Console::CleanArgument(std::string &argument)
 {
 	// Remove prefix and suffix spaces
 	size_t firstPos = argument.find_first_not_of(VK_SPACE);
@@ -109,32 +114,37 @@ void Logger::CleanArgument(std::string &argument)
 	argument.erase(end, argument.end());
 }
 
-bool Logger::AddVar(std::string varName)
+bool Console::AddVar(std::string varName)
 {
 	return AddVar(varName, "");
 }
 
-bool Logger::AddVar(std::string varName, std::string value)
+bool Console::AddVar(std::string varName, std::string value)
 {
 	// Convert variable name to lowercase
 	std::transform(varName.begin(), varName.end(), varName.begin(), tolower);
 
-	std::pair<ConVars::const_iterator, bool> result = conVars.insert(ConVar(varName, value));
+	ConVar conVar;
+	conVar.first = varName;
+	conVar.second.value = value;
+	conVar.second.defaultValue = value;
+
+	std::pair<ConVars::const_iterator, bool> result = conVars.insert(conVar);
 
 	return result.second;
 }
 
-ConVar::first_type Logger::GetVar(std::string varName)
+ConVar::first_type Console::GetVar(std::string varName)
 {
 	// Convert variable name to lowercase
 	std::transform(varName.begin(), varName.end(), varName.begin(), tolower);
 
 	ConVars::const_iterator it = conVars.find(varName);
 
-	return it != conVars.end() ? it->second : "";
+	return it != conVars.end() ? it->second.value : "";
 }
 
-bool Logger::SetVar(std::string varName, std::string value)
+bool Console::SetVar(std::string varName, std::string value)
 {
 	// Convert variable name to lowercase
 	std::transform(varName.begin(), varName.end(), varName.begin(), tolower);
@@ -143,7 +153,7 @@ bool Logger::SetVar(std::string varName, std::string value)
 
 	if (it != conVars.end())
 	{
-		it->second = value;
+		it->second.value = value;
 
 		return true;
 	}
@@ -151,7 +161,7 @@ bool Logger::SetVar(std::string varName, std::string value)
 	return false;
 }
 
-void Logger::ConsoleLoop()
+void Console::ConsoleLoop()
 {
 	if (bIsRunning)
 		return;
@@ -159,6 +169,7 @@ void Logger::ConsoleLoop()
 	bIsRunning = true;
 
 	HANDLE hConsoleBuf = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, CONSOLE_TEXTMODE_BUFFER, nullptr);
+	SetConsoleMode(hConsoleBuf, ENABLE_QUICK_EDIT_MODE | ENABLE_EXTENDED_FLAGS);
 	HANDLE hStdIn = GetStdHandle(STD_INPUT_HANDLE);
 
 	HWND hConsole = GetConsoleWindow();
@@ -178,35 +189,40 @@ void Logger::ConsoleLoop()
 		{
 			if (inputRecord.EventType == KEY_EVENT && inputRecord.Event.KeyEvent.bKeyDown)
 			{
-				if (inputRecord.Event.KeyEvent.uChar.AsciiChar == VK_RETURN)
+				// Process console input if any key other than backspace or any of the modifier keys was pressed
+				if (inputRecord.Event.KeyEvent.uChar.AsciiChar != VK_BACK &&
+					!(inputRecord.Event.KeyEvent.dwControlKeyState & (LEFT_ALT_PRESSED | LEFT_CTRL_PRESSED 
+						| RIGHT_CTRL_PRESSED | RIGHT_ALT_PRESSED | SHIFT_PRESSED)))
+
 				{
 					// Delete console input
-					FlushConsoleInputBuffer(hStdIn);
+					//FlushConsoleInputBuffer(hStdIn);
 
+					// Write entered character to input buffer if it isn't the return key
+					if (inputRecord.Event.KeyEvent.uChar.AsciiChar != VK_RETURN)
+						WriteConsoleInput(hStdIn, &inputRecord, 1, &noEventsRead);
+					
 					// Change console screen to input buffer
 					SetConsoleActiveScreenBuffer(hConsoleBuf);
 
 					// Wait for input from user
 					std::getline(std::cin, buffer);
 
-					size_t actualStart = buffer.find_first_not_of(VK_SPACE);
+					size_t cmdPos = buffer.find_first_not_of(VK_SPACE);
 
 					// Process the input if it contains non-spaces
-					if (actualStart != std::string::npos)
+					if (cmdPos != std::string::npos)
 					{
-						// Remove prefix spaces before command/variable
-						//buffer.erase(0, buffer.find_first_not_of(VK_SPACE));
+						size_t argPos = buffer.find_first_of(VK_SPACE, cmdPos);
 
 						// Convert command to lowercase
-						size_t argPos = buffer.find_first_of(VK_SPACE, actualStart);
-
 						if (argPos == std::string::npos)
 							std::transform(buffer.begin(), buffer.begin(), buffer.begin(), tolower);
 						else
 							std::transform(buffer.begin(), buffer.begin() + argPos, buffer.begin(), tolower);
 
-						result = conCmds.find(buffer.substr(actualStart, argPos - actualStart));
-						varResult = conVars.find(buffer.substr(actualStart, argPos - actualStart));
+						result = conCmds.find(buffer.substr(cmdPos, argPos - cmdPos));
+						varResult = conVars.find(buffer.substr(cmdPos, argPos - cmdPos));
 
 						// Process console command if found
 						if (result != conCmds.end())
@@ -221,23 +237,32 @@ void Logger::ConsoleLoop()
 						// Process console variable if found
 						else if (varResult != conVars.end())
 						{
-							ConVars::iterator varResult = conVars.find(buffer.substr(actualStart, argPos - actualStart));
+							ConVars::iterator varResult = conVars.find(buffer.substr(cmdPos, argPos - cmdPos));
+
+							// Remove trailing spaces
+							std::string strValue = buffer.substr(argPos + 1, buffer.length() - argPos - 1);
+							CleanArgument(strValue);
 
 							if (varResult != conVars.end())
 							{
-								// Remove trailing spaces
-								std::string strValue = buffer.substr(argPos + 1, buffer.length() - argPos - 1);
-								CleanArgument(strValue);
+								// Print the variable's value if there are no arguments after the command
+								if (argPos == std::string::npos || strValue.empty())
+								{
+									Log() << ColourCode::Magenta << varResult->first << ColourCode::White << " = " << ColourCode::Magenta << varResult->second.value 
+										<< ColourCode::White <<  " (default: " << varResult->second.defaultValue << ")\n";
+								}
+								else
+								{
+									varResult->second.value = strValue;
 
-								varResult->second = strValue;
-
-								Log() << "Set variable " << ColourCode::Magenta << varResult->first << ColourCode::White
-									<< " to " << ColourCode::Magenta << varResult->second << "\n";
+									Log() << "Set variable " << ColourCode::Magenta << varResult->first << ColourCode::White
+										<< " to " << ColourCode::Magenta << strValue << "\n";
+								}
 							}	
 						}
 						else
 						{
-							Log(LogType::Error) << "Unknown command!\n";
+							Log(LogType::Error) << ColourCode::BrightWhite << buffer.substr(cmdPos, argPos - cmdPos) << ColourCode::BrightRed << " is not a recognised command or variable.\n";
 						}
 					}
 
@@ -249,7 +274,7 @@ void Logger::ConsoleLoop()
 	}
 }
 
-void Logger::CmdTest(std::string argument)
+void Console::CmdTest(std::string argument)
 {
 	// Remove trailing spaces
 	CleanArgument(argument);

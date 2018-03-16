@@ -44,7 +44,13 @@ ColourCode operator+(ColourCode lhs, const ColourCode &rhs);
 // Console command/variable typedefs
 typedef void(*FuncPtrS)(std::string s);
 
-typedef std::pair<std::string, std::string> ConVar;
+struct Var
+{
+	std::string value;
+	std::string defaultValue;
+};
+
+typedef std::pair<std::string, Var> ConVar;
 typedef std::unordered_map<ConVar::first_type, ConVar::second_type> ConVars;
 
 struct Command
@@ -56,18 +62,18 @@ struct Command
 typedef std::pair<std::string, Command> ConCmd;
 typedef std::unordered_map<ConCmd::first_type, ConCmd::second_type> ConCmds;
 
-// Singleton console logger
-class Logger
+// Singleton developer console
+class Console
 {
 public:
-	~Logger();
+	~Console();
 
 	// Set the colour of the next message
-	Logger& operator<<(ColourCode code);
+	Console& operator<<(ColourCode code);
 	
 	// Print a message with the current colour
 	template<class T>
-	Logger& operator<<(T message)
+	Console& operator<<(T message)
 	{
 		std::cerr << message;
 
@@ -77,8 +83,8 @@ public:
 		return *this;
 	}
 	
-	// Returns singleton logger
-	static Logger& Log(LogType type = LogType::Log);
+	// Returns singleton console
+	static Console& Log(LogType type = LogType::Log);
 
 	static bool AddCommand(std::string cmdName, FuncPtrS funcPtr);
 	static void CleanArgument(std::string &argument);
@@ -98,9 +104,9 @@ public:
 
 	static bool bIsRunning;
 private:
-	Logger();
+	Console();
 
-	static Logger *pLogger;
+	static Console *pConsole;
 
 	static HANDLE hStdOut;
 	//CONSOLE_SCREEN_BUFFER_INFO csbi;

@@ -193,7 +193,7 @@
     <ClCompile Include="src\utilities\file.cpp" />
     <ClCompile Include="src\utilities\import_audio_wav.cpp" />
     <ClCompile Include="src\utilities\import_bitmap.cpp" />
-    <ClCompile Include="src\utilities\logger.cpp" />
+    <ClCompile Include="src\utilities\console.cpp" />
     <ClCompile Include="src\utilities\timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -233,7 +233,7 @@
     <ClInclude Include="src\utilities\file.h" />
     <ClInclude Include="src\utilities\import_audio_wav.h" />
     <ClInclude Include="src\utilities\import_bitmap.h" />
-    <ClInclude Include="src\utilities\logger.h" />
+    <ClInclude Include="src\utilities\console.h" />
     <ClInclude Include="src\utilities\timer.h" />
   </ItemGroup>
   <ItemGroup>

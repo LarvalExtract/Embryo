@@ -2,7 +2,7 @@
 #include <maths/maths.h>
 #include <math.h>
 
-#include <utilities/logger.h>
+#include <utilities/console.h>
 
 double xpos, ypos;
 
@@ -65,7 +65,7 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 
 		//// Keyboard controls ////		
 		// Increases camera movement speed if shift is held
-		movementSpeed = std::stof(Logger::GetVar("CamSpeed"));
+		movementSpeed = std::stof(Console::GetVar("CamSpeed"));
 
 		(window.IsKeyPressed(GLFW_KEY_LEFT_SHIFT)) ? movementSpeed *= 2.0f : movementSpeed;
 

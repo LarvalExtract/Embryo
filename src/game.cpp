@@ -31,13 +31,13 @@ void Game::Start()
 		// Attempt to initialise the game
 		if (!Initialise())
 		{
-			Logger::Log(LogType::Error) << "Could not initialise!\n";
+			Console::Log(LogType::Error) << "Could not initialise!\n";
 			return;
 		}
 	}
 
 	// Start console thread
-	std::thread tConsole(Logger::ConsoleLoop);
+	std::thread tConsole(Console::ConsoleLoop);
 
 	// GAME LOOP
 	while (glfwWindowShouldClose(window.m_Window) == GLFW_FALSE)
@@ -48,7 +48,7 @@ void Game::Start()
 	}
 
 	// Clean up threads
-	Logger::bIsRunning = false;
+	Console::bIsRunning = false;
 	//tConsole.join();
 	// TO-DO: Find out if this could cause corruption
 	tConsole.detach();
@@ -65,7 +65,8 @@ bool Game::Initialise()
 		return false;
 
 	// TO-DO: DELETE ME
-	Logger::AddCommand("cmdtest", Logger::CmdTest);
+	Console::AddCommand("cmdtest", Console::CmdTest);
+	Console::AddVar("timescale", "1.0");
 
 	Timer initTimer;
 
@@ -76,14 +77,14 @@ bool Game::Initialise()
 	//window->SetColour(0.1f, 0.3f, 0.6f, 1.0f);
 
 	// Print OpenGL and OpenAL version info
-	Logger::Log(LogType::None) << "OpenGL " << ColourCode::BrightYellow << glGetString(GL_VERSION) << ColourCode::White << ", " << glGetString(GL_VENDOR) << ", " << glGetString(GL_RENDERER) << "\n";
-	Logger::Log(LogType::None) << "OpenAL " << ColourCode::BrightYellow << alGetString(AL_VERSION) << ColourCode::White << ", " << alGetString(AL_VENDOR) << ", " << alGetString(AL_RENDERER) << "\n\n";
+	Console::Log(LogType::Log) << "OpenGL " << ColourCode::BrightYellow << glGetString(GL_VERSION) << ColourCode::White << ", " << glGetString(GL_VENDOR) << ", " << glGetString(GL_RENDERER) << "\n";
+	Console::Log(LogType::Log) << "OpenAL " << ColourCode::BrightYellow << alGetString(AL_VERSION) << ColourCode::White << ", " << alGetString(AL_VENDOR) << ", " << alGetString(AL_RENDERER) << "\n\n";
 
-	Logger::Log(LogType::None) << "Press Z to enable camera controls" << "\n\n";
+	Console::Log(LogType::Log) << "Press Z to enable camera controls" << "\n\n";
 
 	scene.SetSkybox("skybox_ocean.tga");
 
-	Logger::AddVar("CamSpeed", "4.0");
+	Console::AddVar("CamSpeed", "4.0");
 	Camera *pCamera = new CamPerspective(60.0f, static_cast<float>(window.GetWidth()) / static_cast<float>(window.GetHeight()), 0.01f, 1000.0f);
 	pCamera->SetPosition(0.0f, 1.0f, -3.0f);
 	scene.AddCamera(pCamera);
@@ -183,7 +184,7 @@ bool Game::Initialise()
 	//scene->PrintSoundList();
 	//scene->PrintCameraList();
 
-	Logger::Log() << "Initialisation time: " << initTimer.Elapsed() << " seconds" << "\n";
+	Console::Log() << "Initialisation time: " << initTimer.Elapsed() << " seconds" << "\n";
 
 	lastTime = glfwGetTime();
 
@@ -198,11 +199,11 @@ void Game::ProcessInput()
 void Game::Update()
 {
 	currentTime = glfwGetTime();
-	deltaTime = currentTime - lastTime;
+	deltaTime = (currentTime - lastTime) * std::stof(Console::GetVar("timescale"));
 	lastTime = currentTime;
 
 	// Display frame time/frame rate
-	//Logger::Log() << "Frame time: " << ColourCode::BrightGreen << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
+	//Console::Log() << "Frame time: " << ColourCode::BrightGreen << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
 	
 	counter += 1.0f * deltaTime;
 

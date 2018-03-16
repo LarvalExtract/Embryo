@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utilities\logger.h"
+#include "utilities\console.h"
 
 #include "graphics/window.h"
 

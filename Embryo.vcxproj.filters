@@ -114,7 +114,7 @@
     <ClCompile Include="src\graphics\cameraortho.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\utilities\logger.cpp">
+    <ClCompile Include="src\utilities\console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -230,7 +230,7 @@
     <ClInclude Include="src\graphics\cameraortho.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\utilities\logger.h">
+    <ClInclude Include="src\utilities\console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
