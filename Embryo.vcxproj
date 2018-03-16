@@ -195,6 +195,7 @@
     <ClCompile Include="src\utilities\import_bitmap.cpp" />
     <ClCompile Include="src\utilities\console.cpp" />
     <ClCompile Include="src\utilities\timer.cpp" />
+    <ClCompile Include="src\utilities\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\audio\audiobuffer.h" />
@@ -235,6 +236,7 @@
     <ClInclude Include="src\utilities\import_bitmap.h" />
     <ClInclude Include="src\utilities\console.h" />
     <ClInclude Include="src\utilities\timer.h" />
+    <ClInclude Include="src\utilities\utility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\basiccolour.frag" />

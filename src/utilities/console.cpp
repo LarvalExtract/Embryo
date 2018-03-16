@@ -1,4 +1,5 @@
 #include "console.h"
+#include "utility.h"
 
 #include <algorithm>
 #include <chrono>
@@ -93,9 +94,6 @@ bool Console::AddCommand(std::string cmdName, FuncPtrS funcPtr)
 	return result.second;
 }
 
-// TO-DO: MOVE THIS ELSEWHERE!!
-bool BothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
-
 void Console::CleanArgument(std::string &argument)
 {
 	// Remove prefix and suffix spaces
@@ -110,7 +108,7 @@ void Console::CleanArgument(std::string &argument)
 	argument = argument.substr(firstPos, argument.find_last_not_of(VK_SPACE) - firstPos + 1);
 
 	// Remove duplicate spaces
-	std::string::iterator end = std::unique(argument.begin(), argument.end(), BothAreSpaces);
+	std::string::iterator end = std::unique(argument.begin(), argument.end(), Utility::BothAreSpaces);
 	argument.erase(end, argument.end());
 }
 
