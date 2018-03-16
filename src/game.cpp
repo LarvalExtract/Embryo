@@ -89,7 +89,7 @@ bool Game::Initialise()
 	pCamera->SetPosition(0.0f, 1.0f, -3.0f);
 	scene.AddCamera(pCamera);
 
-	Camera *pOrtho = new CamOrtho(0.0f, window.GetWidth(), 0.0f, window.GetHeight(), -1.0f, 1.0f);
+	Camera *pOrtho = new CamOrtho(-1.0f, 1.0f, -0.5625f, 0.5625f, -0.001f, 1000.0f);
 	pOrtho->SetPosition(0.0f, 1.0f, -3.0f);
 	scene.AddCamera(pOrtho);
 
@@ -193,6 +193,14 @@ bool Game::Initialise()
 
 void Game::ProcessInput()
 {
+	// Press U to switch to ortho camera
+	if (window.OnKeyPress(GLFW_KEY_U))
+		scene.SetActiveCamera(1);
+
+	// Press P to switch to perspective camera
+	if (window.OnKeyPress(GLFW_KEY_P))
+		scene.SetActiveCamera(0);
+
 	MatricesFromInputs(window, scene.GetActiveCamera(), deltaTime);
 }
 
