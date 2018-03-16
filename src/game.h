@@ -44,4 +44,5 @@ private:
 	float counter;
 
 	bool bInitialised;
+
 };

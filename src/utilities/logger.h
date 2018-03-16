@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include <string>
+#include <unordered_map>
+
 #include "windows.h"
 
 // Colour codes used to colour text in console
@@ -37,6 +40,22 @@ enum class LogType
 // Adds two colour codes to make the console text foreground/background colour
 ColourCode operator+(ColourCode lhs, const ColourCode &rhs);
 
+
+// Console command/variable typedefs
+typedef void(*FuncPtrS)(std::string s);
+
+typedef std::pair<std::string, std::string> ConVar;
+typedef std::unordered_map<ConVar::first_type, ConVar::second_type> ConVars;
+
+struct Command
+{
+	FuncPtrS delegate;
+	std::string argument;
+};
+
+typedef std::pair<std::string, Command> ConCmd;
+typedef std::unordered_map<ConCmd::first_type, ConCmd::second_type> ConCmds;
+
 // Singleton console logger
 class Logger
 {
@@ -61,9 +80,23 @@ public:
 	// Returns singleton logger
 	static Logger& Log(LogType type = LogType::Log);
 
-	static char* const strLog;
+	static bool AddCommand(std::string cmdName, FuncPtrS funcPtr);
+	static void CleanArgument(std::string &argument);
+
+	static bool AddVar(std::string varName);
+	static bool AddVar(std::string varName, std::string value);
+	
+	static ConVar::first_type GetVar(std::string varName);
+	static bool SetVar(std::string varName, std::string value);
+
+	static void ConsoleLoop();
+
+	static void CmdTest(std::string argument);
+
 	static char* const strWarning;
 	static char* const strError;
+
+	static bool bIsRunning;
 private:
 	Logger();
 
@@ -72,4 +105,8 @@ private:
 	static HANDLE hStdOut;
 	//CONSOLE_SCREEN_BUFFER_INFO csbi;
 	//CONSOLE_SCREEN_BUFFER_INFO colourCsbi;
+
+	// Console
+	static ConVars conVars;
+	static ConCmds conCmds;
 };
