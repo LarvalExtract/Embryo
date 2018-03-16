@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utilities\logger.h"
+
 #include "graphics/window.h"
 
 #include "graphics/Scene.h"

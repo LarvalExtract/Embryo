@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+#include <utilities/logger.h>
+
 Scene::Scene() :
 	activeCameraID(-1),
 	pSceneSky(nullptr),
@@ -36,18 +38,17 @@ bool Scene::InitialiseScene()
 {
 	if (sceneCameras.size() == 0)
 	{
-		std::cout
-			<< "Error: No cameras found in " << sceneName << ".\n"
-			<< "Your scene must have at least 1 camera" << std::endl;
+		Logger::Log(LogType::Error) << "No cameras found in " << sceneName
+			<< ". Your scene must have at least 1 camera.\n";
 
 		return false;
 	}
 
-	activeCameraID = 0;
+	//activeCameraID = 0;
 
 	// Print a warning if the skybox does not exist
 	if (pSceneSky == nullptr)
-		std::cout << "Warning: No skybox initialised in " << sceneName << "\n" << std::endl;
+		Logger::Log(LogType::Warning) << "No skybox initialised in " << sceneName << "\n";
 
 	// Play all sounds in the scene
 	for (sound_it = sceneSounds.begin(); sound_it != sceneSounds.end(); sound_it++)
@@ -154,7 +155,7 @@ Camera* Scene::GetCamera(const char& cameraID)
 void Scene::RemoveRenderable(const std::string &renderableName)
 {
 	if (sceneRenderables.find(renderableName) == sceneRenderables.end())
-		std::cout << "Error: Couldn't find " << renderableName << " in " << sceneName << std::endl;
+		Logger::Log(LogType::Error) << "Couldn't find " << renderableName << " in " << sceneName << "\n";
 	
 	else
 		sceneRenderables.erase(renderableName);
@@ -163,7 +164,7 @@ void Scene::RemoveRenderable(const std::string &renderableName)
 void Scene::RemoveLight(const std::string &lightName)
 {
 	if (sceneLights.find(lightName) == sceneLights.end())
-		std::cout << "Error: Couldn't find " << lightName << " in " << sceneName << std::endl;
+		Logger::Log(LogType::Error) << "Couldn't find " << lightName << " in " << sceneName << "\n";
 	else
 		sceneRenderables.erase(lightName);
 }
@@ -171,7 +172,7 @@ void Scene::RemoveLight(const std::string &lightName)
 void Scene::RemoveSound(const std::string &soundName)
 {
 	if (sceneSounds.find(soundName) == sceneSounds.end())
-		std::cout << "Error: Couldn't find " << soundName << std::endl;
+		Logger::Log(LogType::Error) << "Couldn't find " << soundName << "\n";
 
 	else
 		sceneRenderables.erase(soundName);
@@ -180,7 +181,7 @@ void Scene::RemoveSound(const std::string &soundName)
 void Scene::RemoveShader(const std::string &shaderName)
 {
 	if (sceneShaders.find(shaderName) == sceneShaders.end())
-		std::cout << "Error: Couldn't find " << shaderName << " in " << sceneName << std::endl;
+		Logger::Log(LogType::Error) << "Couldn't find " << shaderName << " in " << sceneName << "\n";
 
 	else
 		sceneShaders.erase(shaderName);
@@ -189,7 +190,7 @@ void Scene::RemoveShader(const std::string &shaderName)
 void Scene::RemoveCamera(const char &cameraID)
 {
 	if (sceneCameras.size() < cameraID)
-		std::cout << "Error: Couldn't find camera \'" << cameraID << "\' in " << sceneName << std::endl;
+		Logger::Log(LogType::Error) << "Couldn't find camera \'" << cameraID << "\' in " << sceneName << "\n";
 
 	else
 		sceneCameras.erase(sceneCameras.begin() + cameraID);
@@ -197,48 +198,48 @@ void Scene::RemoveCamera(const char &cameraID)
 
 void Scene::PrintRenderableList()
 {
-	std::cout << sceneRenderables.size() << " renderables in " << sceneName << std::endl;
+	Logger::Log() << sceneRenderables.size() << " renderables in " << sceneName << "\n";
 
 	for (renderable_it = sceneRenderables.begin(); renderable_it != sceneRenderables.end(); renderable_it++)
-		std::cout << "\t" << renderable_it->first << "\n";
+		Logger::Log() << "\t" << renderable_it->first << "\n";
 
-	std::cout << std::endl;
+	Logger::Log() << "\n";
 }
 
 void Scene::PrintLightList()
 {
-	std::cout << sceneLights.size() << " lights in " << sceneName << std::endl;
+	Logger::Log() << sceneLights.size() << " lights in " << sceneName << "\n";
 
 	for (light_it = sceneLights.begin(); light_it != sceneLights.end(); light_it++)
-		std::cout << "\t" << light_it->first << "\n";
+		Logger::Log() << "\t" << light_it->first << "\n";
 
-	std::cout << std::endl;
+	Logger::Log() << "\n";
 }
 
 void Scene::PrintSoundList()
 {
-	std::cout << sceneSounds.size() << " sounds in " << sceneName << std::endl;
+	Logger::Log() << sceneSounds.size() << " sounds in " << sceneName << "\n";
 
 	for (sound_it = sceneSounds.begin(); sound_it != sceneSounds.end(); sound_it++)
-		std::cout << "\t" << sound_it->first << "\n";
+		Logger::Log() << "\t" << sound_it->first << "\n";
 
-	std::cout << std::endl;
+	Logger::Log() << "\n";
 }
 
 void Scene::PrintCameraList()
 {
-	std::cout << sceneCameras.size() << " cameras in " << sceneName << std::endl;
+	Logger::Log() << sceneCameras.size() << " cameras in " << sceneName << "\n";
 
 	for (unsigned char i = 0; i < sceneCameras.size(); i++)
 	{
 		if (i == 0)
-			std::cout << "\tCamera_" << std::to_string(i) << " (Default)\n";
+			Logger::Log() << "\tCamera_" << std::to_string(i) << " (Default)\n";
 
 		else
-			std::cout << "\tCamera_" << std::to_string(i) << "\n";
+			Logger::Log() << "\tCamera_" << std::to_string(i) << "\n";
 	}	
 
-	std::cout << std::endl;
+	Logger::Log() << "\n";
 }
 
 // TO-DO: Fix potential memory leak due to not cleaning up previous skyboxes

@@ -30,7 +30,7 @@ void Game::Start()
 		// Attempt to initialise the game
 		if (!Initialise())
 		{
-			std::cerr << "Could not initialise!" << std::endl;
+			Logger::Log(LogType::Error) << "Could not initialise!\n";
 			return;
 		}
 	}
@@ -63,17 +63,22 @@ bool Game::Initialise()
 	//window->SetColour(0.1f, 0.3f, 0.6f, 1.0f);
 
 	// Print OpenGL and OpenAL version info
-	std::cout << "OpenGL " << glGetString(GL_VERSION) << ", " << glGetString(GL_VENDOR) << ", " << glGetString(GL_RENDERER) << "\n"
-			  << "OpenAL " << alGetString(AL_VERSION) << ", " << alGetString(AL_VENDOR) << ", " << alGetString(AL_RENDERER) << "\n"
-			  << std::endl;
+	Logger::Log(LogType::None) << "OpenGL " << ColourCode::BrightYellow << glGetString(GL_VERSION) << ColourCode::White << ", " << glGetString(GL_VENDOR) << ", " << glGetString(GL_RENDERER) << "\n";
+	Logger::Log(LogType::None) << "OpenAL " << ColourCode::BrightYellow << alGetString(AL_VERSION) << ColourCode::White << ", " << alGetString(AL_VENDOR) << ", " << alGetString(AL_RENDERER) << "\n\n";
 
-	std::cout << "Press Z to enable camera controls" << "\n" << std::endl;
+	Logger::Log(LogType::None) << "Press Z to enable camera controls" << "\n\n";
 
 	scene.SetSkybox("skybox_ocean.tga");
 
 	Camera *pCamera = new CamPerspective(60.0f, static_cast<float>(window.GetWidth()) / static_cast<float>(window.GetHeight()), 0.01f, 1000.0f);
 	pCamera->SetPosition(0.0f, 1.0f, -3.0f);
 	scene.AddCamera(pCamera);
+
+	Camera *pOrtho = new CamOrtho(-1.0f, 1.0f, -0.5625f, 0.5625f, -0.001f, 1000.0f);
+	pOrtho->SetPosition(0.0f, 1.0f, -3.0f);
+	scene.AddCamera(pOrtho);
+
+	scene.SetActiveCamera(0);
 
 	Shader *pShader = new Shader("basicPhong");
 	scene.AddShader(pShader);
@@ -146,6 +151,7 @@ bool Game::Initialise()
 	//scene->AddLight(redLight);
 
 	testQuad = new Shape2D::Quad(250.0f, 250.0f);
+
 	pCrosshair = new Sprite("sprites/crosshair.tga");
 	pCrosshair->CenterOrigin();
 	pCrosshair->SetPosition(window.GetWidth() / 2, window.GetHeight() / 2);
@@ -163,7 +169,7 @@ bool Game::Initialise()
 	//scene->PrintSoundList();
 	//scene->PrintCameraList();
 
-	std::cout << "Initialisation time: " << initTimer.Elapsed() << " seconds" << "\n" << std::endl;
+	Logger::Log() << "Initialisation time: " << initTimer.Elapsed() << " seconds" << "\n\n";
 
 	lastTime = glfwGetTime();
 
@@ -173,6 +179,14 @@ bool Game::Initialise()
 
 void Game::ProcessInput()
 {
+	// Press U to switch to ortho camera
+	if (window.OnKeyPress(GLFW_KEY_U))
+		scene.SetActiveCamera(1);
+
+	// Press P to switch to perspective camera
+	if (window.OnKeyPress(GLFW_KEY_P))
+		scene.SetActiveCamera(0);
+
 	MatricesFromInputs(window, scene.GetActiveCamera(), deltaTime);
 }
 
@@ -183,10 +197,11 @@ void Game::Update()
 	lastTime = currentTime;
 
 	// Display frame time/frame rate
-	std::cerr << "Frame time: " << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
+	Logger::Log() << "Frame time: " << ColourCode::BrightGreen << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
 	
 	counter += 1.0f * deltaTime;
 
+	// BUG: Crashes if the scene cannot find a renderable or light
 	scene.GetRenderable("teapot")->SetRotation(sin(counter * 10), 0.0f, cos(counter * 20));
 	scene.GetLight("light_omni")->SetPosition(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
 	//scene->GetLight("light_omni")->SetPower(sin(counter * 2) * 3);
