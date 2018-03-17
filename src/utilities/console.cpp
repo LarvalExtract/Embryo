@@ -157,7 +157,7 @@ float Console::GetVarF(std::string varName)
 		ss >> f;
 
 		// Return 0 if the string is not a valid number
-		return ss.good() ? 0 : f;
+		return ss.fail() || ss.good() ? 0 : f;
 	}
 
 	return 0;
