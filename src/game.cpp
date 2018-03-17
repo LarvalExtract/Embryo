@@ -1,11 +1,5 @@
 #include "game.h"
 
-#include "graphics/sprite2d.h"
-#include "graphics/sphere.h"
-#include "graphics/pivot.h"
-#include "graphics/model3d.h"
-#include "graphics/box.h"
-
 #include "utilities/controls.h"
 
 #include <string>
@@ -74,63 +68,65 @@ bool Game::Initialise()
 	pCamera->SetPosition(0.0f, 1.0f, -3.0f);
 	scene.AddCamera(pCamera);
 
-	Camera *pOrtho = new CamOrtho(-1.0f, 1.0f, -0.5625f, 0.5625f, -0.001f, 1000.0f);
-	pOrtho->SetPosition(0.0f, 1.0f, -3.0f);
-	scene.AddCamera(pOrtho);
+	Camera *pOrtho = new CamOrtho(0.0f, window.GetWidth(), 0.0f, window.GetHeight(), -1.0f, 1.0f);
+	hud.AddCamera(pOrtho);
 
 	scene.SetActiveCamera(0);
+	hud.SetActiveCamera(0);
 
 	Shader *pShader = new Shader("basicPhong");
 	scene.AddShader(pShader);
 
 	Model3D *pFloor = new Model3D("floor.mmf");
 	pFloor->SetPosition(0.0f, -1.0f, 0.0f);
-	pFloor->SetTexture("models/floor.tga");
+	pFloor->SetDiffuseTexture("models/floor.tga");
 	pFloor->SetShader(pShader);
 	scene.AddRenderable(pFloor);
 
 	Model3D *pCube = new Model3D("cube.mmf");
 	pCube->SetScale(0.2f, 0.2f, 0.2f);
-	pCube->SetTexture("models/cube.tga");
-	pCube->SetSpecularity(0.2f);
-	pCube->SetGlossiness(20.0f);
+	pCube->SetDiffuseTexture("models/cube.tga");
+	pCube->specularity = 0.2f;
+	pCube->glossiness = 20.0f;
 	pCube->SetShader(pShader);
 	scene.AddRenderable(pCube);
 
 	Model3D *pTeapot = new Model3D("teapot.mmf");
 	pTeapot->SetPosition(1.2f, 0.0f, 0.0f);
 	pTeapot->SetScale(0.02f, 0.02f, 0.02f);
-	pTeapot->SetTexture("models/test.tga");
-	pTeapot->SetSpecularity(2.0f);
-	pTeapot->SetGlossiness(100.0f);
+	pTeapot->SetDiffuseTexture("models/test.tga");
+	pTeapot->specularity = 2.0f;
+	pTeapot->glossiness = 100.0f;
 	pTeapot->SetShader(pShader);
 	scene.AddRenderable(pTeapot);
 
 	Model3D *pClone = new Model3D("poo.mmf");
 	pClone->SetPosition(-1.0f, 0.0f, 0.0f);
-	pClone->SetRotation(0.0f, 180.0f, 0.0f);
+	pClone->SetRotation3D(0.0f, 180.0f, 0.0f);
 	pClone->SetScale(0.02f, 0.02f, 0.02f);
-	pClone->SetTexture("models/clone.tga");
-	pClone->SetSpecularity(0.5f);
-	pClone->SetGlossiness(30.0f);
+	pClone->SetDiffuseTexture("models/clone.tga");
+	pClone->specularity = 0.5f;
+	pClone->glossiness = 30.0f;
 	pClone->SetShader(pShader);
 	scene.AddRenderable(pClone);
 
-	Sprite2D *pSprite = new Sprite2D("sprites/sprite_test3.tga");
+	Sprite3D *pSprite = new Sprite3D("sprites/sprite_test3.tga");
 	pSprite->SetPosition(1.7f, 0.0f, -1.0f);
 	pSprite->SetShader(pShader);
 	scene.AddRenderable(pSprite);
 
-	Sphere *pSphere = new Sphere(24, 2.0f, Vec4<float>(1.0f, 1.0f, 0.0f, 1.0f));
+	Gyro3D *pSphere = new Gyro3D(2.0f, 4);
 	pSphere->SetPosition(-5, 2, 3);
+	pSphere->SetColour(1.0f, 1.0f, 0.0f, 1.0f);
 	scene.AddRenderable(pSphere);
 
-	Box *pBox = new Box(2, 3, 3, Vec4<float>(1.0f, 0.0f, 1.0f, 1.0f));
+	Box3D *pBox = new Box3D(2, 3, 3);
 	pBox->SetPosition(13.3f, 3.0f, 5.0f);
-	pBox->SetRotation(0.0f, 23.0f, 0.0f);
+	pBox->SetRotation3D(0.0f, 23.0f, 0.0f);
+	pBox->SetColour(1.0f, 0.0f, 1.0f, 1.0f);
 	scene.AddRenderable(pBox);
 
-	Pivot *pPivot = new Pivot();
+	Gizmo3D *pPivot = new Gizmo3D();
 	pPivot->SetPosition(0.0f, 2.0f, 0.0f);
 	scene.AddRenderable(pPivot);
 
@@ -150,21 +146,16 @@ bool Game::Initialise()
 	//LightOmni *pRedLight = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
 	//scene->AddLight(redLight);
 
-	testQuad = new Shape2D::Quad(250.0f, 250.0f);
-
-	pCrosshair = new Sprite("sprites/crosshair.tga");
-	pCrosshair->CenterOrigin();
-	pCrosshair->SetPosition(window.GetWidth() / 2, window.GetHeight() / 2);
-
-	//pCrosshair->SetPosition(0.0f, 0.0f);
-
-	proj.Orthographic(0.0f, window.GetWidth(), 0.0f, window.GetHeight(), -1.0f, 1.0f);
+	Sprite2D *pCrosshair = new Sprite2D("sprites/crosshair.tga");
+	pCrosshair->CentreLocalOrigin();
+	pCrosshair->SetPosition(window.GetWidth() / 2, window.GetHeight() / 2, 0.0f);
+	hud.AddRenderable(pCrosshair);
 	
 	// Initialise the scene
 	if (scene.InitialiseScene("Scene1") == false)
 		return false;
 
-	//scene->PrintRenderableList();
+	hud.PrintRenderableList();
 	//scene->PrintLightList();
 	//scene->PrintSoundList();
 	//scene->PrintCameraList();
@@ -202,12 +193,11 @@ void Game::Update()
 	counter += 1.0f * deltaTime;
 
 	// BUG: Crashes if the scene cannot find a renderable or light
-	scene.GetRenderable("teapot")->SetRotation(sin(counter * 10), 0.0f, cos(counter * 20));
+	scene.GetRenderable("teapot")->SetRotation3D(sin(counter * 10), 0.0f, cos(counter * 20));
 	scene.GetLight("light_omni")->SetPosition(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
 	//scene->GetLight("light_omni")->SetPower(sin(counter * 2) * 3);
 
-	pCrosshair->SetRotation(counter * 15.0f);
-	//sprite->SetScale(cos(counter), cos(counter));
+	hud.GetRenderable("crosshair.tga")->SetRotation2D(counter * 30);
 
 	scene.UpdateScene();
 }
@@ -219,15 +209,9 @@ void Game::Draw()
 
 	// Draw everything in the scene
 	scene.DrawScene();
+	hud.DrawScene();
 
-	//testQuad->GetShader().Bind();
-	//testQuad->GetShader().SetUniformMat4("projectionMatrix", proj);
-	//testQuad->Draw();
-
-	pCrosshair->GetShader().Bind();
-	pCrosshair->GetShader().SetUniformMat4("projectionMatrix", proj);
-	pCrosshair->GetShader().SetUniformMat4("mpMatrix", pCrosshair->GetTransformMatrix() * proj);
-	pCrosshair->Draw();
+	//pCrosshair->Draw(;
 
 	// Update the window with the next frame
 	window.Update();

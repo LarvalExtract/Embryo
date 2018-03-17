@@ -9,10 +9,9 @@ Mat4::Mat4(float scalar) :
 		elements[i][i] = scalar;
 }
 
-void Mat4::Identity()
+Mat4 Mat4::Identity()
 {
-	for (char i = 0; i < columnSize; i++)
-		elements[i][i] = 1.0f;
+	return Mat4(1.0f);
 }
 
 
