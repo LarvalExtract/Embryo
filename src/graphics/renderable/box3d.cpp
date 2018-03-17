@@ -27,7 +27,7 @@ Box3D::Box3D(float width, float height, float depth) :
 		4, 5, 5, 6, 6, 7, 7, 4		// Bottom
 	};
 
-	vao.AddBuffers(positions, sizeof(positions), 0, 3);
+	vao.AddBuffer(positions, sizeof(positions), 0, 3);
 	vao.AddIndices(indices, 24);
 
 	shader = new Shader("basiccolour");

@@ -65,7 +65,7 @@ Gyro3D::Gyro3D(float radius, char segments) :
 		}
 	}
 
-	vao.AddBuffers(&positions[0], sizeof(positions[0]) * positions.size(), 0, 3);
+	vao.AddBuffer(&positions[0], sizeof(positions[0]) * positions.size(), 0, 3);
 	vao.AddIndices(&indices[0], indices.size());
 
 	shader = new Shader("basiccolour");

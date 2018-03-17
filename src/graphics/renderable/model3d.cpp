@@ -24,9 +24,9 @@ Model3D::Model3D(const std::string &fileName) :
 		return;
 	}
 
-	vao.AddBuffers(&positions[0], positions.size() * sizeof(positions[0]), 0, 3);
-	vao.AddBuffers(&normals[0], normals.size() * sizeof(normals[0]), 1, 3);
-	vao.AddBuffers(&texCoords[0], texCoords.size() * sizeof(texCoords[0]), 2, 2);
+	vao.AddBuffer(&positions[0], positions.size() * sizeof(positions[0]), 0, 3);
+	vao.AddBuffer(&normals[0], normals.size() * sizeof(normals[0]), 1, 3);
+	vao.AddBuffer(&texCoords[0], texCoords.size() * sizeof(texCoords[0]), 2, 2);
 	vao.AddIndices(&indices[0], indices.size());
 }
 

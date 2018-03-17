@@ -27,7 +27,7 @@ Skybox3D::Skybox3D(const std::string &skyboxName, float size) :
 	};
 
 	// Send skybox vertex data to GPU
-	vao.AddBuffers(positions, sizeof(positions), 0, 3);
+	vao.AddBuffer(positions, sizeof(positions), 0, 3);
 	vao.AddIndices(indices, 24);
 
 	// Use default sky shader

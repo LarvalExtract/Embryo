@@ -155,7 +155,7 @@ bool Game::Initialise()
 	if (scene.InitialiseScene("Scene1") == false)
 		return false;
 
-	hud.PrintRenderableList();
+	//hud.PrintRenderableList();
 	//scene->PrintLightList();
 	//scene->PrintSoundList();
 	//scene->PrintCameraList();

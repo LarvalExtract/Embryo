@@ -23,8 +23,8 @@ Sprite2D::Sprite2D(const std::string &textureName) :
 		1.0f, 1.0f
 	};
 
-	vao.AddBuffers(positions, sizeof(positions), 0, 2);
-	vao.AddBuffers(texCoords, sizeof(texCoords), 2, 2);
+	vao.AddBuffer(positions, sizeof(positions), 0, 2);
+	vao.AddBuffer(texCoords, sizeof(texCoords), 2, 2);
 
 	shader = new Shader("basicSprite");
 }

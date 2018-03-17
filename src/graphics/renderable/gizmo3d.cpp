@@ -25,8 +25,8 @@ Gizmo3D::Gizmo3D() :
 		0.0f, 0.0f, 1.0f, 1.0f		// Blue
 	};
 
-	vao.AddBuffers(positions, sizeof(positions), 0, 3);
-	vao.AddBuffers(colours, sizeof(colours), 3, 4);
+	vao.AddBuffer(positions, sizeof(positions), 0, 3);
+	vao.AddBuffer(colours, sizeof(colours), 3, 4);
 
 	shader = new Shader("in_colour");
 }

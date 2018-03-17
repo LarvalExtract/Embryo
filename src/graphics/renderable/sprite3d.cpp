@@ -10,10 +10,10 @@ Sprite3D::Sprite3D(const std::string &textureName) :
 	height = texture->GetHeight();
 
 	float positions[] = {
-		-(width / 2) * 0.01f,  height * 0.01f,
-		-(width / 2) * 0.01f,  0.0f,
-		 (width / 2) * 0.01f,  0.0f,
-		 (width / 2) * 0.01f,  height * 0.01f
+		0.0f,			height * 0.01f,
+		0.0f,			0.0f,
+		width * 0.01f,  0.0f,
+		width * 0.01f,  height * 0.01f
 	};
 
 	float texCoords[] = {
@@ -23,8 +23,8 @@ Sprite3D::Sprite3D(const std::string &textureName) :
 		1.0f, 1.0f
 	};
 
-	vao.AddBuffers(positions, sizeof(positions), 0, 2);
-	vao.AddBuffers(texCoords, sizeof(texCoords), 2, 2);
+	vao.AddBuffer(positions, sizeof(positions), 0, 2);
+	vao.AddBuffer(texCoords, sizeof(texCoords), 2, 2);
 
 	shader = new Shader("basicSprite");
 }
