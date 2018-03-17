@@ -2,9 +2,11 @@
 
 int main()
 {
-	Game game;
+	// TO-DO: Grab this string from somewhere else
+	// TO-DO: Move this inside console class
+	SetConsoleTitle("Embryo (developer console)");
 
-	game.Start();
+	Game().Start();
 	
 	return 0;
 }

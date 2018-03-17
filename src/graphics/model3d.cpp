@@ -1,6 +1,6 @@
 #include "model3d.h"
 
-#include <utilities/logger.h>
+#include <utilities/console.h>
 
 // Default directory: res/models/
 Model3D::Model3D(const std::string& filePath) :
@@ -15,7 +15,7 @@ Model3D::Model3D(const std::string& filePath) :
 
 	if (!ImportModel(filePath, positions, normals, texCoords, indices))
 	{
-		Logger::Log(LogType::Error) << "Could not load model: " << filePath << "\n";
+		Console::Log(LogType::Error) << "Could not load model: " << filePath << "\n";
 
 		return;
 	}
@@ -68,7 +68,7 @@ bool Model3D::ImportModel(
 
 	if (!file.is_open())
 	{
-		Logger::Log(LogType::Error) << "Couldn't open " << fileName << "\n";
+		Console::Log(LogType::Error) << "Couldn't open " << fileName << "\n";
 		return false;
 	}
 
@@ -79,7 +79,7 @@ bool Model3D::ImportModel(
 	// TO-DO: Handle error
 	if (file.fail())
 	{
-		Logger::Log(LogType::Error) << "Header could not be read in " << fileName << "\n";
+		Console::Log(LogType::Error) << "Header could not be read in " << fileName << "\n";
 		return false;
 	}
 
@@ -112,7 +112,7 @@ bool Model3D::ImportModel(
 	}
 	else
 	{
-		Logger::Log(LogType::Error) << "Selected file is not an MMF file. Use obj-mmf.exe to convert a wavefront obj model file in to an appropriate MMF file.\n";
+		Console::Log(LogType::Error) << "Selected file is not an MMF file. Use obj-mmf.exe to convert a wavefront obj model file in to an appropriate MMF file.\n";
 		file.close();
 
 		return false;

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <GL/glew.h>
 
-#include <utilities/logger.h>
+#include <utilities/console.h>
 
 // Base class methods
 void Texture::Bind(unsigned int unit)
@@ -104,7 +104,7 @@ void Cubemap::Init(const std::string& filePath)
 
 	if (!file.is_open())
 	{
-		Logger::Log(LogType::Error) << "Couldn't open " << filePath << "\n";
+		Console::Log(LogType::Error) << "Couldn't open " << filePath << "\n";
 		return;
 	}
 
@@ -122,7 +122,7 @@ void Cubemap::Init(const std::string& filePath)
 
 	if (width != height)
 	{
-		Logger::Log(LogType::Error)
+		Console::Log(LogType::Error)
 			<< "Cubemap texture dimensions are invalid.\n"
 			<< "Please ensure the width is a power of 2 and the height is 3/4 the width.\n"
 			<< "e.g. 2048 x 1536 or 4096 x 3072\n";
