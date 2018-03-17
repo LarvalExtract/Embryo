@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <sstream>
 
 Console* Console::pConsole = nullptr;
 HANDLE Console::hStdOut = nullptr;
@@ -140,6 +141,26 @@ ConVar::first_type Console::GetVar(std::string varName)
 	ConVars::const_iterator it = conVars.find(varName);
 
 	return it != conVars.end() ? it->second.value : "";
+}
+
+float Console::GetVarF(std::string varName)
+{
+	// Convert variable name to lowercase
+	std::transform(varName.begin(), varName.end(), varName.begin(), tolower);
+
+	ConVars::const_iterator it = conVars.find(varName);
+	float f;
+
+	if (it != conVars.end())
+	{
+		std::stringstream ss(it->second.value);
+		ss >> f;
+
+		// Return 0 if the string is not a valid number
+		return ss.good() ? 0 : f;
+	}
+
+	return 0;
 }
 
 bool Console::SetVar(std::string varName, std::string value)

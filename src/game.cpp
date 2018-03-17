@@ -207,7 +207,7 @@ void Game::ProcessInput()
 void Game::Update()
 {
 	currentTime = glfwGetTime();
-	deltaTime = (currentTime - lastTime) * std::stof(Console::GetVar("timescale"));
+	deltaTime = (currentTime - lastTime) * Console::GetVarF("timescale");
 	lastTime = currentTime;
 
 	// Display frame time/frame rate
