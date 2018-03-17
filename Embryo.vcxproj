@@ -235,14 +235,6 @@
     <ClInclude Include="src\utilities\timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\shaders\basiccolour.frag" />
-    <None Include="resources\shaders\basiccolour.vert" />
-    <None Include="resources\shaders\in_colour.frag" />
-    <None Include="resources\shaders\in_colour.vert" />
-    <None Include="resources\shaders\sky.frag" />
-    <None Include="resources\shaders\sky.vert" />
-    <None Include="resources\shaders\test.frag" />
-    <None Include="resources\shaders\test.vert" />
     <None Include="res\shaders\basic2D.frag" />
     <None Include="res\shaders\basic2D.vert" />
     <None Include="res\shaders\basiccolour.frag" />
@@ -255,23 +247,6 @@
     <None Include="res\shaders\sky.vert" />
     <None Include="res\shaders\basicPhong.frag" />
     <None Include="res\shaders\basicPhong.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="resources\models\teapot.obj">
-      <FileType>Document</FileType>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="resources\bitmaps\sky\skybox_cloudy.tga" />
-    <Image Include="resources\bitmaps\sky\skybox_day.tga" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
