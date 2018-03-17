@@ -34,7 +34,7 @@ Logger& Logger::Log(LogType type)
 	// Create an instance of pLogger if it doesn't already exist
 	if (pLogger == nullptr)
 		pLogger = new Logger();
-	char a;
+
 	// Appends a log type tag to the start of the message and colours the line
 	switch (type)
 	{
