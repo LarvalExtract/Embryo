@@ -85,7 +85,7 @@ bool Game::Initialise()
 	scene.SetSkybox("skybox_ocean.tga");
 
 	Console::AddVar("CamSpeed", "4.0");
-	Camera *pCamera = new CamPerspective(60.0f, static_cast<float>(window.GetWidth()) / static_cast<float>(window.GetHeight()), 0.01f, 1000.0f);
+	Camera *pCamera = new CamPersp(60.0f, static_cast<float>(window.GetWidth()) / static_cast<float>(window.GetHeight()), 0.01f, 1000.0f);
 	pCamera->SetPosition(0.0f, 1.0f, -3.0f);
 	scene.AddCamera(pCamera);
 

@@ -165,8 +165,9 @@
     <ClCompile Include="src\audio\audiosource.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\graphics\box.cpp" />
+    <ClCompile Include="src\graphics\camera.cpp" />
     <ClCompile Include="src\graphics\cameraortho.cpp" />
-    <ClCompile Include="src\graphics\cameraperspective.cpp" />
+    <ClCompile Include="src\graphics\campersp.cpp" />
     <ClCompile Include="src\graphics\indexbuffer.cpp" />
     <ClCompile Include="src\graphics\lightomni.cpp" />
     <ClCompile Include="src\graphics\lightsource.cpp" />
@@ -204,7 +205,7 @@
     <ClInclude Include="src\graphics\box.h" />
     <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\cameraortho.h" />
-    <ClInclude Include="src\graphics\cameraperspective.h" />
+    <ClInclude Include="src\graphics\campersp.h" />
     <ClInclude Include="src\graphics\graphics.h" />
     <ClInclude Include="src\graphics\indexbuffer.h" />
     <ClInclude Include="src\graphics\lightomni.h" />
