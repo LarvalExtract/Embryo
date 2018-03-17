@@ -65,7 +65,7 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 
 		//// Keyboard controls ////		
 		// Increases camera movement speed if shift is held
-		movementSpeed = std::stof(Console::GetVar("CamSpeed"));
+		movementSpeed = Console::GetVarF("CamSpeed");
 
 		(window.IsKeyPressed(GLFW_KEY_LEFT_SHIFT)) ? movementSpeed *= 2.0f : movementSpeed;
 

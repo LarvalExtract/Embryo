@@ -92,6 +92,8 @@ public:
 	static bool AddVar(std::string varName, std::string value);
 	
 	static ConVar::first_type GetVar(std::string varName);
+	static float GetVarF(std::string varName);
+
 	static bool SetVar(std::string varName, std::string value);
 
 	static void ConsoleLoop();
