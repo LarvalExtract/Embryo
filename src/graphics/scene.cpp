@@ -102,9 +102,9 @@ void Scene::DrawScene()
 		pSceneSky->Draw(*sceneCameras[activeCameraID], vpMatrix);
 }
 
-void Scene::AddRenderable(Renderable3D *pRenderable)
+void Scene::AddRenderable(Renderable *pRenderable)
 {
-	sceneRenderables.insert(std::pair<std::string, Renderable3D*>(pRenderable->GetName(), pRenderable));
+	sceneRenderables.insert(std::pair<std::string, Renderable*>(pRenderable->name, pRenderable));
 }
 
 void Scene::AddLight(LightSource *pLight)
@@ -127,7 +127,7 @@ void Scene::AddCamera(Camera *pCamera)
 	sceneCameras.push_back(pCamera);
 }
 
-Renderable3D* Scene::GetRenderable(const std::string &renderableName)
+Renderable* Scene::GetRenderable(const std::string &renderableName)
 {
 	return sceneRenderables.at(renderableName);
 }
@@ -245,7 +245,7 @@ void Scene::PrintCameraList()
 // TO-DO: Fix potential memory leak due to not cleaning up previous skyboxes
 void Scene::SetSkybox(const std::string &skyName)
 {
-	pSceneSky = new Skybox(skyName);
+	pSceneSky = new Skybox3D(skyName, 100.0f);
 }
 
 void Scene::SetActiveCamera(const char& cameraID)

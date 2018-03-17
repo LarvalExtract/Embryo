@@ -1,13 +1,21 @@
 #pragma once
 
-#include "Renderable3D.h"
+#include "renderable.h"
+#include <graphics/texture.h>
+#include <vector>
 
-// Render 3D models from loaded MMF files
-class Model3D : public Renderable3D
+class Model3D : public Renderable
 {
 public:
-	Model3D(const std::string &filePath);
+	Model3D(const std::string &fileName);
 
+	void Draw(Camera &camera, Mat4 &cameraMatrix) override;
+	void SetDiffuseTexture(const std::string &fileName);
+
+	float specularity;
+	float glossiness;
+
+private:
 	static bool ImportModel(
 		const std::string& filePath,
 		std::vector<Vec3<float>> &in_positions,
@@ -19,18 +27,9 @@ public:
 	static void GetUVs(std::ifstream& file, std::vector<Vec2<float>> &uv, unsigned int count);
 	static void GetVertex(std::ifstream &file, std::vector<Vec3<float>> &vertex, unsigned int count);
 
-	Texture2D& GetTexture();
-	float GetSpecularity();
-	float GetGlossiness();
+	Texture2D *diffuseMap;
+	Texture2D *normalMap;		// Currently unused
+	Texture2D *specularMap;		// Currently unused
 
-	void SetTexture(const std::string &filePath);
-	void SetSpecularity(float value);
-	void SetGlossiness(float value);
-
-	void Draw(Camera &camera, Mat4 &vpMatrix) override;
-private:
-	float specularity;
-	float glossiness;
-
-	Texture2D *texture;
+	static Texture2D* const defaultTexture;
 };

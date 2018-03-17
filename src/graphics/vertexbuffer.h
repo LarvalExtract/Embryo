@@ -5,16 +5,14 @@
 class VertexBuffer
 {
 public:
-	VertexBuffer();
 	VertexBuffer(const void* data, unsigned int size);
 	~VertexBuffer();
 
-	void AddData(const void* data, unsigned int size);
-	void DrawArray(unsigned int renderMode);
-
 	void Bind();
 	void Unbind();
+	void DrawArray(unsigned int renderMode);
+
 private:
-	unsigned int m_Size;
+	unsigned int m_Count;
 	GLuint vbo;
 };

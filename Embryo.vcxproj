@@ -50,7 +50,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -164,23 +164,22 @@
     <ClCompile Include="src\audio\audiobuffer.cpp" />
     <ClCompile Include="src\audio\audiosource.cpp" />
     <ClCompile Include="src\game.cpp" />
-    <ClCompile Include="src\graphics\box.cpp" />
     <ClCompile Include="src\graphics\camera.cpp" />
     <ClCompile Include="src\graphics\cameraortho.cpp" />
     <ClCompile Include="src\graphics\campersp.cpp" />
     <ClCompile Include="src\graphics\indexbuffer.cpp" />
     <ClCompile Include="src\graphics\lightomni.cpp" />
     <ClCompile Include="src\graphics\lightsource.cpp" />
-    <ClCompile Include="src\graphics\model3d.cpp" />
-    <ClCompile Include="src\graphics\pivot.cpp" />
-    <ClCompile Include="src\graphics\primitive.cpp" />
-    <ClCompile Include="src\graphics\renderable2d.cpp" />
-    <ClCompile Include="src\graphics\renderable3d.cpp" />
+    <ClCompile Include="src\graphics\renderable\box3d.cpp" />
+    <ClCompile Include="src\graphics\renderable\gizmo3d.cpp" />
+    <ClCompile Include="src\graphics\renderable\model3d.cpp" />
+    <ClCompile Include="src\graphics\renderable\renderable.cpp" />
+    <ClCompile Include="src\graphics\renderable\skybox3d.cpp" />
+    <ClCompile Include="src\graphics\renderable\gyro3d.cpp" />
+    <ClCompile Include="src\graphics\renderable\sprite2d.cpp" />
+    <ClCompile Include="src\graphics\renderable\sprite3d.cpp" />
     <ClCompile Include="src\graphics\scene.cpp" />
     <ClCompile Include="src\graphics\shader.cpp" />
-    <ClCompile Include="src\graphics\skybox.cpp" />
-    <ClCompile Include="src\graphics\sphere.cpp" />
-    <ClCompile Include="src\graphics\sprite2d.cpp" />
     <ClCompile Include="src\graphics\texture.cpp" />
     <ClCompile Include="src\graphics\vertexarray.cpp" />
     <ClCompile Include="src\graphics\vertexbuffer.cpp" />
@@ -190,11 +189,11 @@
     <ClCompile Include="src\maths\mat4.cpp" />
     <ClCompile Include="src\maths\maths.cpp" />
     <ClCompile Include="src\screen.cpp" />
+    <ClCompile Include="src\utilities\console.cpp" />
     <ClCompile Include="src\utilities\controls.cpp" />
     <ClCompile Include="src\utilities\file.cpp" />
     <ClCompile Include="src\utilities\import_audio_wav.cpp" />
     <ClCompile Include="src\utilities\import_bitmap.cpp" />
-    <ClCompile Include="src\utilities\console.cpp" />
     <ClCompile Include="src\utilities\timer.cpp" />
     <ClCompile Include="src\utilities\utility.cpp" />
   </ItemGroup>
@@ -202,7 +201,6 @@
     <ClInclude Include="src\audio\audiobuffer.h" />
     <ClInclude Include="src\audio\audiosource.h" />
     <ClInclude Include="src\game.h" />
-    <ClInclude Include="src\graphics\box.h" />
     <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\cameraortho.h" />
     <ClInclude Include="src\graphics\campersp.h" />
@@ -210,16 +208,16 @@
     <ClInclude Include="src\graphics\indexbuffer.h" />
     <ClInclude Include="src\graphics\lightomni.h" />
     <ClInclude Include="src\graphics\lightsource.h" />
-    <ClInclude Include="src\graphics\model3d.h" />
-    <ClInclude Include="src\graphics\pivot.h" />
-    <ClInclude Include="src\graphics\primitive.h" />
-    <ClInclude Include="src\graphics\renderable2d.h" />
-    <ClInclude Include="src\graphics\renderable3d.h" />
+    <ClInclude Include="src\graphics\renderable\box3d.h" />
+    <ClInclude Include="src\graphics\renderable\gizmo3d.h" />
+    <ClInclude Include="src\graphics\renderable\gyro3d.h" />
+    <ClInclude Include="src\graphics\renderable\model3d.h" />
+    <ClInclude Include="src\graphics\renderable\renderable.h" />
+    <ClInclude Include="src\graphics\renderable\skybox3d.h" />
+    <ClInclude Include="src\graphics\renderable\sprite2d.h" />
+    <ClInclude Include="src\graphics\renderable\sprite3d.h" />
     <ClInclude Include="src\graphics\scene.h" />
     <ClInclude Include="src\graphics\shader.h" />
-    <ClInclude Include="src\graphics\skybox.h" />
-    <ClInclude Include="src\graphics\sphere.h" />
-    <ClInclude Include="src\graphics\sprite2d.h" />
     <ClInclude Include="src\graphics\texture.h" />
     <ClInclude Include="src\graphics\vertexarray.h" />
     <ClInclude Include="src\graphics\vertexbuffer.h" />
@@ -231,23 +229,15 @@
     <ClInclude Include="src\maths\vec3.h" />
     <ClInclude Include="src\maths\vec4.h" />
     <ClInclude Include="src\screen.h" />
+    <ClInclude Include="src\utilities\console.h" />
     <ClInclude Include="src\utilities\controls.h" />
     <ClInclude Include="src\utilities\file.h" />
     <ClInclude Include="src\utilities\import_audio_wav.h" />
     <ClInclude Include="src\utilities\import_bitmap.h" />
-    <ClInclude Include="src\utilities\console.h" />
     <ClInclude Include="src\utilities\timer.h" />
     <ClInclude Include="src\utilities\utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\shaders\basiccolour.frag" />
-    <None Include="resources\shaders\basiccolour.vert" />
-    <None Include="resources\shaders\in_colour.frag" />
-    <None Include="resources\shaders\in_colour.vert" />
-    <None Include="resources\shaders\sky.frag" />
-    <None Include="resources\shaders\sky.vert" />
-    <None Include="resources\shaders\test.frag" />
-    <None Include="resources\shaders\test.vert" />
     <None Include="res\shaders\basic2D.frag" />
     <None Include="res\shaders\basic2D.vert" />
     <None Include="res\shaders\basiccolour.frag" />
@@ -260,23 +250,6 @@
     <None Include="res\shaders\sky.vert" />
     <None Include="res\shaders\basicPhong.frag" />
     <None Include="res\shaders\basicPhong.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="resources\models\teapot.obj">
-      <FileType>Document</FileType>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="resources\bitmaps\sky\skybox_cloudy.tga" />
-    <Image Include="resources\bitmaps\sky\skybox_day.tga" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

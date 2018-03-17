@@ -1,18 +1,21 @@
-#include "sphere.h"
+#include "gyro3d.h"
 
-// Sphere methods
-// Inherits from Primitive base class
-Sphere::Sphere(unsigned char segments, float radius, const Vec4<float> &colour) :
-	Primitive(GL_LINES, colour)
+Gyro3D::Gyro3D(float radius, char segments) :
+	Renderable(GL_LINES)
 {
-	name = "Sphere";
+	name = "Gyro";
 
 	std::vector<Vec3<float>> positions;
 	std::vector<unsigned short> indices;
 
+	// Segments must not be less than 4
+	if (segments < 4)
+		segments = 4;
+	
 	// Algorithm doesn't currently work with odd numbered segments
-	if (segments % 2 != 0)
-		segments++;
+	else
+		if (segments % 2 != 0)
+			segments++;
 
 	positions.reserve(segments * 3);
 	indices.reserve(segments * 6);
@@ -21,30 +24,30 @@ Sphere::Sphere(unsigned char segments, float radius, const Vec4<float> &colour) 
 	for (float i = 0; i < 360.0f; i += 360.0f / segments)
 	{
 		positions.push_back(
-			Vec3<float>(0.0f,							// X
-				radius * sin(Maths::Radians(i)),		// Y	   
-				radius * cos(Maths::Radians(i))));		// Z
+			Vec3<float>(0.0f,								// X
+				radius * sin(Maths::Radians(i)),			// Y	   
+				radius * cos(Maths::Radians(i))));			// Z
 	}
 
 	// Generate Y-aligned circle co-ordinates
 	for (float i = 0; i < 360.0f; i += 360.0f / segments)
 	{
 		positions.push_back(
-			Vec3<float>(radius * sin(Maths::Radians(i)),		// X
-				0.0f,							// Y	   
-				radius * cos(Maths::Radians(i))));	// Z
+			Vec3<float>(radius * sin(Maths::Radians(i)),	// X
+				0.0f,										// Y	   
+				radius * cos(Maths::Radians(i))));			// Z
 	}
 
 	// Generate Z-aligned circle co-ordinates
 	for (float i = 0; i < 360.0f; i += 360.0f / segments)
 	{
 		positions.push_back(
-			Vec3<float>(radius * sin(Maths::Radians(i)),		// X
-				radius * cos(Maths::Radians(i)),		// Y	   
-				0.0f));						// Z
+			Vec3<float>(radius * sin(Maths::Radians(i)),	// X
+				radius * cos(Maths::Radians(i)),			// Y	   
+				0.0f));										// Z
 	}
 
-	// Generate sphere indices
+	// Generate gyro indices
 	for (unsigned char j = 0; j < 3; j++)
 	{
 		for (unsigned char i = 0; i < segments; i++)
@@ -62,15 +65,18 @@ Sphere::Sphere(unsigned char segments, float radius, const Vec4<float> &colour) 
 		}
 	}
 
-	vao.AddBuffers(&positions[0], sizeof(positions[0]) * positions.size(), 0, 3);
+	vao.AddBuffer(&positions[0], sizeof(positions[0]) * positions.size(), 0, 3);
 	vao.AddIndices(&indices[0], indices.size());
 
 	shader = new Shader("basiccolour");
 	shader->Bind();
-	shader->SetUniformVec4f("wire_colour", colour);
+	shader->SetUniformVec4f("u_colour", colour);
 }
 
-void Sphere::Draw()
+void Gyro3D::Draw(Camera &camera, Mat4 &cameraMatrix)
 {
-	Primitive::Draw();
+	vao.Bind();
+	shader->Bind();
+	shader->SetUniformMat4("mvpMatrix", GetTransformMatrix() * cameraMatrix);
+	vao.DrawElements(renderMode);
 }

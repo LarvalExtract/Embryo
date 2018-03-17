@@ -1,11 +1,16 @@
 #pragma once
 
-#include "utilities\console.h"
+#include "utilities/console.h"
 
 #include "graphics/window.h"
-
-#include "graphics/Scene.h"
-#include "graphics/Renderable2D.h"
+#include <graphics/renderable/box3d.h>
+#include <graphics/renderable/gizmo3d.h>
+#include <graphics/renderable/gyro3d.h>
+#include <graphics/renderable/model3d.h>
+#include <graphics/renderable/skybox3d.h>
+#include <graphics/renderable/sprite2d.h>
+#include <graphics/renderable/sprite3d.h>
+#include "graphics/scene.h"
 
 #include <utilities/timer.h>
 
@@ -31,10 +36,7 @@ private:
 
 	Window window;
 	Scene scene;
-	Shape2D::Quad *testQuad;
-	Sprite *pCrosshair;
-
-	Mat4 proj;
+	Scene hud;
 
 	// Delta time
 	double lastTime;

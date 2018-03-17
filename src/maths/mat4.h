@@ -7,7 +7,7 @@ public:
 	Mat4() : elements{ 0 } {};
 	Mat4(float scalar);
 
-	void Identity();
+	Mat4 Identity();
 	void Translate(const Vec3<float> &translate);
 	void Rotate(float angle, const Vec3<float> &axis);
 	void Scale(const Vec3<float> &scale);

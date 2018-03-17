@@ -3,8 +3,8 @@
 #include <unordered_map>
 
 // Graphics
-#include "Renderable3D.h"
-#include "skybox.h"
+#include <graphics/renderable/renderable.h>
+#include <graphics/renderable/skybox3d.h>
 
 // Lights
 #include "LightSource.h"
@@ -26,13 +26,13 @@ public:
 	void UpdateScene();
 	void DrawScene();
 
-	void AddRenderable(Renderable3D *pRenderable);
+	void AddRenderable(Renderable *pRenderable);
 	void AddLight(LightSource *pLight);
 	void AddSound(AudioSource *pSound);
 	void AddShader(Shader *pShader);
 	void AddCamera(Camera *pCamera);
 
-	Renderable3D* GetRenderable(const std::string &renderableName);
+	Renderable* GetRenderable(const std::string &renderableName);
 	LightSource*  GetLight(const std::string &lightName);
 	AudioSource*  GetSound(const std::string &soundName);
 	Shader*	   GetShader(const std::string &shaderName);
@@ -56,7 +56,7 @@ public:
 	Camera& GetActiveCamera();
 
 private:
-	std::unordered_map<std::string, Renderable3D*> sceneRenderables;
+	std::unordered_map<std::string, Renderable*>   sceneRenderables;
 	std::unordered_map<std::string, LightSource*>  sceneLights;
 	std::unordered_map<std::string, AudioSource*>  sceneSounds;
 	std::unordered_map<std::string, Shader*>	   sceneShaders;
@@ -64,7 +64,7 @@ private:
 
 	std::vector<Camera*> sceneCameras;
 
-	std::unordered_map<std::string, Renderable3D*>::iterator  renderable_it;
+	std::unordered_map<std::string, Renderable*>::iterator    renderable_it;
 	std::unordered_map<std::string, LightSource*>::iterator   light_it;
 	std::unordered_map<std::string, AudioSource*>::iterator   sound_it;
 	std::unordered_map<std::string, Shader*>::iterator		  shader_it;
@@ -74,7 +74,7 @@ private:
 
 	char activeCameraID;
 
-	Skybox *pSceneSky;
+	Skybox3D *pSceneSky;
 
 	Mat4 vpMatrix;
 };

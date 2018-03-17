@@ -1,59 +1,57 @@
 #include "model3d.h"
 
-#include <utilities/console.h>
+Texture2D* const Model3D::defaultTexture = new Texture2D("missingtexture2.tga");
 
-// Default directory: res/models/
-Model3D::Model3D(const std::string& filePath) :
-	Renderable3D(GL_TRIANGLES)
+Model3D::Model3D(const std::string &fileName) :
+	Renderable(GL_TRIANGLES),
+	specularity(0),
+	glossiness(1),
+	diffuseMap(defaultTexture),
+	normalMap(nullptr),
+	specularMap(nullptr)
 {
-	name = filePath.substr(0, filePath.rfind("."));
+	name = fileName.substr(0, fileName.rfind("."));
 
 	std::vector<Vec3<float>> positions;
 	std::vector<Vec3<float>> normals;
 	std::vector<Vec2<float>> texCoords;
 	std::vector<unsigned short> indices;
 
-	if (!ImportModel(filePath, positions, normals, texCoords, indices))
+	if (!ImportModel(fileName, positions, normals, texCoords, indices))
 	{
-		Console::Log(LogType::Error) << "Could not load model: " << filePath << "\n";
+		Console::Log(LogType::Error) << "Could not load model: " << fileName << "\n";
 
 		return;
 	}
 
-	vao.AddBuffers(&positions[0], positions.size() * sizeof(positions[0]), 0, 3);
-	vao.AddBuffers(&normals[0], normals.size() * sizeof(normals[0]), 1, 3);
-	vao.AddBuffers(&texCoords[0], texCoords.size() * sizeof(texCoords[0]), 2, 2);
+	vao.AddBuffer(&positions[0], positions.size() * sizeof(positions[0]), 0, 3);
+	vao.AddBuffer(&normals[0], normals.size() * sizeof(normals[0]), 1, 3);
+	vao.AddBuffer(&texCoords[0], texCoords.size() * sizeof(texCoords[0]), 2, 2);
 	vao.AddIndices(&indices[0], indices.size());
 }
 
-Texture2D& Model3D::GetTexture()
+void Model3D::SetDiffuseTexture(const std::string &fileName)
 {
-	return *texture;
+	diffuseMap = new Texture2D(fileName);
 }
 
-float Model3D::GetSpecularity()
+void Model3D::Draw(Camera &camera, Mat4 &cameraMatrix)
 {
-	return specularity;
-}
+	vao.Bind();
+	shader->Bind();
 
-float Model3D::GetGlossiness()
-{
-	return glossiness;
-}
+	// Update shader matrices
+	shader->SetUniformMat4("transformMatrix", GetTransformMatrix());
+	shader->SetUniformMat4("viewMatrix", camera.viewMatrix);
+	shader->SetUniformMat4("mvpMatrix", GetTransformMatrix() * cameraMatrix);
 
-void Model3D::SetTexture(const std::string& filePath)
-{
-	texture = new Texture2D(filePath);
-}
+	// Update shader specular and gloss values
+	shader->SetUniformFloat("specularity", specularity);
+	shader->SetUniformFloat("glossiness", glossiness);
 
-void Model3D::SetSpecularity(float value)
-{
-	specularity = value;
-}
+	diffuseMap->Bind(0);
 
-void Model3D::SetGlossiness(float value)
-{
-	glossiness = value;
+	vao.DrawElements(renderMode);
 }
 
 bool Model3D::ImportModel(
@@ -162,21 +160,4 @@ void Model3D::GetVertex(std::ifstream &file, std::vector<Vec3<float>> &vertex, u
 		memcpy(&currentVertex.z, &test[0], sizeof(float));
 		vertex.push_back(currentVertex);
 	}
-}
-
-void Model3D::Draw(Camera &camera, Mat4 &vpMatrix)
-{
-	vao.Bind();
-
-	shader->Bind();
-	shader->SetUniformMat4("transformMatrix", GetModelMatrix());
-	shader->SetUniformMat4("viewMatrix", camera.viewMatrix);
-	shader->SetUniformMat4("mvpMatrix", GetModelMatrix() * vpMatrix);
-
-	// Update shader lighting components
-	shader->SetUniformFloat("specularity", specularity);
-	shader->SetUniformFloat("glossiness", glossiness);
-
-	texture->Bind(0);
-	vao.DrawElements(renderMode);
 }

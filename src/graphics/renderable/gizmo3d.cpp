@@ -1,11 +1,9 @@
-#include "pivot.h"
+#include "gizmo3d.h"
 
-// Pivot sub-class methods
-// Inherits from Primitive base class
-Pivot::Pivot() :
-	Primitive(GL_LINES, Vec4<float>(1, 1, 1, 1))
+Gizmo3D::Gizmo3D() :
+	Renderable(GL_LINES)
 {
-	name = "Pivot";
+	name = "Gizmo";
 
 	float positions[] = {
 		0.0f, 0.0f, 0.0f,			// Origin
@@ -27,15 +25,16 @@ Pivot::Pivot() :
 		0.0f, 0.0f, 1.0f, 1.0f		// Blue
 	};
 
-	vao.AddBuffers(positions, sizeof(positions), 0, 3);
-	vao.AddBuffers(colours, sizeof(colours), 3, 4);
+	vao.AddBuffer(positions, sizeof(positions), 0, 3);
+	vao.AddBuffer(colours, sizeof(colours), 3, 4);
 
 	shader = new Shader("in_colour");
 }
 
-void Pivot::Draw()
+void Gizmo3D::Draw(Camera &camera, Mat4 &cameraMatrix)
 {
 	vao.Bind();
 	shader->Bind();
+	shader->SetUniformMat4("mvpMatrix", GetTransformMatrix() * cameraMatrix);
 	vao.DrawArrays(renderMode);
 }
