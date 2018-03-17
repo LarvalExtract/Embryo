@@ -35,5 +35,7 @@ Pivot::Pivot() :
 
 void Pivot::Draw()
 {
-	Primitive::Draw();
+	vao.Bind();
+	shader->Bind();
+	vao.DrawArrays(renderMode);
 }

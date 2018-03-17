@@ -74,6 +74,12 @@ bool Game::Initialise()
 	pCamera->SetPosition(0.0f, 1.0f, -3.0f);
 	scene.AddCamera(pCamera);
 
+	Camera *pOrtho = new CamOrtho(-1.0f, 1.0f, -0.5625f, 0.5625f, -0.001f, 1000.0f);
+	pOrtho->SetPosition(0.0f, 1.0f, -3.0f);
+	scene.AddCamera(pOrtho);
+
+	scene.SetActiveCamera(0);
+
 	Shader *pShader = new Shader("basicPhong");
 	scene.AddShader(pShader);
 
@@ -145,6 +151,7 @@ bool Game::Initialise()
 	//scene->AddLight(redLight);
 
 	testQuad = new Shape2D::Quad(250.0f, 250.0f);
+
 	pCrosshair = new Sprite("sprites/crosshair.tga");
 	pCrosshair->CenterOrigin();
 	pCrosshair->SetPosition(window.GetWidth() / 2.0f, window.GetHeight() / 2.0f);
@@ -172,6 +179,14 @@ bool Game::Initialise()
 
 void Game::ProcessInput()
 {
+	// Press U to switch to ortho camera
+	if (window.OnKeyPress(GLFW_KEY_U))
+		scene.SetActiveCamera(1);
+
+	// Press P to switch to perspective camera
+	if (window.OnKeyPress(GLFW_KEY_P))
+		scene.SetActiveCamera(0);
+
 	MatricesFromInputs(window, scene.GetActiveCamera(), deltaTime);
 }
 
