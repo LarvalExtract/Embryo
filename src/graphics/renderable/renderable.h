@@ -6,7 +6,7 @@
 #include <graphics/shader.h>
 #include <graphics/vertexarray.h>
 #include <graphics/camera.h>
-#include <utilities/logger.h>
+#include <utilities/console.h>
 #include <string>
 
 // Base class for all renderable objects

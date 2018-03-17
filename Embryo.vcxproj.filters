@@ -81,13 +81,10 @@
     <ClCompile Include="src\graphics\lightomni.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\cameraperspective.cpp">
+    <ClCompile Include="src\graphics\campersp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\cameraortho.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utilities\logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\renderable\renderable.cpp">
@@ -112,6 +109,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\renderable\sprite3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\campersp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,13 +203,10 @@
     <ClInclude Include="src\graphics\lightomni.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\cameraperspective.h">
+    <ClInclude Include="src\graphics\campersp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\cameraortho.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utilities\logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\renderable.h">
@@ -227,16 +233,17 @@
     <ClInclude Include="src\graphics\renderable\sprite3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\utilities\console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\campersp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utilities\utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\shaders\test.frag" />
-    <None Include="resources\shaders\test.vert" />
-    <None Include="resources\shaders\sky.vert" />
-    <None Include="resources\shaders\sky.frag" />
-    <None Include="resources\shaders\basiccolour.vert" />
-    <None Include="resources\shaders\basiccolour.frag" />
-    <None Include="resources\shaders\in_colour.vert" />
-    <None Include="resources\shaders\in_colour.frag" />
     <None Include="res\shaders\basiccolour.frag" />
     <None Include="res\shaders\basiccolour.vert" />
     <None Include="res\shaders\in_colour.frag" />
@@ -249,12 +256,5 @@
     <None Include="res\shaders\basic2D.frag" />
     <None Include="res\shaders\basicSprite.vert" />
     <None Include="res\shaders\basicSprite.frag" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="resources\models\teapot.obj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="resources\bitmaps\sky\skybox_cloudy.tga" />
-    <Image Include="resources\bitmaps\sky\skybox_day.tga" />
   </ItemGroup>
 </Project>

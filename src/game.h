@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utilities\console.h"
+#include "utilities/console.h"
 
 #include "graphics/window.h"
 #include <graphics/renderable/box3d.h>

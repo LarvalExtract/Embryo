@@ -43,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -164,8 +164,9 @@
     <ClCompile Include="src\audio\audiobuffer.cpp" />
     <ClCompile Include="src\audio\audiosource.cpp" />
     <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\graphics\camera.cpp" />
     <ClCompile Include="src\graphics\cameraortho.cpp" />
-    <ClCompile Include="src\graphics\cameraperspective.cpp" />
+    <ClCompile Include="src\graphics\campersp.cpp" />
     <ClCompile Include="src\graphics\indexbuffer.cpp" />
     <ClCompile Include="src\graphics\lightomni.cpp" />
     <ClCompile Include="src\graphics\lightsource.cpp" />
@@ -188,12 +189,13 @@
     <ClCompile Include="src\maths\mat4.cpp" />
     <ClCompile Include="src\maths\maths.cpp" />
     <ClCompile Include="src\screen.cpp" />
+    <ClCompile Include="src\utilities\console.cpp" />
     <ClCompile Include="src\utilities\controls.cpp" />
     <ClCompile Include="src\utilities\file.cpp" />
     <ClCompile Include="src\utilities\import_audio_wav.cpp" />
     <ClCompile Include="src\utilities\import_bitmap.cpp" />
-    <ClCompile Include="src\utilities\logger.cpp" />
     <ClCompile Include="src\utilities\timer.cpp" />
+    <ClCompile Include="src\utilities\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\audio\audiobuffer.h" />
@@ -201,7 +203,7 @@
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\cameraortho.h" />
-    <ClInclude Include="src\graphics\cameraperspective.h" />
+    <ClInclude Include="src\graphics\campersp.h" />
     <ClInclude Include="src\graphics\graphics.h" />
     <ClInclude Include="src\graphics\indexbuffer.h" />
     <ClInclude Include="src\graphics\lightomni.h" />
@@ -227,12 +229,13 @@
     <ClInclude Include="src\maths\vec3.h" />
     <ClInclude Include="src\maths\vec4.h" />
     <ClInclude Include="src\screen.h" />
+    <ClInclude Include="src\utilities\console.h" />
     <ClInclude Include="src\utilities\controls.h" />
     <ClInclude Include="src\utilities\file.h" />
     <ClInclude Include="src\utilities\import_audio_wav.h" />
     <ClInclude Include="src\utilities\import_bitmap.h" />
-    <ClInclude Include="src\utilities\logger.h" />
     <ClInclude Include="src\utilities\timer.h" />
+    <ClInclude Include="src\utilities\utility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic2D.frag" />
