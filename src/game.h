@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utilities\logger.h"
+#include "utilities\console.h"
 
 #include "graphics/window.h"
 #include <graphics/renderable/box3d.h>
@@ -46,4 +46,5 @@ private:
 	float counter;
 
 	bool bInitialised;
+
 };

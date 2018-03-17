@@ -1,19 +1,23 @@
-#include "cameraperspective.h"
+#include "campersp.h"
 
-CamPerspective::CamPerspective(float fov, float aspectRatio, float zNear, float zFar) :
-	Camera(), fov(fov), aspectRatio(aspectRatio), zNear(zNear), zFar(zFar)
+CamPersp::CamPersp(float fov, float aspectRatio, float zNear, float zFar) :
+	fov(fov), aspectRatio(aspectRatio)
 {
 	projectionMatrix.Perspective(fov, aspectRatio, zNear, zFar);
 	viewMatrix.LookAt(position, position + forwardVector, upwardVector);
 }
 
-void CamPerspective::SetFOV(float value)
+CamPersp::~CamPersp()
+{
+}
+
+void CamPersp::SetFOV(float value)
 {
 	fov = value;
 	projectionMatrix.Perspective(fov, aspectRatio, zNear, zFar);
 }
 
-void CamPerspective::SetAspectRatio(float value)
+void CamPersp::SetAspectRatio(float value)
 {
 	aspectRatio = value;
 	projectionMatrix.Perspective(fov, aspectRatio, zNear, zFar);

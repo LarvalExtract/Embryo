@@ -1,6 +1,6 @@
 #include "import_bitmap.h"
 
-#include "logger.h"
+#include "console.h"
 
 #include <iostream>
 
@@ -16,7 +16,7 @@ void ImportBitmap(
 
 	if (!file.is_open())
 	{
-		Logger::Log(LogType::Error) << "Couldn't open " << filePath << "\n";
+		Console::Log(LogType::Error) << "Couldn't open " << filePath << "\n";
 		return;
 	}
 	

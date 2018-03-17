@@ -2,6 +2,8 @@
 #include <maths/maths.h>
 #include <math.h>
 
+#include <utilities/console.h>
+
 double xpos, ypos;
 
 Vec2<float> lookAngle;
@@ -63,7 +65,9 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 
 		//// Keyboard controls ////		
 		// Increases camera movement speed if shift is held
-		(window.IsKeyPressed(GLFW_KEY_LEFT_SHIFT)) ? movementSpeed = 10.0f : movementSpeed = 4.0f;
+		movementSpeed = std::stof(Console::GetVar("CamSpeed"));
+
+		(window.IsKeyPressed(GLFW_KEY_LEFT_SHIFT)) ? movementSpeed *= 2.0f : movementSpeed;
 
 		// Movement controls
 		if (window.IsKeyPressed(GLFW_KEY_W))

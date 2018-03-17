@@ -2,7 +2,7 @@
 #include <iostream>
 #include <utilities/file.h>
 
-#include <utilities/logger.h>
+#include <utilities/console.h>
 
 static GLuint CreateShader(const std::string& shaderSource, GLenum shaderType);
 static void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage);
@@ -142,7 +142,7 @@ static GLuint CreateShader(const std::string &source, GLenum shaderType)
 
 	// TO-DO: Handle error
 	if (shader == 0)
-		Logger::Log(LogType::Error) << "Couldn't create shader!\n";
+		Console::Log(LogType::Error) << "Couldn't create shader!\n";
 
 	const GLchar* shaderSource = source.c_str();
 	const GLint shaderSourceLength = source.length();
@@ -174,6 +174,6 @@ static void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const s
 		else
 			glGetShaderInfoLog(shader, sizeof(error), NULL, error);
 
-		Logger::Log(LogType::Error) << errorMessage << ": " << error << "\n";
+		Console::Log(LogType::Error) << errorMessage << ": " << error << "\n";
 	}
 }
