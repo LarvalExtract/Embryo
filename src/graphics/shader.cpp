@@ -1,64 +1,54 @@
 #include "shader.h"
 #include <iostream>
 #include <utilities/file.h>
-
 #include <utilities/console.h>
 
 static GLuint CreateShader(const std::string& shaderSource, GLenum shaderType);
 static void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage);
 
-Shader::Shader()
-{
-}
-
 Shader::Shader(const std::string& fileName) :
 	name(fileName)
 {
-	Init(fileName);
+	hShaderProgram = glCreateProgram();
+
+	// Get vertex and fragment shader source code
+	hVertexShader = CreateShader(File::Load("res/shaders/" + fileName + ".vert"), GL_VERTEX_SHADER);
+	hFragmentShader = CreateShader(File::Load("res/shaders/" + fileName + ".frag"), GL_FRAGMENT_SHADER);
+
+	glAttachShader(hShaderProgram, hVertexShader);
+	glAttachShader(hShaderProgram, hFragmentShader);
+
+	glBindAttribLocation(hShaderProgram, 0, "in_position");	// Vertex position attribute
+	glBindAttribLocation(hShaderProgram, 1, "in_normal");		// Vertex normal attribute
+	glBindAttribLocation(hShaderProgram, 2, "in_texCoord");	// Vertex UV co-ordinate attribute
+	glBindAttribLocation(hShaderProgram, 3, "in_colour");		// Vertex colour attribute
+
+	glLinkProgram(hShaderProgram);
+	CheckShaderError(hShaderProgram, GL_LINK_STATUS, true, "Shader program linking failed: ");
+
+	glValidateProgram(hShaderProgram);
+	CheckShaderError(hShaderProgram, GL_VALIDATE_STATUS, true, "Invalid shader program: ");
 }
 
 Shader::~Shader()
 {
-	glDetachShader(glsl_program, vertexShader);
-	glDeleteShader(vertexShader);
+	glDetachShader(hShaderProgram, hVertexShader);
+	glDeleteShader(hVertexShader);
 
-	glDetachShader(glsl_program, fragmentShader);
-	glDeleteShader(fragmentShader);
+	glDetachShader(hShaderProgram, hFragmentShader);
+	glDeleteShader(hFragmentShader);
 	
-	glDeleteProgram(glsl_program);
-}
-
-void Shader::Init(const std::string& shaderPath)
-{
-	glsl_program = glCreateProgram();
-
-	// Get vertex and fragment shader source code
-	vertexShader   = CreateShader(File::Load("res/shaders/" + shaderPath + ".vert"), GL_VERTEX_SHADER);
-	fragmentShader = CreateShader(File::Load("res/shaders/" + shaderPath + ".frag"), GL_FRAGMENT_SHADER);
-
-	glAttachShader(glsl_program, vertexShader);
-	glAttachShader(glsl_program, fragmentShader);
-	
-	glBindAttribLocation(glsl_program, 0, "in_position");	// Vertex position attribute
-	glBindAttribLocation(glsl_program, 1, "in_normal");		// Vertex normal attribute
-	glBindAttribLocation(glsl_program, 2, "in_texCoord");	// Vertex UV co-ordinate attribute
-	glBindAttribLocation(glsl_program, 3, "in_colour");		// Vertex colour attribute
-
-	glLinkProgram(glsl_program);
-	CheckShaderError(glsl_program, GL_LINK_STATUS, true, "Shader program linking failed: ");
-
-	glValidateProgram(glsl_program);
-	CheckShaderError(glsl_program, GL_VALIDATE_STATUS, true, "Invalid shader program: ");
+	glDeleteProgram(hShaderProgram);
 }
 
 void Shader::Bind()
 {
-	glUseProgram(glsl_program);
+	glUseProgram(hShaderProgram);
 }
 
 unsigned int Shader::GetUniformLocation(const std::string& name)
 {
-	return glGetUniformLocation(glsl_program, name.c_str());
+	return glGetUniformLocation(hShaderProgram, name.c_str());
 }
 
 std::string Shader::GetName()
@@ -66,24 +56,30 @@ std::string Shader::GetName()
 	return name;
 }
 
+int Shader::GetUniformInt(const std::string &name)
+{
+	int uniform;
+	glGetUniformiv(hShaderProgram, GetUniformLocation(name), &uniform);
+	return uniform;
+}
+
+unsigned int Shader::GetUniformInt_u(const std::string &name)
+{
+	unsigned int uniform;
+	glGetUniformuiv(hShaderProgram, GetUniformLocation(name), &uniform);
+	return uniform;
+}
+
+float Shader::GetUniformFloat(const std::string &name)
+{
+	float uniform;
+	glGetUniformfv(hShaderProgram, GetUniformLocation(name), &uniform);
+	return uniform;
+}
+
 void Shader::SetUniformInt(const std::string& name, int value)
 {
 	glUniform1i(GetUniformLocation(name), value);
-}
-
-void Shader::SetUniformVec2i(const std::string &name, int x, int y)
-{
-	glUniform2i(GetUniformLocation(name), x, y);
-}
-
-void Shader::SetUniformVec3i(const std::string &name, int x, int y, int z)
-{
-	glUniform3i(GetUniformLocation(name), x, y, z);
-}
-
-void Shader::SetUniformVec4i(const std::string &name, int x, int y, int z, int w)
-{
-	glUniform4i(GetUniformLocation(name), x, y, z, w);
 }
 
 void Shader::SetUniformInt_u(const std::string &name, unsigned int value)
@@ -91,24 +87,39 @@ void Shader::SetUniformInt_u(const std::string &name, unsigned int value)
 	glUniform1ui(GetUniformLocation(name), value);
 }
 
-void Shader::SetUniformVec2i_u(const std::string &name, unsigned int x, unsigned int y)
-{
-	glUniform2ui(GetUniformLocation(name), x, y);		 
-}														 
-														 
-void Shader::SetUniformVec3i_u(const std::string &name, unsigned int x, unsigned int y, unsigned int z)
-{		
-	glUniform3ui(GetUniformLocation(name), x, y, z);	
-}														
-														
-void Shader::SetUniformVec4i_u(const std::string &name, unsigned int x, unsigned int y, unsigned int z, unsigned int w)
-{
-	glUniform4ui(GetUniformLocation(name), x, y, z, w);
-}
-
 void Shader::SetUniformFloat(const std::string &name, float value)
 {
 	glUniform1f(GetUniformLocation(name), value);
+}
+
+void Shader::SetUniformVec2i(const std::string &name, const Vec2<int> &vector)
+{
+	glUniform2i(GetUniformLocation(name), vector.x, vector.y);
+}
+
+void Shader::SetUniformVec3i(const std::string &name, const Vec3<int> &vector)
+{
+	glUniform3i(GetUniformLocation(name), vector.x, vector.y, vector.z);
+}
+
+void Shader::SetUniformVec4i(const std::string &name, const Vec4<int> &vector)
+{
+	glUniform4i(GetUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
+}
+
+void Shader::SetUniformVec2ui(const std::string &name, const Vec2<unsigned int> &vector)
+{
+	glUniform2ui(GetUniformLocation(name), vector.x, vector.y);
+}
+
+void Shader::SetUniformVec3ui(const std::string &name, const Vec3<unsigned int> &vector)
+{
+	glUniform3ui(GetUniformLocation(name), vector.x, vector.y, vector.z);
+}
+
+void Shader::SetUniformVec4ui(const std::string &name, const Vec4<unsigned int> &vector)
+{
+	glUniform4ui(GetUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
 }
 
 void Shader::SetUniformVec2f(const std::string &name, const Vec2<float> &vector)

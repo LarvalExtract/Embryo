@@ -184,14 +184,6 @@ bool Game::Initialise()
 
 void Game::ProcessInput()
 {
-	// Press U to switch to ortho camera
-	if (window.OnKeyPress(GLFW_KEY_U))
-		scene.SetActiveCamera(1);
-
-	// Press P to switch to perspective camera
-	if (window.OnKeyPress(GLFW_KEY_P))
-		scene.SetActiveCamera(0);
-
 	MatricesFromInputs(window, scene.GetActiveCamera(), deltaTime);
 }
 
