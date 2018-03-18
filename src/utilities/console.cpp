@@ -81,6 +81,11 @@ Console& Console::Log(LogType type)
 
 bool Console::AddCommand(std::string cmdName, FuncPtrS funcPtr)
 {
+	return AddCommand(cmdName, funcPtr, "");
+}
+
+bool Console::AddCommand(std::string cmdName, FuncPtrS funcPtr, std::string desc)
+{
 	// Convert command name to lowercase
 	std::transform(cmdName.begin(), cmdName.end(), cmdName.begin(), tolower);
 
@@ -89,6 +94,7 @@ bool Console::AddCommand(std::string cmdName, FuncPtrS funcPtr)
 	conCmd.first = cmdName;
 	conCmd.second.delegate = funcPtr;
 	conCmd.second.argument = "";
+	conCmd.second.desc = desc;
 
 	std::pair<ConCmds::const_iterator, bool> result = conCmds.insert(conCmd);
 
@@ -133,6 +139,14 @@ bool Console::AddVar(std::string varName, std::string value)
 	return result.second;
 }
 
+bool Console::AddVar(std::string varName, int value)
+{
+	if (value)
+		return AddVar(varName, static_cast<std::string>("1"));
+	else
+		return AddVar(varName, static_cast<std::string>("0"));
+}
+
 ConVar::first_type Console::GetVar(std::string varName)
 {
 	// Convert variable name to lowercase
@@ -141,6 +155,29 @@ ConVar::first_type Console::GetVar(std::string varName)
 	ConVars::const_iterator it = conVars.find(varName);
 
 	return it != conVars.end() ? it->second.value : "";
+}
+
+bool Console::GetVarB(std::string varName)
+{
+	// Convert variable name to lowercase
+	std::transform(varName.begin(), varName.end(), varName.begin(), tolower);
+
+	ConVars::const_iterator it = conVars.find(varName);
+
+	if (it != conVars.end())
+	{
+		if (it->second.value == "true")
+			return true;
+
+		std::stringstream ss(it->second.value);
+		float f;
+		ss >> f;
+
+		if (f == 1)
+			return true;
+	}
+
+	return false;
 }
 
 float Console::GetVarF(std::string varName)
@@ -301,6 +338,27 @@ void Console::CmdTest(std::string argument)
 		Log(LogType::Error) << "You didn't enter an argument for the command test function!\n";
 	else
 		Log() << ColourCode::Green << argument << " (" << argument.length() << ")\n";
+}
+
+void Console::CmdListC(std::string argument)
+{
+	Log() << "Available commands: \n";
+
+	for (ConCmds::const_iterator it = conCmds.begin(); it != conCmds.end(); it++)
+	{
+		Log(LogType::None) << ColourCode::Red << it->first << ColourCode::White << ": " << it->second.desc << "\n";
+	}
+}
+
+void Console::CmdListV(std::string argument)
+{
+	Log() << "Available variables: \n";
+
+	for (ConVars::const_iterator it = conVars.begin(); it != conVars.end(); it++)
+	{
+		Log(LogType::None) << ColourCode::Magenta << it->first << ColourCode::White << " = " << ColourCode::Magenta << it->second.value
+			<< ColourCode::White << " (default: " << it->second.defaultValue << ")\n";
+	}
 }
 
 ColourCode operator+(ColourCode lhs, const ColourCode &rhs)

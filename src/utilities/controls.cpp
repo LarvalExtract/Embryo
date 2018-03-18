@@ -1,23 +1,26 @@
 #include "controls.h"
+
 #include <maths/maths.h>
 #include <math.h>
 
 #include <utilities/console.h>
 
-double xpos, ypos;
+Controls::Controls()
+	: bEnableCamera(false)
+{
+}
 
-Vec2<float> lookAngle;
-Vec2<float> screenCentre;
+Controls::~Controls()
+{
+}
 
-float sensitivity = 0.002f;
-float movementSpeed;
+void Controls::MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
+{
+	// TO-DO: Get the value from a console variable
+	float sensitivity = 0.002f;
 
-bool bEnableCamera = false;
-
-void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
-{	
-	screenCentre.x = window.GetWidth() / 2;
-	screenCentre.y = window.GetHeight() / 2;
+	screenCentre.x = 0;
+	screenCentre.y = 0;
 
 	// Toggle camera mode
 	if (window.OnKeyPress(GLFW_KEY_Z))
@@ -25,36 +28,43 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 		bEnableCamera = !bEnableCamera;
 
 		if (bEnableCamera == true)
-			glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
+		{
+			glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			window.SetCursorPosition(screenCentre + Vec2<double>(pos.x, pos.y));
+		}
 		else
+		{
 			glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
-		window.SetCursorPosition(screenCentre);
+			//window.SetCursorPosition(screenCentre);
+		}
 	}
 
 	// Process camera inputs only if camera input is enabled
 	if (bEnableCamera)
 	{
 		//// Mouse controls ////
-		xpos = window.GetCursorPosition().x;
-		ypos = window.GetCursorPosition().y;
+		pos.x = window.GetCursorPosition().x;
 
-		window.SetCursorPosition(screenCentre);
+		// Clamp the cursor's Y position to the window draw region
+		if (window.GetCursorPosition().y > window.GetHeight())
+			window.SetCursorPosition(Vec2<double>(window.GetCursorPosition().x, window.GetHeight()));
+		else if (window.GetCursorPosition().y < -window.GetHeight())
+			window.SetCursorPosition(Vec2<double>(window.GetCursorPosition().x, -window.GetHeight()));
 
-		lookAngle.x += sensitivity * float(screenCentre.x - xpos);
-		lookAngle.y += sensitivity * float(screenCentre.y - ypos);
+		pos.y = Maths::Clamp(window.GetCursorPosition().y, -window.GetHeight(), window.GetHeight());
 
-		lookAngle.y = Maths::Clamp(lookAngle.y, -1.5f, 1.5f);		// Prevents camera from inverting
+		// Set look angle
+		lookAngle.x = sensitivity * -pos.x;
+		lookAngle.y = sensitivity * -pos.y;
 
 		camera.forwardVector.x = cos(lookAngle.y) * sin(lookAngle.x);
 		camera.forwardVector.y = sin(lookAngle.y);
 		camera.forwardVector.z = cos(lookAngle.y) * cos(lookAngle.x);
 
 		Vec3<float> rightVector(
-			sin(lookAngle.x - (3.14159f / 2.0f)),
+			sin(lookAngle.x - (Maths::Pi * 0.5f)),
 			0,
-			cos(lookAngle.x - (3.14159f / 2.0f)));
+			cos(lookAngle.x - (Maths::Pi * 0.5f)));
 
 		Vec3<float> upVector(Maths::Cross(rightVector, camera.forwardVector));
 
@@ -62,6 +72,8 @@ void MatricesFromInputs(Window &window, Camera &camera, double deltaTime)
 		camera.upwardVector.y = upVector.y;
 		camera.upwardVector.z = upVector.z;
 
+		if (Console::GetVarB("bPrintMouse"))
+			Console::Log() << "Mouse position: X " << pos.x << " | Y " << pos.y << "\n";
 
 		//// Keyboard controls ////		
 		// Increases camera movement speed if shift is held

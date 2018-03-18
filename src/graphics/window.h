@@ -28,8 +28,8 @@ public:
 	// Mouse input
 	bool IsButtonPressed(unsigned int button);
 	inline void SetButtonState(unsigned int button, bool state) { m_Buttons[button] = state; };
-	Vec2<float> GetCursorPosition();
-	inline void SetCursorPosition(const Vec2<float> &pos) { glfwSetCursorPos(m_Window, pos.x, pos.y); }
+	Vec2<double> GetCursorPosition();
+	inline void SetCursorPosition(const Vec2<double> &pos) { glfwSetCursorPos(m_Window, pos.x, pos.y); }
 
 	void SetColour(float r, float g, float b, float a);
 

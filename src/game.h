@@ -12,6 +12,8 @@
 #include <graphics/renderable/sprite3d.h>
 #include "graphics/scene.h"
 
+#include "utilities/controls.h"
+
 #include <utilities/timer.h>
 
 // Encapsulates the entire game
@@ -37,6 +39,8 @@ private:
 	Window window;
 	Scene scene;
 	Scene hud;
+
+	Controls controls;
 
 	// Delta time
 	double lastTime;

@@ -56,6 +56,7 @@ struct Command
 {
 	FuncPtrS delegate;
 	std::string argument;
+	std::string desc;
 };
 
 typedef std::pair<std::string, Command> ConCmd;
@@ -86,19 +87,35 @@ public:
 	static Console& Log(LogType type = LogType::Log);
 
 	static bool AddCommand(std::string cmdName, FuncPtrS funcPtr);
+	static bool AddCommand(std::string cmdName, FuncPtrS funcPtr, std::string desc);
+
 	static void CleanArgument(std::string &argument);
 
+	// Add console variable
 	static bool AddVar(std::string varName);
+
+	// Add console variable with a string value
 	static bool AddVar(std::string varName, std::string value);
+
+	// Add console variable with a Boolean value (int type to prevent bool overriding std::string)
+	static bool AddVar(std::string varName, int value);
 	
 	static ConVar::first_type GetVar(std::string varName);
+	static bool GetVarB(std::string varName);
 	static float GetVarF(std::string varName);
 
 	static bool SetVar(std::string varName, std::string value);
 
 	static void ConsoleLoop();
 
+	// Test console command
 	static void CmdTest(std::string argument);
+
+	// Print available commands
+	static void CmdListC(std::string argument);
+
+	// Print available variables
+	static void CmdListV(std::string argument);
 
 	static char* const strWarning;
 	static char* const strError;
