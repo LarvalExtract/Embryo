@@ -13,10 +13,7 @@ public:
 
 	void MatricesFromInputs(Window &window, Camera &camera, double deltaTime);
 private:
-	Vec2<float> pos;
-	Vec2<float> lookAngle;
-
-	Vec2<double> screenCentre;
+	Vec2<double> lookAngle;
 
 	float sensitivity;
 	float movementSpeed;
