@@ -19,9 +19,6 @@ void Controls::MatricesFromInputs(Window &window, Camera &camera, double deltaTi
 	// TO-DO: Get the value from a console variable
 	float sensitivity = 0.002f;
 
-	screenCentre.x = 0;
-	screenCentre.y = 0;
-
 	// Toggle camera mode
 	if (window.OnKeyPress(GLFW_KEY_Z))
 	{
@@ -30,12 +27,11 @@ void Controls::MatricesFromInputs(Window &window, Camera &camera, double deltaTi
 		if (bEnableCamera == true)
 		{
 			glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-			window.SetCursorPosition(screenCentre + Vec2<double>(pos.x, pos.y));
+			window.ResetCursorPosition();
 		}
 		else
 		{
 			glfwSetInputMode(window.GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			//window.SetCursorPosition(screenCentre);
 		}
 	}
 
@@ -43,28 +39,20 @@ void Controls::MatricesFromInputs(Window &window, Camera &camera, double deltaTi
 	if (bEnableCamera)
 	{
 		//// Mouse controls ////
-		pos.x = window.GetCursorPosition().x;
-
-		// Clamp the cursor's Y position to the window draw region
-		if (window.GetCursorPosition().y > window.GetHeight())
-			window.SetCursorPosition(Vec2<double>(window.GetCursorPosition().x, window.GetHeight()));
-		else if (window.GetCursorPosition().y < -window.GetHeight())
-			window.SetCursorPosition(Vec2<double>(window.GetCursorPosition().x, -window.GetHeight()));
-
-		pos.y = Maths::Clamp(window.GetCursorPosition().y, -window.GetHeight(), window.GetHeight());
-
 		// Set look angle
-		lookAngle.x = sensitivity * -pos.x;
-		lookAngle.y = sensitivity * -pos.y;
+		lookAngle.x += sensitivity * -window.GetCursorPosition().x;
+		lookAngle.y += sensitivity * -window.GetCursorPosition().y;
+		lookAngle.x = fmod(lookAngle.x, Maths::DoublePi);
+		lookAngle.y = Maths::Clamp(lookAngle.y, -(Maths::HalfPi), Maths::HalfPi);
 
 		camera.forwardVector.x = cos(lookAngle.y) * sin(lookAngle.x);
 		camera.forwardVector.y = sin(lookAngle.y);
 		camera.forwardVector.z = cos(lookAngle.y) * cos(lookAngle.x);
 
 		Vec3<float> rightVector(
-			sin(lookAngle.x - (Maths::Pi * 0.5f)),
+			sin(lookAngle.x - (Maths::HalfPi)),
 			0,
-			cos(lookAngle.x - (Maths::Pi * 0.5f)));
+			cos(lookAngle.x - (Maths::HalfPi)));
 
 		Vec3<float> upVector(Maths::Cross(rightVector, camera.forwardVector));
 
@@ -73,7 +61,7 @@ void Controls::MatricesFromInputs(Window &window, Camera &camera, double deltaTi
 		camera.upwardVector.z = upVector.z;
 
 		if (Console::GetVarB("bPrintMouse"))
-			Console::Log() << "Mouse position: X " << pos.x << " | Y " << pos.y << "\n";
+			Console::Log() << "Mouse position: X " << lookAngle.x << " | Y " << lookAngle.y << "\n";
 
 		//// Keyboard controls ////		
 		// Increases camera movement speed if shift is held
@@ -99,6 +87,8 @@ void Controls::MatricesFromInputs(Window &window, Camera &camera, double deltaTi
 
 		if (window.IsKeyPressed(GLFW_KEY_LEFT_CONTROL))
 			camera.position.y -= movementSpeed * static_cast<float>(deltaTime);
+
+		window.ResetCursorPosition();
 	}
 
 	// Returns camera to home position
