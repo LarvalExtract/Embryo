@@ -43,16 +43,16 @@ void Controls::MatricesFromInputs(Window &window, Camera &camera, double deltaTi
 		lookAngle.x += sensitivity * -window.GetCursorPosition().x;
 		lookAngle.y += sensitivity * -window.GetCursorPosition().y;
 		lookAngle.x = fmod(lookAngle.x, Maths::DoublePi);
-		lookAngle.y = Maths::Clamp(lookAngle.y, -(Maths::Pi / 2), Maths::Pi / 2);
+		lookAngle.y = Maths::Clamp(lookAngle.y, -(Maths::HalfPi), Maths::HalfPi);
 
 		camera.forwardVector.x = cos(lookAngle.y) * sin(lookAngle.x);
 		camera.forwardVector.y = sin(lookAngle.y);
 		camera.forwardVector.z = cos(lookAngle.y) * cos(lookAngle.x);
 
 		Vec3<float> rightVector(
-			sin(lookAngle.x - (Maths::Pi * 0.5f)),
+			sin(lookAngle.x - (Maths::HalfPi)),
 			0,
-			cos(lookAngle.x - (Maths::Pi * 0.5f)));
+			cos(lookAngle.x - (Maths::HalfPi)));
 
 		Vec3<float> upVector(Maths::Cross(rightVector, camera.forwardVector));
 
