@@ -27,14 +27,33 @@ void VertexArray::Unbind()
 	glBindVertexArray(0);
 }
 
-void VertexArray::AddBuffer(const void* data, unsigned int size, unsigned int attribIndex, unsigned int attribCount)
+void VertexArray::AddBuffer(const float *data, unsigned int size, unsigned int attribIndex, unsigned int attribCount)
 {
 	vertexBuffers.push_back(new VertexBuffer(data, size));
 	glVertexAttribPointer(attribIndex, attribCount, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(attribIndex);
 }
 
-void VertexArray::AddIndices(const void* data, unsigned int count)
+void VertexArray::AddBuffer(const Vec2<float> *data, unsigned int size, unsigned int attribIndex, unsigned int attribCount)
+{
+	vertexBuffers.push_back(new VertexBuffer(data, size));
+	glVertexAttribPointer(attribIndex, attribCount, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(attribIndex);
+}
+
+void VertexArray::AddBuffer(const Vec3<float> *data, unsigned int size, unsigned int attribIndex, unsigned int attribCount)
+{
+	vertexBuffers.push_back(new VertexBuffer(data, size));
+	glVertexAttribPointer(attribIndex, attribCount, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(attribIndex);
+}
+
+void VertexArray::AddIndices(const unsigned short* data, unsigned int count)
+{
+	indexBuffers.push_back(new IndexBuffer(data, count));
+}
+
+void VertexArray::AddIndices(const unsigned int* data, unsigned int count)
 {
 	indexBuffers.push_back(new IndexBuffer(data, count));
 }

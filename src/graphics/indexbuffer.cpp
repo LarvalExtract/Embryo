@@ -1,11 +1,29 @@
 #include "IndexBuffer.h"
 
-IndexBuffer::IndexBuffer(const void* data, unsigned int count)
+IndexBuffer::IndexBuffer(const unsigned short* data, unsigned int count)
 {
+	// The number of elements in the index array is required by glDrawElements
+	// count is already the number of elements, so we can simply assign count to m_Count
 	m_Count = count;
+
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(count), data, GL_STATIC_DRAW);
+
+	// Creating an OpenGL buffer requires the size of the array, so multiply the count by the size of an element inside the count
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned short), data, GL_STATIC_DRAW);
+}
+
+IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count)
+{
+	// The number of elements in the index array is required by glDrawElements
+	// count is already the number of elements, so we can simply assign count to m_Count
+	m_Count = count;
+
+	glGenBuffers(1, &ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+	// Creating an OpenGL buffer requires the size of the array, so multiply the count by the size of an element inside the count
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW);
 }
 
 IndexBuffer::~IndexBuffer()

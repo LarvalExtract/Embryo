@@ -5,6 +5,7 @@
 
 #include <vector>
 
+// Create an OpenGL vertex array
 class VertexArray
 {
 public:
@@ -13,8 +14,11 @@ public:
 
 	void Bind();
 	void Unbind();
-	void AddBuffer(const void *data, unsigned int size, unsigned int attribIndex, unsigned int attribCount);
-	void AddIndices(const void *data, unsigned int count);
+	void AddBuffer(const float *data, unsigned int size, unsigned int attribIndex, unsigned int attribCount);
+	void AddBuffer(const Vec2<float> *data, unsigned int size, unsigned int attribIndex, unsigned int attribCount);
+	void AddBuffer(const Vec3<float> *data, unsigned int size, unsigned int attribIndex, unsigned int attribCount);
+	void AddIndices(const unsigned short *data, unsigned int count);
+	void AddIndices(const unsigned int *data, unsigned int count);		// Overloaded so that index arrays can be shorts or ints
 	void DrawArrays(unsigned int renderMode);
 	void DrawElements(unsigned int renderMode);
 

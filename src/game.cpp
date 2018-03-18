@@ -1,7 +1,5 @@
 #include "game.h"
 
-#include "utilities/controls.h"
-
 #include <string>
 #include <iostream>
 #include <thread>
@@ -59,8 +57,11 @@ bool Game::Initialise()
 		return false;
 
 	// TO-DO: DELETE ME
-	Console::AddCommand("cmdtest", Console::CmdTest);
+	Console::AddCommand("cmdtest", Console::CmdTest, "Test command");
+	Console::AddCommand("listC", Console::CmdListC, "List all commands");
+	Console::AddCommand("listV", Console::CmdListV, "List all variables");
 	Console::AddVar("timescale", "1.0");
+	Console::AddVar("bPrintMouse", false);
 
 	Timer initTimer;
 
@@ -184,7 +185,7 @@ bool Game::Initialise()
 
 void Game::ProcessInput()
 {
-	MatricesFromInputs(window, scene.GetActiveCamera(), deltaTime);
+	controls.MatricesFromInputs(window, scene.GetActiveCamera(), deltaTime);
 }
 
 void Game::Update()

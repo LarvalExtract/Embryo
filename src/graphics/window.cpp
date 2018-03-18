@@ -170,8 +170,8 @@ void Window::mouse_cursor_position_callback(GLFWwindow* window, double x, double
 	win->ypos = y;
 }
 
-Vec2<float> Window::GetCursorPosition()
+Vec2<double> Window::GetCursorPosition()
 { 
 	glfwGetCursorPos(m_Window, &xpos, &ypos); 
-	return Vec2<float>(xpos, ypos);
+	return Vec2<double>(xpos, ypos);
 }

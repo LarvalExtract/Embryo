@@ -2,7 +2,7 @@
 
 namespace Maths
 {
-	const float Pi = 3.14159f;
+	const float Pi = 3.1415927f;
 
 	// Converts degrees to radians
 	float Radians(float degrees)
