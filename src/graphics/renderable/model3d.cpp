@@ -36,12 +36,16 @@ static Vec2<float> GetVec2FromOBJLine(std::string &line);
 // Return an ObjFace from a line in an OBJ file
 static ObjFace GetFaceFromOBJLine(std::string &line, unsigned int numUVs, unsigned int numNormals);
 
+typedef std::vector< std::vector<Vec3<float>>* > vec3Lists;
+typedef std::vector< std::vector<Vec2<float>>* > vec2Lists;
+typedef std::vector< std::vector<ObjFace>* >	 objFaceLists;
+
 // Generate un-indexed position, normal and texCoord arrays from the indices provided by OBJ file
 // This is necessary because OBJ file indices cannot be used by OpenGL, thus new vertex arrays need to be created to later produce OpenGL friendly indices
 void GenerateVertexArrays(
-	std::vector<std::vector<Vec3<float>>*> &out_positions,
-	std::vector<std::vector<Vec3<float>>*> &out_normals,
-	std::vector<std::vector<Vec2<float>>*> &out_texCoords,
+	vec3Lists &out_positions,
+	vec3Lists &out_normals,
+	vec2Lists &out_texCoords,
 	const std::vector<Vec3<float>> &in_positions,
 	const std::vector<Vec3<float>> &in_normals,
 	const std::vector<Vec2<float>> &in_texCoords,
@@ -68,12 +72,12 @@ bool GetSimilarVertexIndex(
 
 // Iterate through an array of vertices to find similar vertices and generate an list of indices
 void GenerateIndices(
-	std::vector<std::vector<Vec3<float>>*> &in_positions,
-	std::vector<std::vector<Vec3<float>>*> &in_normals,
-	std::vector<std::vector<Vec2<float>>*> &in_texCoords,
-	std::vector<std::vector<Vec3<float>>*> &out_positions,
-	std::vector<std::vector<Vec3<float>>*> &out_normals,
-	std::vector<std::vector<Vec2<float>>*> &out_texCoords,
+	vec3Lists &in_positions,
+	vec3Lists &in_normals,
+	vec2Lists &in_texCoords,
+	vec3Lists &out_positions,
+	vec3Lists &out_normals,
+	vec2Lists &out_texCoords,
 	std::vector<std::vector<unsigned int>> &out_indices);
 
 Model3D::Model3D(const std::string &fileName) :
@@ -201,7 +205,7 @@ bool Model3D::ImportOBJ(
 	std::vector<std::vector<unsigned int>> &out_indices
 )
 {
-	std::ifstream objFile("res/models/shapes_seperated.obj");
+	std::ifstream objFile("res/models/two_boxes.obj");
 	//name = filePath.substr(filePath.rfind("/") + 1, filePath.length());
 
 	if (!objFile.is_open())
@@ -210,19 +214,25 @@ bool Model3D::ImportOBJ(
 		return false;
 	}
 
+	// Stored all vertex data in to unseperated vectors
+	// This ignores the concept of individual objects in OBJ files and treats all the data in the OBJ file as one object
 	std::vector<Vec3<float>>	temp_positions;
 	std::vector<Vec2<float>>	temp_texCoords;
 	std::vector<Vec3<float>>	temp_normals;
-	std::vector<std::vector<ObjFace>*> indexLists;
 
+	// indexLists is a vector of vectors. This is to extract faces from the OBJ file as seperate objects dependant on lines beginning with o
+	objFaceLists indexLists;
+
+	// Buffer to store the current line in the obj file
 	std::string curLine;
 
-	// Extract data from OBJ file
+	// Iterate through OBJ file line-by-line to extract appropriate data
 	while (getline(objFile, curLine))
 	{
-		if (curLine.length() > 2)
+		// Only bother checking the line for data if the line is greater than n characters long
+		if (curLine.length() > 5)
 		{
-			// Get the position of the current o-line
+			// If an O is found, push a new vector of ObjFaces on to the vector of vectors
 			if (curLine.compare(0, 2, "o ") == 0)
 				indexLists.push_back(new std::vector<ObjFace>);
 
@@ -238,26 +248,38 @@ bool Model3D::ImportOBJ(
 			else if (curLine.compare(0, 2, "vn") == 0)
 				temp_normals.push_back(GetVec3FromOBJLine(curLine));
 
-			// Get face data
+			// If an f is found, push the face data on to the last vector of ObjFaces added to the vector of indexLists when an o was last found
 			else if (curLine.compare(0, 2, "f ") == 0)
 				indexLists.back()->push_back(GetFaceFromOBJLine(curLine, temp_texCoords.size(), temp_normals.size()));
 		}
 	}
 
-	std::vector<std::vector<Vec3<float>>*> new_positions;
-	std::vector<std::vector<Vec3<float>>*> new_normals;
-	std::vector<std::vector<Vec2<float>>*> new_texCoords;
+	// Vectors of vectors to store vertex data by seperate object
+	vec3Lists new_positions;
+	vec3Lists new_normals;
+	vec2Lists new_texCoords;
 
+	// The following algorithm requires the seperated lists of indices to generate multiple, un-indexed vertex arrays per object found in the OBJ file
 	for (unsigned short i = 0; i < indexLists.size(); i++)
 		GenerateVertexArrays(new_positions, new_normals, new_texCoords, temp_positions, temp_normals, temp_texCoords, *indexLists[i]);
 	
-	// Clear temp_ vectors as they are no longer needed
+	// Clear memory that is no longer needed
 	temp_positions.clear();
 	temp_normals.clear();
 	temp_texCoords.clear();
+	
+	for (unsigned char i = 0; i < indexLists.size(); i++)
+		delete indexLists[i];
+
+	indexLists.clear();
 
 	// It works up to here
-	// TODO: Create new index lists
+	// TODO: Now that there are seperate vertex arrays per individual object, they need to be indexed...
+	vec3Lists indexed_positions;
+	vec3Lists indexed_normals;
+	vec2Lists indexed_texCoords;
+
+	// TODO: Stick all of the indexed_ vectors in to 1 final vertex buffer for OpenGL, but generate new index lists per object
 }
 
 void Model3D::GetIndices(std::ifstream &file, std::vector<unsigned short> &index, unsigned int count)
@@ -386,9 +408,9 @@ ObjFace GetFaceFromOBJLine(std::string &line, unsigned int numUVs, unsigned int 
 }
 
 void GenerateVertexArrays(
-	std::vector<std::vector<Vec3<float>>*> &out_positions,
-	std::vector<std::vector<Vec3<float>>*> &out_normals,
-	std::vector<std::vector<Vec2<float>>*> &out_texCoords,
+	vec3Lists &out_positions,
+	vec3Lists &out_normals,
+	vec2Lists &out_texCoords,
 	const std::vector<Vec3<float>> &in_positions,
 	const std::vector<Vec3<float>> &in_normals,
 	const std::vector<Vec2<float>> &in_texCoords,
@@ -442,12 +464,12 @@ bool GetSimilarVertexIndex(
 }
 
 void GenerateIndices(
-	std::vector<std::vector<Vec3<float>>*> &in_positions,
-	std::vector<std::vector<Vec3<float>>*> &in_normals,
-	std::vector<std::vector<Vec2<float>>*> &in_texCoords,
-	std::vector<std::vector<Vec3<float>>*> &out_positions,
-	std::vector<std::vector<Vec3<float>>*> &out_normals,
-	std::vector<std::vector<Vec2<float>>*> &out_texCoords,
+	vec3Lists &in_positions,
+	vec3Lists &in_normals,
+	vec2Lists &in_texCoords,
+	vec3Lists &out_positions,
+	vec3Lists &out_normals,
+	vec2Lists &out_texCoords,
 	std::vector<std::vector<unsigned int>> &out_indices
 )
 {
