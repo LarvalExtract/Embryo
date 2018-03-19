@@ -34,7 +34,7 @@ Scene::~Scene()
 			delete shader_it->second;
 }
 
-bool Scene::InitialiseScene()
+bool Scene::InitialiseScene(Window &window)
 {
 	if (sceneCameras.size() == 0)
 	{
@@ -57,16 +57,21 @@ bool Scene::InitialiseScene()
 	return true;
 }
 
-bool Scene::InitialiseScene(std::string name)
+bool Scene::InitialiseScene(std::string name, Window &window)
 {
 	// Set screen name if it doesn't have one already
 	if (sceneName.empty())
 		sceneName = "\'" + name + "\'";
 
-	return InitialiseScene();
+	return InitialiseScene(window);
 }
 
-void Scene::UpdateScene()
+void Scene::ProcessInput(Window &window, float deltaTime)
+{
+	controls.MatricesFromInputs(window, GetActiveCamera(), deltaTime);
+}
+
+void Scene::UpdateScene(float deltaTime)
 {
 	alListener3f(AL_POSITION, sceneCameras[activeCameraID]->position.x, sceneCameras[activeCameraID]->position.y, sceneCameras[activeCameraID]->position.z);
 

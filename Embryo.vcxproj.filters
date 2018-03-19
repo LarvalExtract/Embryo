@@ -58,6 +58,18 @@
     <Filter Include="Source Files\Graphics\Shaders">
       <UniqueIdentifier>{4d54efd7-6aa1-4bf7-92af-9f177425f238}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{023cd11d-bfab-4f89-9cd9-95d614317529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{d1c57398-8a15-4741-89bb-4eddfa47c94a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Scenes">
+      <UniqueIdentifier>{5f75ec7c-77fa-4fed-b979-c27a408d3858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game\Scenes">
+      <UniqueIdentifier>{34ffb8f8-384d-448b-b45b-9bf2d46c9c87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\graphics\campersp.cpp">
@@ -78,12 +90,6 @@
     <ClCompile Include="src\graphics\campersp.cpp">
       <Filter>Source Files\Graphics\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="src\utilities\controls.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utilities\file.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="src\game.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
@@ -101,9 +107,6 @@
     </ClCompile>
     <ClCompile Include="src\utilities\import_audio_wav.cpp">
       <Filter>Source Files\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utilities\console.cpp">
-      <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\indexbuffer.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -132,9 +135,6 @@
     <ClCompile Include="src\graphics\renderable\renderable.cpp">
       <Filter>Source Files\Graphics\Renderables</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\scene.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="src\screen.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
@@ -150,12 +150,6 @@
     <ClCompile Include="src\graphics\texture.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\utilities\timer.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utilities\utility.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\window.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
@@ -167,6 +161,30 @@
     </ClCompile>
     <ClCompile Include="src\graphics\shader.cpp">
       <Filter>Source Files\Graphics\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\console.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\file.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\utility.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\timer.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\controls.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\scene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\scenetest.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\scenehud.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,9 +224,6 @@
     <ClInclude Include="src\screen.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\scene.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\renderable\model3d.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -245,12 +260,6 @@
     <ClInclude Include="src\maths\mat3.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="src\utilities\timer.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utilities\utility.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\vertexbuffer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -269,15 +278,6 @@
     <ClInclude Include="src\graphics\window.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\utilities\file.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utilities\console.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utilities\controls.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\indexbuffer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -286,6 +286,30 @@
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\sprite3d.h">
       <Filter>Header Files\Graphics\Renderables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utilities\file.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utilities\timer.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utilities\utility.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utilities\console.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utilities\controls.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\scene.h">
+      <Filter>Header Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\scenetest.h">
+      <Filter>Header Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\scenehud.h">
+      <Filter>Header Files\Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,16 +3,8 @@
 #include "utilities/console.h"
 
 #include "graphics/window.h"
-#include <graphics/renderable/box3d.h>
-#include <graphics/renderable/gizmo3d.h>
-#include <graphics/renderable/gyro3d.h>
-#include <graphics/renderable/model3d.h>
-#include <graphics/renderable/skybox3d.h>
-#include <graphics/renderable/sprite2d.h>
-#include <graphics/renderable/sprite3d.h>
-#include "graphics/scene.h"
 
-#include "utilities/controls.h"
+#include "graphics/scene.h"
 
 #include <utilities/timer.h>
 
@@ -23,10 +15,11 @@ public:
 	Game();
 	~Game();
 
-	bool Initialise();
 	void Start();
 
 private:
+	bool Initialise();
+
 	// Process user input
 	void ProcessInput();
 
@@ -37,10 +30,8 @@ private:
 	void Draw();
 
 	Window window;
-	Scene scene;
-	Scene hud;
 
-	Controls controls;
+	std::vector<Scene*> scenes;
 
 	// Delta time
 	double lastTime;

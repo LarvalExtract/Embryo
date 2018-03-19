@@ -4,6 +4,9 @@
 #include <iostream>
 #include <thread>
 
+#include "graphics/scenetest.h"
+#include "graphics/scenehud.h"
+
 Game::Game() : 
 	bInitialised(false),
 	counter(0.0f)
@@ -12,14 +15,18 @@ Game::Game() :
 
 Game::~Game()
 {
+	// Clean up scenes
+	for (auto scene : scenes)
+	{
+		if (scene != nullptr)
+			delete scene;
+	}
 }
 
 void Game::Start()
 {
 	if (!bInitialised)
 	{
-		//std::cerr << "The game is not initialised! Attempting to initialise...\n\n";
-		
 		// Attempt to initialise the game
 		if (!Initialise())
 		{
@@ -40,9 +47,8 @@ void Game::Start()
 	}
 
 	// Clean up threads
-	Console::bIsRunning = false;
-	//tConsole.join();
 	// TO-DO: Find out if this could cause corruption
+	Console::bIsRunning = false;
 	tConsole.detach();
 
 	// Exit game
@@ -62,6 +68,7 @@ bool Game::Initialise()
 	Console::AddCommand("listV", Console::CmdListV, "List all variables");
 	Console::AddVar("timescale", "1.0");
 	Console::AddVar("bPrintMouse", false);
+	Console::AddVar("CamSpeed", "4.0");
 
 	Timer initTimer;
 
@@ -77,104 +84,17 @@ bool Game::Initialise()
 
 	Console::Log(LogType::Log) << "Press Z to enable camera controls" << "\n\n";
 
-	scene.SetSkybox("skybox_ocean.tga");
+	SceneTest *pSceneTest = new SceneTest();
+	SceneHud *pSceneHud = new SceneHud();
+	scenes.push_back(pSceneTest);
+	scenes.push_back(pSceneHud);
 
-	Console::AddVar("CamSpeed", "4.0");
-	Camera *pCamera = new CamPersp(60.0f, static_cast<float>(window.GetWidth()) / static_cast<float>(window.GetHeight()), 0.01f, 1000.0f);
-	pCamera->SetPosition(0.0f, 1.0f, -3.0f);
-	scene.AddCamera(pCamera);
-
-	Camera *pOrtho = new CamOrtho(0.0f, window.GetWidth(), 0.0f, window.GetHeight(), -1.0f, 1.0f);
-	hud.AddCamera(pOrtho);
-
-	scene.SetActiveCamera(0);
-	hud.SetActiveCamera(0);
-
-	Shader *pShader = new Shader("basicPhong");
-	scene.AddShader(pShader);
-
-	Model3D *pFloor = new Model3D("floor.mmf");
-	pFloor->SetPosition(0.0f, -1.0f, 0.0f);
-	pFloor->SetDiffuseTexture("models/floor.tga");
-	pFloor->SetShader(pShader);
-	scene.AddRenderable(pFloor);
-
-	Model3D *pCube = new Model3D("cube.mmf");
-	pCube->SetScale(0.2f, 0.2f, 0.2f);
-	pCube->SetDiffuseTexture("models/cube.tga");
-	pCube->specularity = 0.2f;
-	pCube->glossiness = 20.0f;
-	pCube->SetShader(pShader);
-	scene.AddRenderable(pCube);
-
-	Model3D *pTeapot = new Model3D("teapot.mmf");
-	pTeapot->SetPosition(1.2f, 0.0f, 0.0f);
-	pTeapot->SetScale(0.02f, 0.02f, 0.02f);
-	pTeapot->SetDiffuseTexture("models/test.tga");
-	pTeapot->specularity = 2.0f;
-	pTeapot->glossiness = 100.0f;
-	pTeapot->SetShader(pShader);
-	scene.AddRenderable(pTeapot);
-
-	Model3D *pClone = new Model3D("poo.mmf");
-	pClone->SetPosition(-1.0f, 0.0f, 0.0f);
-	pClone->SetRotation3D(0.0f, 180.0f, 0.0f);
-	pClone->SetScale(0.02f, 0.02f, 0.02f);
-	pClone->SetDiffuseTexture("models/clone.tga");
-	pClone->specularity = 0.5f;
-	pClone->glossiness = 30.0f;
-	pClone->SetShader(pShader);
-	scene.AddRenderable(pClone);
-
-	Sprite3D *pSprite = new Sprite3D("sprites/sprite_test3.tga");
-	pSprite->SetPosition(1.7f, 0.0f, -1.0f);
-	pSprite->SetShader(pShader);
-	scene.AddRenderable(pSprite);
-
-	Gyro3D *pSphere = new Gyro3D(2.0f, 4);
-	pSphere->SetPosition(-5, 2, 3);
-	pSphere->SetColour(1.0f, 1.0f, 0.0f, 1.0f);
-	scene.AddRenderable(pSphere);
-
-	Box3D *pBox = new Box3D(2, 3, 3);
-	pBox->SetPosition(13.3f, 3.0f, 5.0f);
-	pBox->SetRotation3D(0.0f, 23.0f, 0.0f);
-	pBox->SetColour(1.0f, 0.0f, 1.0f, 1.0f);
-	scene.AddRenderable(pBox);
-
-	Gizmo3D *pPivot = new Gizmo3D();
-	pPivot->SetPosition(0.0f, 2.0f, 0.0f);
-	scene.AddRenderable(pPivot);
-
-	AudioSourceGlobal *pWind = new AudioSourceGlobal("sandtrap_wind_loop.wav");
-	pWind->SetGain(0.3f);
-	pWind->SetLoop(true);
-	scene.AddSound(pWind);
-
-	AudioSourceLocal *pComputer = new AudioSourceLocal("alien_generator.wav");
-	pComputer->SetGain(0.55f);
-	pComputer->SetLoop(true);
-	scene.AddSound(pComputer);
-
-	LightOmni *pLight = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
-	scene.AddLight(pLight);
-
-	//LightOmni *pRedLight = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
-	//scene->AddLight(redLight);
-
-	Sprite2D *pCrosshair = new Sprite2D("sprites/crosshair.tga");
-	pCrosshair->CentreLocalOrigin();
-	pCrosshair->SetPosition(window.GetWidth() / 2, window.GetHeight() / 2, 0.0f);
-	hud.AddRenderable(pCrosshair);
-	
-	// Initialise the scene
-	if (scene.InitialiseScene("Scene1") == false)
+	// Initialise the scenes
+	if (pSceneTest->InitialiseScene("Scene1", window) == false)
 		return false;
 
-	//hud.PrintRenderableList();
-	//scene->PrintLightList();
-	//scene->PrintSoundList();
-	//scene->PrintCameraList();
+	if (pSceneHud->InitialiseScene("Scene2", window) == false)
+		return false;
 
 	Console::Log() << "Initialisation time: " << initTimer.Elapsed() << " seconds" << "\n";
 
@@ -185,7 +105,10 @@ bool Game::Initialise()
 
 void Game::ProcessInput()
 {
-	controls.MatricesFromInputs(window, scene.GetActiveCamera(), deltaTime);
+	// TO-DO: Update delta before this step
+	for (auto scene : scenes)
+		if (scene != nullptr)
+			scene->ProcessInput(window, deltaTime);
 }
 
 void Game::Update()
@@ -197,16 +120,10 @@ void Game::Update()
 	// Display frame time/frame rate
 	//Console::Log() << "Frame time: " << ColourCode::BrightGreen << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
 	
-	counter += 1.0f * deltaTime;
-
-	// BUG: Crashes if the scene cannot find a renderable or light
-	scene.GetRenderable("teapot")->SetRotation3D(sin(counter * 10), 0.0f, cos(counter * 20));
-	scene.GetLight("light_omni")->SetPosition(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
-	//scene->GetLight("light_omni")->SetPower(sin(counter * 2) * 3);
-
-	hud.GetRenderable("crosshair.tga")->SetRotation2D(counter * 30);
-
-	scene.UpdateScene();
+	// Update scenes
+	for (auto scene : scenes)
+		if (scene != nullptr)
+			scene->UpdateScene(deltaTime);
 }
 
 void Game::Draw()
@@ -215,10 +132,9 @@ void Game::Draw()
 	window.Clear();
 
 	// Draw everything in the scene
-	scene.DrawScene();
-	hud.DrawScene();
-
-	//pCrosshair->Draw(;
+	for (auto scene : scenes)
+		if (scene != nullptr)
+			scene->DrawScene();
 
 	// Update the window with the next frame
 	window.Update();

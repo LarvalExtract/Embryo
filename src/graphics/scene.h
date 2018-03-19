@@ -2,29 +2,35 @@
 
 #include <unordered_map>
 
+#include "window.h"
+#include <utilities\controls.h>
+
 // Graphics
-#include <graphics/renderable/renderable.h>
-#include <graphics/renderable/skybox3d.h>
+#include "renderable/skybox3d.h"
+#include "renderable/renderable.h"
+#include "camera.h"
+#include "campersp.h"
+#include "cameraortho.h"
 
 // Lights
 #include "LightSource.h"
 #include "lightomni.h"
 
-#include "campersp.h"
-#include "cameraortho.h"
-#include "Shader.h"
+// Audio
 #include <audio/AudioSource.h>
 
+// Base scene
 class Scene
 {
 public:
 	Scene();
-	~Scene();
+	virtual ~Scene();
 
-	bool InitialiseScene();
-	bool InitialiseScene(std::string sceneName);
-	void UpdateScene();
-	void DrawScene();
+	virtual bool InitialiseScene(Window &window) = 0;
+	virtual bool InitialiseScene(std::string sceneName, Window &window);
+	virtual void ProcessInput(Window &window, float deltaTime);
+	virtual void UpdateScene(float deltaTime);
+	virtual void DrawScene();
 
 	void AddRenderable(Renderable *pRenderable);
 	void AddLight(LightSource *pLight);
@@ -33,10 +39,10 @@ public:
 	void AddCamera(Camera *pCamera);
 
 	Renderable* GetRenderable(const std::string &renderableName);
-	LightSource*  GetLight(const std::string &lightName);
-	AudioSource*  GetSound(const std::string &soundName);
-	Shader*	   GetShader(const std::string &shaderName);
-	Camera*	   GetCamera(const char &cameraID);
+	LightSource* GetLight(const std::string &lightName);
+	AudioSource* GetSound(const std::string &soundName);
+	Shader* GetShader(const std::string &shaderName);
+	Camera* GetCamera(const char &cameraID);
 
 	void RemoveRenderable(const std::string &renderableName);
 	void RemoveLight(const std::string &lightName);
@@ -55,20 +61,22 @@ public:
 
 	Camera& GetActiveCamera();
 
-private:
-	std::unordered_map<std::string, Renderable*>   sceneRenderables;
-	std::unordered_map<std::string, LightSource*>  sceneLights;
-	std::unordered_map<std::string, AudioSource*>  sceneSounds;
-	std::unordered_map<std::string, Shader*>	   sceneShaders;
+protected:
+	Controls controls;
+
+	std::unordered_map<std::string, Renderable*> sceneRenderables;
+	std::unordered_map<std::string, LightSource*> sceneLights;
+	std::unordered_map<std::string, AudioSource*> sceneSounds;
+	std::unordered_map<std::string, Shader*> sceneShaders;
 	//std::unordered_map<unsigned char, Camera*>   sceneCameras;
 
 	std::vector<Camera*> sceneCameras;
 
-	std::unordered_map<std::string, Renderable*>::iterator    renderable_it;
-	std::unordered_map<std::string, LightSource*>::iterator   light_it;
-	std::unordered_map<std::string, AudioSource*>::iterator   sound_it;
-	std::unordered_map<std::string, Shader*>::iterator		  shader_it;
-	//std::unordered_map<std::string, Camera*>::iterator		camera_it;
+	std::unordered_map<std::string, Renderable*>::iterator renderable_it;
+	std::unordered_map<std::string, LightSource*>::iterator light_it;
+	std::unordered_map<std::string, AudioSource*>::iterator sound_it;
+	std::unordered_map<std::string, Shader*>::iterator shader_it;
+	//std::unordered_map<std::string, Camera*>::iterator camera_it;
 
 	std::string sceneName;
 
