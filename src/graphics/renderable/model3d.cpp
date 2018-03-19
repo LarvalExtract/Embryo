@@ -2,6 +2,80 @@
 
 Texture2D* const Model3D::defaultTexture = new Texture2D("missingtexture2.tga");
 
+struct ObjFace
+{
+	int v[3];
+	int vt[3];
+	int vn[3];
+
+	ObjFace() :v{ -1 }, vt{ -1 }, vn{ -1 } {}
+};
+
+struct Vertex
+{
+	Vec3<float> position;
+	Vec2<float> texCoord;
+	Vec3<float> normal;
+
+	Vertex() {}
+
+	Vertex(const Vec3<float> &position, const Vec2<float> &texCoord, const Vec3<float> &normal)
+	{
+		this->position = position;
+		this->texCoord = texCoord;
+		this->normal = normal;
+	}
+};
+
+// Return a Vec3 of floats from a line in an OBJ file
+static Vec3<float> GetVec3FromOBJLine(std::string &line);
+
+// Return a Vec2 of floats from a line in an OBJ file
+static Vec2<float> GetVec2FromOBJLine(std::string &line);
+
+// Return an ObjFace from a line in an OBJ file
+static ObjFace GetFaceFromOBJLine(std::string &line, unsigned int numUVs, unsigned int numNormals);
+
+// Generate un-indexed position, normal and texCoord arrays from the indices provided by OBJ file
+// This is necessary because OBJ file indices cannot be used by OpenGL, thus new vertex arrays need to be created to later produce OpenGL friendly indices
+void GenerateVertexArrays(
+	std::vector<std::vector<Vec3<float>>*> &out_positions,
+	std::vector<std::vector<Vec3<float>>*> &out_normals,
+	std::vector<std::vector<Vec2<float>>*> &out_texCoords,
+	const std::vector<Vec3<float>> &in_positions,
+	const std::vector<Vec3<float>> &in_normals,
+	const std::vector<Vec2<float>> &in_texCoords,
+	const std::vector<ObjFace> &in_indexList);
+
+// Compare two floats to determine if they are the same
+bool Compare(float a, float b)
+{
+	bool result;
+	(a - b < 0.0001f && a - b > -0.0001f) ? result = true : result = false;
+	return result;
+}
+
+// Compare an input Vertex to map of vertices
+// If similar, return the index. Otherwise, return false
+bool GetSimilarVertexIndex(
+	Vec3<float> &in_positions,
+	Vec3<float> &in_normals,
+	Vec2<float> &in_texCoords,
+	std::vector<Vec3<float>> &out_positions,
+	std::vector<Vec3<float>> &out_normals,
+	std::vector<Vec2<float>> &out_texCoords,
+	unsigned int &result);
+
+// Iterate through an array of vertices to find similar vertices and generate an list of indices
+void GenerateIndices(
+	std::vector<std::vector<Vec3<float>>*> &in_positions,
+	std::vector<std::vector<Vec3<float>>*> &in_normals,
+	std::vector<std::vector<Vec2<float>>*> &in_texCoords,
+	std::vector<std::vector<Vec3<float>>*> &out_positions,
+	std::vector<std::vector<Vec3<float>>*> &out_normals,
+	std::vector<std::vector<Vec2<float>>*> &out_texCoords,
+	std::vector<std::vector<unsigned int>> &out_indices);
+
 Model3D::Model3D(const std::string &fileName) :
 	Renderable(GL_TRIANGLES),
 	specularity(0),
@@ -15,9 +89,9 @@ Model3D::Model3D(const std::string &fileName) :
 	std::vector<Vec3<float>> positions;
 	std::vector<Vec3<float>> normals;
 	std::vector<Vec2<float>> texCoords;
-	std::vector<unsigned short> indices;
+	std::vector<std::vector<unsigned int>> indices;
 
-	if (!ImportModel(fileName, positions, normals, texCoords, indices))
+	if (!ImportOBJ(fileName, positions, normals, texCoords, indices))
 	{
 		Console::Log(LogType::Error) << "Could not load model: " << fileName << "\n";
 
@@ -27,7 +101,9 @@ Model3D::Model3D(const std::string &fileName) :
 	vao.AddBuffer(&positions[0], positions.size() * sizeof(positions[0]), 0, 3);
 	vao.AddBuffer(&normals[0], normals.size() * sizeof(normals[0]), 1, 3);
 	vao.AddBuffer(&texCoords[0], texCoords.size() * sizeof(texCoords[0]), 2, 2);
-	vao.AddIndices(&indices[0], indices.size());
+
+	for (unsigned char i = 0; i < indices.size(); i++)
+		vao.AddIndices(&indices[i][0], indices[i].size());
 }
 
 void Model3D::SetDiffuseTexture(const std::string &fileName)
@@ -117,6 +193,73 @@ bool Model3D::ImportModel(
 	}
 }
 
+bool Model3D::ImportOBJ(
+	const std::string &filePath,
+	std::vector<Vec3<float>> &in_positions,
+	std::vector<Vec3<float>> &in_normals,
+	std::vector<Vec2<float>> &in_texCoords,
+	std::vector<std::vector<unsigned int>> &out_indices
+)
+{
+	std::ifstream objFile("res/models/shapes_seperated.obj");
+	//name = filePath.substr(filePath.rfind("/") + 1, filePath.length());
+
+	if (!objFile.is_open())
+	{
+		Console::Log(LogType::Error) << "Couldn't open file!";
+		return false;
+	}
+
+	std::vector<Vec3<float>>	temp_positions;
+	std::vector<Vec2<float>>	temp_texCoords;
+	std::vector<Vec3<float>>	temp_normals;
+	std::vector<std::vector<ObjFace>*> indexLists;
+
+	std::string curLine;
+
+	// Extract data from OBJ file
+	while (getline(objFile, curLine))
+	{
+		if (curLine.length() > 2)
+		{
+			// Get the position of the current o-line
+			if (curLine.compare(0, 2, "o ") == 0)
+				indexLists.push_back(new std::vector<ObjFace>);
+
+			// Get the vertex positions from the current line in the OBJ file
+			else if (curLine.compare(0, 2, "v ") == 0)
+				temp_positions.push_back(GetVec3FromOBJLine(curLine));
+
+			// Get the texture co-ordinates from the current line in the OBJ file
+			else if (curLine.compare(0, 2, "vt") == 0)
+				temp_texCoords.push_back(GetVec2FromOBJLine(curLine));
+
+			// Get the vertex normals from the current line in the OBJ file
+			else if (curLine.compare(0, 2, "vn") == 0)
+				temp_normals.push_back(GetVec3FromOBJLine(curLine));
+
+			// Get face data
+			else if (curLine.compare(0, 2, "f ") == 0)
+				indexLists.back()->push_back(GetFaceFromOBJLine(curLine, temp_texCoords.size(), temp_normals.size()));
+		}
+	}
+
+	std::vector<std::vector<Vec3<float>>*> new_positions;
+	std::vector<std::vector<Vec3<float>>*> new_normals;
+	std::vector<std::vector<Vec2<float>>*> new_texCoords;
+
+	for (unsigned short i = 0; i < indexLists.size(); i++)
+		GenerateVertexArrays(new_positions, new_normals, new_texCoords, temp_positions, temp_normals, temp_texCoords, *indexLists[i]);
+	
+	// Clear temp_ vectors as they are no longer needed
+	temp_positions.clear();
+	temp_normals.clear();
+	temp_texCoords.clear();
+
+	// It works up to here
+	// TODO: Create new index lists
+}
+
 void Model3D::GetIndices(std::ifstream &file, std::vector<unsigned short> &index, unsigned int count)
 {
 	char test[2];
@@ -159,5 +302,186 @@ void Model3D::GetVertex(std::ifstream &file, std::vector<Vec3<float>> &vertex, u
 		file.read(&test[0], 4);
 		memcpy(&currentVertex.z, &test[0], sizeof(float));
 		vertex.push_back(currentVertex);
+	}
+}
+
+Vec3<float> GetVec3FromOBJLine(std::string &line)
+{	
+	// Remove OBJ line identifier from line
+	line.erase(0, 2);
+
+	// Remove any left over leading whitespace
+	while (line[0] == ' ')
+		line.erase(0, 1);
+
+	// Get float values from line
+	float x = stof(line.substr(0, line.find(' ')));
+	line.erase(0, line.find(' ') + 1);
+
+	float y = stof(line.substr(0, line.find(' ')));
+	line.erase(0, line.find(' ') + 1);
+
+	float z = stof(line.substr(0, line.find('\r')));
+
+	return Vec3<float>(x, y, z);
+}
+
+Vec2<float> GetVec2FromOBJLine(std::string &line)
+{
+	// Remove OBJ line identifier from line
+	line.erase(0, 2);
+
+	// Remove any left over leading whitespace
+	while (line[0] == ' ')
+		line.erase(0, 1);
+
+	float x = stof(line.substr(0, line.find(' ')));
+	line.erase(0, line.find(' ') + 1);
+
+	float y = stof(line.substr(0, line.find('\r')));
+
+	return Vec2<float>(x, y);
+}
+
+ObjFace GetFaceFromOBJLine(std::string &line, unsigned int numUVs, unsigned int numNormals)
+{
+	// Remove OBJ line identifier from line
+	line.erase(0, 2);
+
+	// Check if the model is triangulated by getting the number of spaces from the current line
+	char spaces = 0;
+	for (char i = 0; i < line.length(); i++)
+		if (line[i] == ' ')
+			spaces++;
+
+	if (spaces > 3)
+		Console::Log(LogType::Error) << "OBJ model is not triangulated! Re-export the model with triangulate mesh enabled.";
+
+	ObjFace face;
+
+	// Extract face data from OBJ line
+	for (char i = 0; i < 3; i++)
+	{
+		face.v[i] = stoi(line.substr(0, line.find('/'))) - 1;
+		line.erase(0, line.find('/') + 1);
+
+		if (numUVs > 0)
+		{
+			face.vt[i] = stoi(line.substr(0, line.find('/'))) - 1;
+			line.erase(0, line.find('/') + 1);
+		}
+
+		if (numNormals > 0)
+		{
+			// If the model has normals but no texture co-ordinates, an extra / needs to be removed
+			if (numUVs == 0)
+				line.erase(0, 1);
+
+			face.vn[i] = stoi(line.substr(0, line.find(' '))) - 1;
+			line.erase(0, line.find(' ') + 1);
+		}
+	}
+
+	return face;
+}
+
+void GenerateVertexArrays(
+	std::vector<std::vector<Vec3<float>>*> &out_positions,
+	std::vector<std::vector<Vec3<float>>*> &out_normals,
+	std::vector<std::vector<Vec2<float>>*> &out_texCoords,
+	const std::vector<Vec3<float>> &in_positions,
+	const std::vector<Vec3<float>> &in_normals,
+	const std::vector<Vec2<float>> &in_texCoords,
+	const std::vector<ObjFace> &in_indexList)
+{
+	out_positions.push_back(new std::vector<Vec3<float>>);
+	out_normals.push_back(new std::vector<Vec3<float>>);
+	out_texCoords.push_back(new std::vector<Vec2<float>>);
+
+	for (unsigned int i = 0; i < in_indexList.size(); i++)
+	{
+		for (char j = 0; j < 3; j++)
+		{
+			out_positions.back()->push_back(in_positions[in_indexList[i].v[j]]);
+			out_normals.back()->push_back(in_normals[in_indexList[i].vn[j]]);
+			out_texCoords.back()->push_back(in_texCoords[in_indexList[i].vt[j]]);
+		}
+	}	
+}
+
+bool GetSimilarVertexIndex(
+	Vec3<float> &in_positions,
+	Vec3<float> &in_normals,
+	Vec2<float> &in_texCoords,
+	std::vector<Vec3<float>> &out_positions,
+	std::vector<Vec3<float>> &out_normals,
+	std::vector<Vec2<float>> &out_texCoords,
+	unsigned int &result
+)
+{
+	// Iterate though out_vertices to find a similar vertex
+	for (unsigned int i = 0; i < out_positions.size(); i++)
+	{
+		if (Compare(in_positions.x, out_positions[i].x) &&
+			Compare(in_positions.y, out_positions[i].y) &&
+			Compare(in_positions.z, out_positions[i].z) &&
+			Compare(in_normals.x, out_normals[i].x) &&
+			Compare(in_normals.y, out_normals[i].y) &&
+			Compare(in_normals.z, out_normals[i].z) &&
+			Compare(in_texCoords.x, out_texCoords[i].x) &&
+			Compare(in_texCoords.y, out_texCoords[i].y))
+		{
+			// Similar vertex found, set result to i and return true
+			result = i;
+			return true;
+		}
+	}
+
+	// Similar vertex not found, return false
+	return false;
+}
+
+void GenerateIndices(
+	std::vector<std::vector<Vec3<float>>*> &in_positions,
+	std::vector<std::vector<Vec3<float>>*> &in_normals,
+	std::vector<std::vector<Vec2<float>>*> &in_texCoords,
+	std::vector<std::vector<Vec3<float>>*> &out_positions,
+	std::vector<std::vector<Vec3<float>>*> &out_normals,
+	std::vector<std::vector<Vec2<float>>*> &out_texCoords,
+	std::vector<std::vector<unsigned int>> &out_indices
+)
+{
+	unsigned int index;
+	bool found;
+
+	for (unsigned int j = 0; j < in_positions.size(); j++)
+	{
+		out_positions.push_back(new std::vector<Vec3<float>>);
+		out_normals.push_back(new std::vector<Vec3<float>>);
+		out_texCoords.push_back(new std::vector<Vec2<float>>);
+		std::vector<unsigned int> test;
+		out_indices.push_back(test);
+
+		for (unsigned int i = 0; i < in_positions[j]->size(); i++)
+		{
+			found = GetSimilarVertexIndex(in_positions[j]->at(i), in_normals[j]->at(i), in_texCoords[j]->at(i), *out_positions.at(j), *out_normals.at(j), *out_texCoords.at(j), index);
+
+			if (found == true)
+			{
+				out_indices.back().push_back(index);
+			}
+
+			else
+			{
+				out_positions.back()->push_back(in_positions[j]->at(i));
+				out_normals.back()->push_back(in_normals[j]->at(i));
+				out_texCoords.back()->push_back(in_texCoords[j]->at(i));
+
+				if (j == 0)
+					out_indices.back().push_back(out_positions[j]->size() - 1);
+				else
+					out_indices.back().push_back(out_positions[j - 1]->size() + out_positions[j]->size() - 1);
+			}
+		}
 	}
 }
