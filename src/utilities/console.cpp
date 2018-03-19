@@ -277,7 +277,7 @@ void Console::ConsoleLoop()
 
 						// Convert command to lowercase
 						if (argPos == std::string::npos)
-							std::transform(buffer.begin(), buffer.begin(), buffer.begin(), tolower);
+							std::transform(buffer.begin(), buffer.end(), buffer.begin(), tolower);
 						else
 							std::transform(buffer.begin(), buffer.begin() + argPos, buffer.begin(), tolower);
 
