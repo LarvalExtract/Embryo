@@ -38,14 +38,14 @@ bool SceneHud::InitialiseScene(Window &window)
 	return Scene::InitialiseScene(window);
 }
 
-bool SceneHud::InitialiseScene(std::string name, Window &window)
+bool SceneHud::InitialiseScene(Window &window, std::string name)
 {
-	return Scene::InitialiseScene(name, window);
+	return Scene::InitialiseScene(window, name);
 }
 
-void SceneHud::ProcessInput(Window &window, float deltaTime)
+void SceneHud::ProcessInput(float deltaTime)
 {
-	Scene::ProcessInput(window, deltaTime);
+	Scene::ProcessInput(deltaTime);
 
 	GetRenderable("crosshair.tga")->SetRotation2D(counter * 30);
 }

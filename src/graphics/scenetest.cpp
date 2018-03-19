@@ -105,14 +105,14 @@ bool SceneTest::InitialiseScene(Window &window)
 	return Scene::InitialiseScene(window);
 }
 
-bool SceneTest::InitialiseScene(std::string name, Window &window)
+bool SceneTest::InitialiseScene(Window &window, std::string name)
 {
-	return Scene::InitialiseScene(name, window);
+	return Scene::InitialiseScene(window, name);
 }
 
-void SceneTest::ProcessInput(Window &window, float deltaTime)
+void SceneTest::ProcessInput(float deltaTime)
 {
-	Scene::ProcessInput(window, deltaTime);
+	Scene::ProcessInput(deltaTime);
 }
 
 void SceneTest::UpdateScene(float deltaTime)

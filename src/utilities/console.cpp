@@ -10,6 +10,7 @@ HANDLE Console::hStdOut = nullptr;
 
 char* const Console::strWarning = "Warning: ";
 char* const Console::strError = "Error: ";
+char* const Console::strSuccess = "Success: ";
 bool Console::bIsRunning = false;
 ConCmds Console::conCmds = {};
 ConVars Console::conVars = {};
@@ -71,6 +72,10 @@ Console& Console::Log(LogType type)
 	case LogType::Error:
 		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::BrightRed));
 		std::cerr << strError;
+		break;
+	case LogType::Success:
+		SetConsoleTextAttribute(hStdOut, static_cast<char>(ColourCode::BrightGreen));
+		std::cerr << strSuccess;
 		break;
 	default:
 		break;

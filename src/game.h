@@ -20,14 +20,18 @@ public:
 private:
 	bool Initialise();
 
-	// Process user input
-	void ProcessInput();
-
-	// Update the game's states and conditions
+	// Update and draw scenes
 	void Update();
 
-	// Draw frame to the window
-	void Draw();
+	// Scenes
+	// Add a new scene
+	bool AddScene(Scene *pScene);
+
+	// Remove an existing screen
+	bool RemoveScene(Scene *pScene);
+
+	// Swap an existing screen with a new scene (e.g., game level to "game over" screen)
+	bool AddRemoveScene(Scene *pScene, Scene *pNewScene);
 
 	Window window;
 

@@ -40,11 +40,7 @@ void Game::Start()
 
 	// GAME LOOP
 	while (glfwWindowShouldClose(window.m_Window) == GLFW_FALSE)
-	{
-		ProcessInput();
 		Update();
-		Draw();
-	}
 
 	// Clean up threads
 	// TO-DO: Find out if this could cause corruption
@@ -64,19 +60,17 @@ bool Game::Initialise()
 
 	// TO-DO: DELETE ME
 	Console::AddCommand("cmdtest", Console::CmdTest, "Test command");
-	Console::AddCommand("listC", Console::CmdListC, "List all commands");
-	Console::AddCommand("listV", Console::CmdListV, "List all variables");
+	Console::AddCommand("listc", Console::CmdListC, "List all commands");
+	Console::AddCommand("listv", Console::CmdListV, "List all variables");
 	Console::AddVar("timescale", "1.0");
-	Console::AddVar("bPrintMouse", false);
-	Console::AddVar("CamSpeed", "4.0");
+	Console::AddVar("bprintmouse", false);
+	Console::AddVar("camspeed", "4.0");
 
 	Timer initTimer;
 
 	// Abort game initialisation if the window failed to initialise
 	if (!window.Init("Embryo", 1280, 720))
 		return false;
-
-	//window->SetColour(0.1f, 0.3f, 0.6f, 1.0f);
 
 	// Print OpenGL and OpenAL version info
 	Console::Log(LogType::Log) << "OpenGL " << ColourCode::BrightYellow << glGetString(GL_VERSION) << ColourCode::White << ", " << glGetString(GL_VENDOR) << ", " << glGetString(GL_RENDERER) << "\n";
@@ -90,10 +84,10 @@ bool Game::Initialise()
 	scenes.push_back(pSceneHud);
 
 	// Initialise the scenes
-	if (pSceneTest->InitialiseScene("Scene1", window) == false)
+	if (!pSceneTest->InitialiseScene(window, "Scene1"))
 		return false;
 
-	if (pSceneHud->InitialiseScene("Scene2", window) == false)
+	if (!pSceneHud->InitialiseScene(window, "Scene2"))
 		return false;
 
 	Console::Log() << "Initialisation time: " << initTimer.Elapsed() << " seconds" << "\n";
@@ -101,14 +95,6 @@ bool Game::Initialise()
 	lastTime = glfwGetTime();
 
 	return bInitialised = true;
-}
-
-void Game::ProcessInput()
-{
-	// TO-DO: Update delta before this step
-	for (auto scene : scenes)
-		if (scene != nullptr)
-			scene->ProcessInput(window, deltaTime);
 }
 
 void Game::Update()
@@ -119,23 +105,105 @@ void Game::Update()
 
 	// Display frame time/frame rate
 	//Console::Log() << "Frame time: " << ColourCode::BrightGreen << 1000 * deltaTime << "ms,\t" << static_cast<int>(1 / deltaTime + 0.5) << "fps" << "                   \r";
-	
-	// Update scenes
-	for (auto scene : scenes)
-		if (scene != nullptr)
-			scene->UpdateScene(deltaTime);
-}
 
-void Game::Draw()
-{
 	// Clear the current buffer
 	window.Clear();
 
-	// Draw everything in the scene
-	for (auto scene : scenes)
-		if (scene != nullptr)
-			scene->DrawScene();
+	// Update scenes
+	for (std::vector<Scene*>::iterator scene = scenes.begin(); scene != scenes.end(); scene++)
+	{
+		if (*scene != nullptr)
+		{
+			(*scene)->UpdateScene(deltaTime);
+			(*scene)->DrawScene();
+		}
+		else
+		{
+			Console::Log(LogType::Warning) << "Deleted a stray nullptr scene in scene vector\n";
+			scenes.erase(scene);
+		}	
+	}
 
 	// Update the window with the next frame
 	window.Update();
+}
+
+bool Game::AddScene(Scene *pScene)
+{
+	if (pScene == nullptr)
+		return false;
+
+	std::vector<Scene*>::iterator scene;
+
+	for (scene = scenes.begin(); scene != scenes.end(); scene++)
+	{
+		if (*scene == pScene)
+		{
+			Console::Log(LogType::Error) << "Scene already exists in scene vector!\n";
+			return false;
+		}
+			
+	}
+
+	Console::Log(LogType::Success) << "Added scene\n";
+
+	scenes.push_back(pScene);
+	return true;
+}
+
+bool Game::RemoveScene(Scene *pScene)
+{
+	if (pScene == nullptr)
+		return false;
+
+	std::vector<Scene*>::iterator scene;
+
+	for (scene = scenes.begin(); scene != scenes.end(); scene++)
+	{
+		if (*scene == pScene)
+		{
+			scenes.erase(scene);
+			delete pScene;
+
+			Console::Log(LogType::Success) << "Scene removed from scene vector and deleted!\n";
+
+			return true;
+		}
+			
+	}
+
+	Console::Log(LogType::Error) << "Couldn't remove unknown scene from scene vector!\n";
+	return false;
+}
+
+bool Game::AddRemoveScene(Scene *pScene, Scene *pNewScene)
+{
+	// Return false if either scene is nullptr
+	if (pScene == nullptr || pNewScene == nullptr)
+		return false;
+
+	// Return false if both pointers are the same
+	if (pScene == pNewScene)
+		return false;
+
+	std::vector<Scene*>::iterator scene;
+
+	// Find scene to be replaced in vector
+	// TO-DO: Prevent new scene being added if it's already in vector
+	for (scene = scenes.begin(); scene != scenes.end(); scene++)
+	{
+		if (*scene == pScene)
+		{
+			*scene = pNewScene;
+			delete pScene;
+
+			Console::Log(LogType::Success) << "Scene removed/deleted from scene vector and replaced!\n";
+
+			return true;
+		}
+	}
+
+	Console::Log(LogType::Error) << "Couldn't find scene to replace in scene vector!\n";
+
+	return false;
 }

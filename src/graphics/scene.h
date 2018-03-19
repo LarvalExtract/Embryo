@@ -27,8 +27,8 @@ public:
 	virtual ~Scene();
 
 	virtual bool InitialiseScene(Window &window) = 0;
-	virtual bool InitialiseScene(std::string sceneName, Window &window);
-	virtual void ProcessInput(Window &window, float deltaTime);
+	virtual bool InitialiseScene(Window &window, std::string sceneName);
+	virtual void ProcessInput(float deltaTime);
 	virtual void UpdateScene(float deltaTime);
 	virtual void DrawScene();
 
@@ -85,4 +85,6 @@ protected:
 	Skybox3D *pSceneSky;
 
 	Mat4 vpMatrix;
+
+	Window *pWindow;
 };

@@ -10,8 +10,8 @@ public:
 	virtual ~SceneHud();
 
 	virtual bool InitialiseScene(Window &window) override;
-	virtual bool InitialiseScene(std::string sceneName, Window &window) override;
-	virtual void ProcessInput(Window &window, float deltaTime) override;
+	virtual bool InitialiseScene(Window &window, std::string sceneName) override;
+	virtual void ProcessInput(float deltaTime) override;
 	virtual void UpdateScene(float deltaTime) override;
 	virtual void DrawScene() override;
 
