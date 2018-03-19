@@ -14,4 +14,7 @@ public:
 	virtual void ProcessInput(Window &window, float deltaTime) override;
 	virtual void UpdateScene(float deltaTime) override;
 	virtual void DrawScene() override;
+
+private:
+	float counter;
 };

@@ -11,7 +11,8 @@
 #include <utilities/console.h>
 
 SceneHud::SceneHud() :
-	Scene()
+	Scene(),
+	counter(0)
 {
 }
 
@@ -45,12 +46,15 @@ bool SceneHud::InitialiseScene(std::string name, Window &window)
 void SceneHud::ProcessInput(Window &window, float deltaTime)
 {
 	Scene::ProcessInput(window, deltaTime);
+
+	GetRenderable("crosshair.tga")->SetRotation2D(counter * 30);
 }
 
 void SceneHud::UpdateScene(float deltaTime)
 {
 	Scene::UpdateScene(deltaTime);
 
+	counter += 1.0f * deltaTime;
 }
 
 void SceneHud::DrawScene()
