@@ -19,6 +19,7 @@ public:
 	void AddBuffer(const Vec3<float> *data, unsigned int size, unsigned int attribIndex, unsigned int attribCount);
 	void AddIndices(const unsigned short *data, unsigned int count);
 	void AddIndices(const unsigned int *data, unsigned int count);		// Overloaded so that index arrays can be shorts or ints
+	void AddIndices(const std::vector<unsigned int> &vector);
 	void DrawArrays(unsigned int renderMode);
 	void DrawElements(unsigned int renderMode);
 

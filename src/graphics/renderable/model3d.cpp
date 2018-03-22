@@ -93,7 +93,7 @@ Model3D::Model3D(const std::string &fileName) :
 	std::vector<Vec3<float>> positions;
 	std::vector<Vec3<float>> normals;
 	std::vector<Vec2<float>> texCoords;
-	std::vector<std::vector<unsigned int>> indices;
+	std::vector< std::vector<unsigned int> > indices;
 
 	if (!ImportOBJ(fileName, positions, normals, texCoords, indices))
 	{
@@ -107,7 +107,7 @@ Model3D::Model3D(const std::string &fileName) :
 	vao.AddBuffer(&texCoords[0], texCoords.size() * sizeof(texCoords[0]), 2, 2);
 
 	for (unsigned char i = 0; i < indices.size(); i++)
-		vao.AddIndices(&indices[i][0], indices[i].size());
+		vao.AddIndices(indices.at(i));
 }
 
 void Model3D::SetDiffuseTexture(const std::string &fileName)
@@ -279,7 +279,27 @@ bool Model3D::ImportOBJ(
 	vec3Lists indexed_normals;
 	vec2Lists indexed_texCoords;
 
+	GenerateIndices(new_positions, new_normals, new_texCoords, indexed_positions, indexed_normals, indexed_texCoords, out_indices);
+
+	// Clear new_ vectors
+	for (unsigned char i = 0; i < new_positions.size(); i++)
+	{
+		delete new_positions[i];
+		delete new_normals[i];
+		delete new_texCoords[i];
+	}
+
 	// TODO: Stick all of the indexed_ vectors in to 1 final vertex buffer for OpenGL, but generate new index lists per object
+	for (unsigned char j = 0; j < indexed_positions.size(); j++)
+	{
+		for (unsigned int i = 0; i < indexed_positions[j]->size(); i++)
+		{
+			in_positions.push_back(indexed_positions[j]->at(i));
+			in_normals.push_back(indexed_normals[j]->at(i));
+			in_texCoords.push_back(indexed_texCoords[j]->at(i));
+		}
+	}
+
 }
 
 void Model3D::GetIndices(std::ifstream &file, std::vector<unsigned short> &index, unsigned int count)

@@ -58,6 +58,11 @@ void VertexArray::AddIndices(const unsigned int* data, unsigned int count)
 	indexBuffers.push_back(new IndexBuffer(data, count));
 }
 
+void VertexArray::AddIndices(const std::vector<unsigned int> &vector)
+{
+	indexBuffers.push_back(new IndexBuffer(vector.data(), vector.size()));
+}
+
 void VertexArray::DrawArrays(unsigned int renderMode)
 {
 	for (char i = 0; i < vertexBuffers.size(); i++)
