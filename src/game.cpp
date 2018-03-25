@@ -93,13 +93,13 @@ bool Game::Initialise()
 	Shader *pShader = new Shader("basicPhong");
 	scene.AddShader(pShader);
 
-	Model3D *pFloor = new Model3D("floor.mmf");
+	ModelMMF *pFloor = new ModelMMF("floor.mmf");
 	pFloor->SetPosition(0.0f, -1.0f, 0.0f);
 	pFloor->SetDiffuseTexture("models/floor.tga");
 	pFloor->SetShader(pShader);
 	scene.AddRenderable(pFloor);
 
-	Model3D *pCube = new Model3D("cube.mmf");
+	ModelMMF *pCube = new ModelMMF("cube.mmf");
 	pCube->SetScale(0.2f, 0.2f, 0.2f);
 	pCube->SetDiffuseTexture("models/cube.tga");
 	pCube->specularity = 0.2f;
@@ -107,7 +107,7 @@ bool Game::Initialise()
 	pCube->SetShader(pShader);
 	scene.AddRenderable(pCube);
 
-	Model3D *pTeapot = new Model3D("teapot.mmf");
+	ModelMMF *pTeapot = new ModelMMF("teapot.mmf");
 	pTeapot->SetPosition(1.2f, 0.0f, 0.0f);
 	pTeapot->SetScale(0.02f, 0.02f, 0.02f);
 	pTeapot->SetDiffuseTexture("models/test.tga");
@@ -116,7 +116,7 @@ bool Game::Initialise()
 	pTeapot->SetShader(pShader);
 	scene.AddRenderable(pTeapot);
 
-	Model3D *pClone = new Model3D("poo.mmf");
+	ModelMMF *pClone = new ModelMMF("poo.mmf");
 	pClone->SetPosition(-1.0f, 0.0f, 0.0f);
 	pClone->SetRotation3D(0.0f, 180.0f, 0.0f);
 	pClone->SetScale(0.02f, 0.02f, 0.02f);

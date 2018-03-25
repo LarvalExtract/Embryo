@@ -6,7 +6,7 @@
 #include <graphics/renderable/box3d.h>
 #include <graphics/renderable/gizmo3d.h>
 #include <graphics/renderable/gyro3d.h>
-#include <graphics/renderable/model3d.h>
+#include <graphics/renderable/modelmmf.h>
 #include <graphics/renderable/skybox3d.h>
 #include <graphics/renderable/sprite2d.h>
 #include <graphics/renderable/sprite3d.h>
