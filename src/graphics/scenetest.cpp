@@ -5,7 +5,7 @@
 #include <graphics/renderable/box3d.h>
 #include <graphics/renderable/gizmo3d.h>
 #include <graphics/renderable/gyro3d.h>
-#include <graphics/renderable/model3d.h>
+#include <graphics/renderable/modelmmf.h>
 #include <graphics/renderable/skybox3d.h>
 #include <graphics/renderable/sprite2d.h>
 #include <graphics/renderable/sprite3d.h>
@@ -33,13 +33,13 @@ bool SceneTest::InitialiseScene(Window &window)
 	Shader *pShader = new Shader("basicPhong");
 	AddShader(pShader);
 
-	Model3D *pFloor = new Model3D("floor.mmf");
+	ModelMMF *pFloor = new ModelMMF("floor.mmf");
 	pFloor->SetPosition(0.0f, -1.0f, 0.0f);
 	pFloor->SetDiffuseTexture("models/floor.tga");
 	pFloor->SetShader(pShader);
 	AddRenderable(pFloor);
 
-	Model3D *pCube = new Model3D("cube.mmf");
+	ModelMMF *pCube = new ModelMMF("cube.mmf");
 	pCube->SetScale(0.2f, 0.2f, 0.2f);
 	pCube->SetDiffuseTexture("models/cube.tga");
 	pCube->specularity = 0.2f;
@@ -47,7 +47,7 @@ bool SceneTest::InitialiseScene(Window &window)
 	pCube->SetShader(pShader);
 	AddRenderable(pCube);
 
-	Model3D *pTeapot = new Model3D("teapot.mmf");
+	ModelMMF *pTeapot = new ModelMMF("teapot.mmf");
 	pTeapot->SetPosition(1.2f, 0.0f, 0.0f);
 	pTeapot->SetScale(0.02f, 0.02f, 0.02f);
 	pTeapot->SetDiffuseTexture("models/test.tga");
@@ -56,7 +56,7 @@ bool SceneTest::InitialiseScene(Window &window)
 	pTeapot->SetShader(pShader);
 	AddRenderable(pTeapot);
 
-	Model3D *pClone = new Model3D("poo.mmf");
+	ModelMMF *pClone = new ModelMMF("poo.mmf");
 	pClone->SetPosition(-1.0f, 0.0f, 0.0f);
 	pClone->SetRotation3D(0.0f, 180.0f, 0.0f);
 	pClone->SetScale(0.02f, 0.02f, 0.02f);
