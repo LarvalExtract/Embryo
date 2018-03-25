@@ -3,16 +3,8 @@
 #include "utilities/console.h"
 
 #include "graphics/window.h"
-#include <graphics/renderable/box3d.h>
-#include <graphics/renderable/gizmo3d.h>
-#include <graphics/renderable/gyro3d.h>
-#include <graphics/renderable/modelmmf.h>
-#include <graphics/renderable/skybox3d.h>
-#include <graphics/renderable/sprite2d.h>
-#include <graphics/renderable/sprite3d.h>
-#include "graphics/scene.h"
 
-#include "utilities/controls.h"
+#include "graphics/scene.h"
 
 #include <utilities/timer.h>
 
@@ -23,24 +15,27 @@ public:
 	Game();
 	~Game();
 
-	bool Initialise();
 	void Start();
 
 private:
-	// Process user input
-	void ProcessInput();
+	bool Initialise();
 
-	// Update the game's states and conditions
+	// Update and draw scenes
 	void Update();
 
-	// Draw frame to the window
-	void Draw();
+	// Scenes
+	// Add a new scene
+	bool AddScene(Scene *pScene);
+
+	// Remove an existing screen
+	bool RemoveScene(Scene *pScene);
+
+	// Swap an existing screen with a new scene (e.g., game level to "game over" screen)
+	bool AddRemoveScene(Scene *pScene, Scene *pNewScene);
 
 	Window window;
-	Scene scene;
-	Scene hud;
 
-	Controls controls;
+	std::vector<Scene*> scenes;
 
 	// Delta time
 	double lastTime;

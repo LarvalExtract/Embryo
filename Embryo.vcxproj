@@ -181,6 +181,8 @@
     <ClCompile Include="src\graphics\renderable\sprite2d.cpp" />
     <ClCompile Include="src\graphics\renderable\sprite3d.cpp" />
     <ClCompile Include="src\graphics\scene.cpp" />
+    <ClCompile Include="src\graphics\scenehud.cpp" />
+    <ClCompile Include="src\graphics\scenetest.cpp" />
     <ClCompile Include="src\graphics\shader.cpp" />
     <ClCompile Include="src\graphics\texture.cpp" />
     <ClCompile Include="src\graphics\vertexarray.cpp" />
@@ -221,6 +223,8 @@
     <ClInclude Include="src\graphics\renderable\sprite2d.h" />
     <ClInclude Include="src\graphics\renderable\sprite3d.h" />
     <ClInclude Include="src\graphics\scene.h" />
+    <ClInclude Include="src\graphics\scenehud.h" />
+    <ClInclude Include="src\graphics\scenetest.h" />
     <ClInclude Include="src\graphics\shader.h" />
     <ClInclude Include="src\graphics\texture.h" />
     <ClInclude Include="src\graphics\vertexarray.h" />

@@ -5,7 +5,7 @@
 Scene::Scene() :
 	activeCameraID(-1),
 	pSceneSky(nullptr),
-	sceneName("Unnamed")
+	sceneName("")
 {
 }
 
@@ -34,7 +34,7 @@ Scene::~Scene()
 			delete shader_it->second;
 }
 
-bool Scene::InitialiseScene()
+bool Scene::InitialiseScene(Window &window)
 {
 	if (sceneCameras.size() == 0)
 	{
@@ -57,22 +57,31 @@ bool Scene::InitialiseScene()
 	return true;
 }
 
-bool Scene::InitialiseScene(std::string name)
+bool Scene::InitialiseScene(Window &window, std::string name)
 {
 	// Set screen name if it doesn't have one already
 	if (sceneName.empty())
 		sceneName = "\'" + name + "\'";
 
-	return InitialiseScene();
+	pWindow = &window;
+
+	return InitialiseScene(window);
 }
 
-void Scene::UpdateScene()
+void Scene::ProcessInput(float deltaTime)
 {
+	controls.MatricesFromInputs(*pWindow, GetActiveCamera(), deltaTime);
+}
+
+void Scene::UpdateScene(float deltaTime)
+{
+	ProcessInput(deltaTime);
+
 	alListener3f(AL_POSITION, sceneCameras[activeCameraID]->position.x, sceneCameras[activeCameraID]->position.y, sceneCameras[activeCameraID]->position.z);
 
 	// Attenuate sounds in scene
-	for (sound_it = sceneSounds.begin(); sound_it != sceneSounds.end(); sound_it++)
-		sound_it->second->Attenuate();
+	for (auto sound : sceneSounds)
+		sound.second->Attenuate();
 
 	sceneShaders["basicPhong"]->Bind();
 	sceneShaders["basicPhong"]->SetUniformFloat("ambience", 0.4f);

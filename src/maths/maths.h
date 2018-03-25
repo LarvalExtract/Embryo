@@ -4,7 +4,9 @@
 
 namespace Maths
 {
+	extern const float HalfPi;
 	extern const float Pi;
+	extern const float DoublePi;
 
 	// TODO: Implement overloads for vector functions
 

@@ -34,7 +34,8 @@ enum class LogType
 	None,
 	Log,
 	Warning,
-	Error
+	Error,
+	Success
 };
 
 // Adds two colour codes to make the console text foreground/background colour
@@ -119,6 +120,7 @@ public:
 
 	static char* const strWarning;
 	static char* const strError;
+	static char* const strSuccess;
 
 	static bool bIsRunning;
 private:
