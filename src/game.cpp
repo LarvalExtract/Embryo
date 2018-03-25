@@ -85,6 +85,7 @@ bool Game::Initialise()
 
 	// Initialise the scenes
 	if (!pSceneTest->InitialiseScene(window, "Scene1"))
+
 		return false;
 
 	if (!pSceneHud->InitialiseScene(window, "Scene2"))

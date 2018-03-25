@@ -173,9 +173,11 @@
     <ClCompile Include="src\graphics\renderable\box3d.cpp" />
     <ClCompile Include="src\graphics\renderable\gizmo3d.cpp" />
     <ClCompile Include="src\graphics\renderable\model3d.cpp" />
+    <ClCompile Include="src\graphics\renderable\modelobj.cpp" />
     <ClCompile Include="src\graphics\renderable\renderable.cpp" />
     <ClCompile Include="src\graphics\renderable\skybox3d.cpp" />
     <ClCompile Include="src\graphics\renderable\gyro3d.cpp" />
+    <ClCompile Include="src\graphics\renderable\modelmmf.cpp" />
     <ClCompile Include="src\graphics\renderable\sprite2d.cpp" />
     <ClCompile Include="src\graphics\renderable\sprite3d.cpp" />
     <ClCompile Include="src\graphics\scene.cpp" />
@@ -213,7 +215,9 @@
     <ClInclude Include="src\graphics\renderable\box3d.h" />
     <ClInclude Include="src\graphics\renderable\gizmo3d.h" />
     <ClInclude Include="src\graphics\renderable\gyro3d.h" />
+    <ClInclude Include="src\graphics\renderable\modelmmf.h" />
     <ClInclude Include="src\graphics\renderable\model3d.h" />
+    <ClInclude Include="src\graphics\renderable\modelobj.h" />
     <ClInclude Include="src\graphics\renderable\renderable.h" />
     <ClInclude Include="src\graphics\renderable\skybox3d.h" />
     <ClInclude Include="src\graphics\renderable\sprite2d.h" />
