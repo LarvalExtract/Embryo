@@ -18,9 +18,9 @@ private:
 		ObjFace() :v{ -1 }, vt{ -1 }, vn{ -1 } {}
 	};
 
-	typedef std::vector< std::vector<Vec3<float>>* > vec3Lists;
-	typedef std::vector< std::vector<Vec2<float>>* > vec2Lists;
-	typedef std::vector< std::vector<ObjFace>* >	 objFaceLists;
+	typedef std::vector< std::vector<Vec3<float>>* > Vec3Lists;
+	typedef std::vector< std::vector<Vec2<float>>* > Vec2Lists;
+	typedef std::vector< std::vector<ObjFace>* >	 ObjFaceLists;
 
 	static bool ImportOBJ(
 		const std::string &filePath,
@@ -44,9 +44,9 @@ private:
 
 	// Use OBJ indices to generate un-indexed vertex arrays
 	static void GenerateVertexArrays(
-		vec3Lists &out_positions,
-		vec3Lists &out_normals,
-		vec2Lists &out_texCoords,
+		Vec3Lists &out_positions,
+		Vec3Lists &out_normals,
+		Vec2Lists &out_texCoords,
 		const std::vector<Vec3<float>> &in_positions,
 		const std::vector<Vec3<float>> &in_normals,
 		const std::vector<Vec2<float>> &in_texCoords,
@@ -65,11 +65,11 @@ private:
 
 	// Iterate through an array of vertices to find similar vertices and generate a list of indices
 	static void GenerateIndices(
-		vec3Lists &in_positions,
-		vec3Lists &in_normals,
-		vec2Lists &in_texCoords,
-		vec3Lists &out_positions,
-		vec3Lists &out_normals,
-		vec2Lists &out_texCoords,
+		Vec3Lists &in_positions,
+		Vec3Lists &in_normals,
+		Vec2Lists &in_texCoords,
+		Vec3Lists &out_positions,
+		Vec3Lists &out_normals,
+		Vec2Lists &out_texCoords,
 		std::vector<std::vector<unsigned int>> &out_indices);
 };

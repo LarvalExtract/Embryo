@@ -54,7 +54,7 @@ bool ModelOBJ::ImportOBJ(
 	std::vector<Vec3<float>>	temp_normals;
 
 	// indexLists is a vector of vectors. This is to extract faces from the OBJ file as seperate objects dependant on lines beginning with o
-	objFaceLists indexLists;
+	ObjFaceLists indexLists;
 
 	// Buffer to store the current line in the obj file
 	std::string curLine;
@@ -88,9 +88,9 @@ bool ModelOBJ::ImportOBJ(
 	}
 
 	// Vectors of vectors to store vertex data by seperate object
-	vec3Lists new_positions;
-	vec3Lists new_normals;
-	vec2Lists new_texCoords;
+	Vec3Lists new_positions;
+	Vec3Lists new_normals;
+	Vec2Lists new_texCoords;
 
 	// The following algorithm requires the seperated lists of indices to generate multiple, un-indexed vertex arrays per object found in the OBJ file
 	for (unsigned short i = 0; i < indexLists.size(); i++)
@@ -108,9 +108,9 @@ bool ModelOBJ::ImportOBJ(
 
 	// It works up to here
 	// TODO: Now that there are seperate vertex arrays per individual object, they need to be indexed...
-	vec3Lists indexed_positions;
-	vec3Lists indexed_normals;
-	vec2Lists indexed_texCoords;
+	Vec3Lists indexed_positions;
+	Vec3Lists indexed_normals;
+	Vec2Lists indexed_texCoords;
 
 	GenerateIndices(new_positions, new_normals, new_texCoords, indexed_positions, indexed_normals, indexed_texCoords, out_indices);
 
@@ -223,9 +223,9 @@ bool ModelOBJ::Compare(float a, float b)
 }
 
 void ModelOBJ::GenerateVertexArrays(
-	vec3Lists &out_positions,
-	vec3Lists &out_normals,
-	vec2Lists &out_texCoords,
+	Vec3Lists &out_positions,
+	Vec3Lists &out_normals,
+	Vec2Lists &out_texCoords,
 	const std::vector<Vec3<float>> &in_positions,
 	const std::vector<Vec3<float>> &in_normals,
 	const std::vector<Vec2<float>> &in_texCoords,
@@ -279,12 +279,12 @@ bool ModelOBJ::GetSimilarVertexIndex(
 }
 
 void ModelOBJ::GenerateIndices(
-	vec3Lists &in_positions,
-	vec3Lists &in_normals,
-	vec2Lists &in_texCoords,
-	vec3Lists &out_positions,
-	vec3Lists &out_normals,
-	vec2Lists &out_texCoords,
+	Vec3Lists &in_positions,
+	Vec3Lists &in_normals,
+	Vec2Lists &in_texCoords,
+	Vec3Lists &out_positions,
+	Vec3Lists &out_normals,
+	Vec2Lists &out_texCoords,
 	std::vector<std::vector<unsigned int>> &out_indices
 )
 {

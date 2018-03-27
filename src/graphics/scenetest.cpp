@@ -99,8 +99,9 @@ bool SceneTest::InitialiseScene(Window &window)
 	LightOmni *pLight = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
 	AddLight(pLight);
 
-	//LightOmni *pRedLight = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
-	//scene->AddLight(redLight);
+	LightOmni *pRedLight = new LightOmni(Vec3<float>(4.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 0.0f, 0.0f), 1.0f);
+	pRedLight->name = "light_red";
+	AddLight(pRedLight);
 
 	return Scene::InitialiseScene(window);
 }
@@ -117,14 +118,14 @@ void SceneTest::ProcessInput(float deltaTime)
 
 void SceneTest::UpdateScene(float deltaTime)
 {
-	Scene::UpdateScene(deltaTime);
-
 	counter += 1.0f * deltaTime;
 
 	// BUG: Crashes if the scene cannot find a renderable or light
 	GetRenderable("teapot")->SetRotation3D(sin(counter * 10), 0.0f, cos(counter * 20));
-	GetLight("light_omni")->SetPosition(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
-	//scene->GetLight("light_omni")->SetPower(sin(counter * 2) * 3);
+	GetLight("light_omni")->position = Vec3<float>(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
+	GetLight("light_red")->power = (sin(counter * 2) * 0.5f) + 0.5f;
+
+	Scene::UpdateScene(deltaTime);
 }
 
 void SceneTest::DrawScene()

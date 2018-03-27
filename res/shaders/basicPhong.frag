@@ -1,16 +1,19 @@
 #version 330 core
 
+#define MAX_LIGHT_SOURCES 8
+
 in vec2 texCoord;
 in vec3 surfaceNormal;
-in vec3 lightVector;
 in vec3 cameraVector;
 
 out vec4 out_colour;
 
 uniform sampler2D diffuseTexture;
 
-uniform vec3 lightColour;
-uniform float lightPower;
+uniform int u_numLights;
+uniform vec3 u_lightColour[MAX_LIGHT_SOURCES];
+uniform float u_lightPower[MAX_LIGHT_SOURCES];
+in vec3 u_surfaceToLight[MAX_LIGHT_SOURCES];
 
 uniform float specularity;
 uniform float glossiness;
@@ -18,18 +21,24 @@ uniform float ambience;
 
 void main()
 { 
-	vec3 normalizedSurfaceNormal = normalize(surfaceNormal);
-	vec3 normalizedLightVector = normalize(lightVector);
-	vec3 normalizedCameraVector = normalize(cameraVector);
+	vec3 unitSurfaceNormal = normalize(surfaceNormal);
+	vec3 unitCameraVector = normalize(cameraVector);
 
-	vec3 reflectedLightDirection = reflect(-normalizedLightVector, normalizedSurfaceNormal);
+	vec4 totalDiffuse = vec4(0.0, 0.0, 0.0, 0.0);
+	vec4 totalSpecular = vec4(0.0, 0.0, 0.0, 0.0);
 
-	float specFactor = max(dot(reflectedLightDirection, normalizedCameraVector), 0.0);
-	float damped = pow(specFactor, glossiness);
+	for (int i = 0; i < u_numLights; i++)
+	{
+		vec3 unitSurfaceToLight = normalize(u_surfaceToLight[i]);
 
-	vec4 diffuse = vec4(lightColour * max(dot(normalizedSurfaceNormal, normalizedLightVector), 0.0), 1.0);
-	vec4 specular = vec4(lightColour * damped * specularity, 1.0);
+		vec3 reflectedLightDirection = reflect(-unitSurfaceToLight, unitSurfaceNormal);
 
-	out_colour =  max(lightPower * diffuse, ambience) * texture(diffuseTexture, texCoord) + max(lightPower * specular, 0.0);
-	
+		float specFactor = max(dot(reflectedLightDirection, unitCameraVector), 0.0);
+		float damped = pow(specFactor, glossiness);
+
+		totalDiffuse += max(u_lightPower[i] * vec4(u_lightColour[i] * max(dot(unitSurfaceNormal, unitSurfaceToLight), 0.0), 1.0), 0.0);
+		totalSpecular += max(u_lightPower[i] * vec4(u_lightColour[i] * damped * specularity, 1.0), 0.0);
+	}
+
+	out_colour = max(totalDiffuse, ambience) * texture(diffuseTexture, texCoord) + max(totalSpecular, 0.0);	
 }
