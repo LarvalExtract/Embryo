@@ -72,13 +72,11 @@ protected:
 
 	std::vector<Camera*> sceneCameras;
 
-	std::unordered_map<std::string, Renderable*>::iterator renderable_it;
-	std::unordered_map<std::string, LightSource*>::iterator light_it;
-	std::unordered_map<std::string, AudioSource*>::iterator sound_it;
-	std::unordered_map<std::string, Shader*>::iterator shader_it;
-	//std::unordered_map<std::string, Camera*>::iterator camera_it;
-
 	std::string sceneName;
+
+	// Maximum number of lights allowed in the scene
+	// Corresponds with MAX_LIGHT_SOURCES macro defined in basicPhong shader source
+	const int maxLightSources;
 
 	char activeCameraID;
 

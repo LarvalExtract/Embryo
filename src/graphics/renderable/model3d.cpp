@@ -43,9 +43,9 @@ void Model3D::Draw(Camera &camera, Mat4 &cameraMatrix)
 	shader->Bind();
 
 	// Update shader matrices
-	shader->SetUniformMat4("transformMatrix", GetTransformMatrix());
-	shader->SetUniformMat4("viewMatrix", camera.viewMatrix);
-	shader->SetUniformMat4("mvpMatrix", GetTransformMatrix() * cameraMatrix);
+	shader->SetUniformMat4("u_transformMatrix", GetTransformMatrix());
+	shader->SetUniformMat4("u_viewMatrix", camera.viewMatrix);
+	shader->SetUniformMat4("u_mvpMatrix", GetTransformMatrix() * cameraMatrix);
 
 	// Update shader specular and gloss values
 	shader->SetUniformFloat("specularity", specularity);

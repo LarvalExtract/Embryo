@@ -1,7 +1,7 @@
 #pragma once
 
 #include "renderable.h"
-#include <graphics/texture.h>
+#include <graphics/texture2d.h>
 #include <vector>
 
 class Model3D : public Renderable
