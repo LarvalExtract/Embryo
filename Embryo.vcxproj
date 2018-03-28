@@ -200,7 +200,6 @@
     <ClCompile Include="src\utilities\console.cpp" />
     <ClCompile Include="src\utilities\controls.cpp" />
     <ClCompile Include="src\utilities\file.cpp" />
-    <ClCompile Include="src\utilities\import_audio_wav.cpp" />
     <ClCompile Include="src\utilities\timer.cpp" />
     <ClCompile Include="src\utilities\utility.cpp" />
   </ItemGroup>
@@ -247,7 +246,6 @@
     <ClInclude Include="src\utilities\console.h" />
     <ClInclude Include="src\utilities\controls.h" />
     <ClInclude Include="src\utilities\file.h" />
-    <ClInclude Include="src\utilities\import_audio_wav.h" />
     <ClInclude Include="src\utilities\timer.h" />
     <ClInclude Include="src\utilities\utility.h" />
   </ItemGroup>

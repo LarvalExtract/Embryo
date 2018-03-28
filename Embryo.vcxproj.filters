@@ -102,9 +102,6 @@
     <ClCompile Include="src\graphics\renderable\gyro3d.cpp">
       <Filter>Source Files\Graphics\Renderables</Filter>
     </ClCompile>
-    <ClCompile Include="src\utilities\import_audio_wav.cpp">
-      <Filter>Source Files\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\indexbuffer.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
@@ -229,9 +226,6 @@
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\gyro3d.h">
       <Filter>Header Files\Graphics\Renderables</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utilities\import_audio_wav.h">
-      <Filter>Header Files\Audio</Filter>
     </ClInclude>
     <ClInclude Include="src\screen.h">
       <Filter>Header Files\Game</Filter>
