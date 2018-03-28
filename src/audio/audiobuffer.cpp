@@ -1,10 +1,15 @@
 #include "AudioBuffer.h"
-#include <utilities/import_audio_wav.h>
-#include <iostream>
+#include "wavfile.h"
 
 AudioBuffer::AudioBuffer(const std::string& filePath)
 {
-	Init(filePath);
+	alGenBuffers(1, &bufferLeft);
+	alGenBuffers(1, &bufferRight);
+
+	WavFile wavFile(filePath);
+
+	alBufferData(bufferLeft, AL_FORMAT_MONO16, wavFile.channelData[(char)Channel::Left], wavFile.channelDataLength, wavFile.sampleRate);
+	alBufferData(bufferRight, AL_FORMAT_MONO16, wavFile.channelData[(char)Channel::Right], wavFile.channelDataLength, wavFile.sampleRate);
 }
 
 AudioBuffer::~AudioBuffer()
@@ -21,25 +26,4 @@ ALuint& AudioBuffer::GetLeftChannelID()
 ALuint& AudioBuffer::GetRightChannelID()
 {
 	return bufferRight;
-}
-
-void AudioBuffer::Init(const std::string& filePath)
-{
-	char* leftChannelData = nullptr;
-	char* rightChannelData = nullptr;
-	unsigned int channelDataLength;
-
-	unsigned int sampleRate;
-	unsigned short bitsPerSample;
-	
-	ImportWAV(filePath, leftChannelData, rightChannelData, channelDataLength, sampleRate, bitsPerSample);
-
-	alGenBuffers(1, &bufferLeft);
-	alGenBuffers(1, &bufferRight);
-
-	alBufferData(bufferLeft,  AL_FORMAT_MONO16, leftChannelData,  channelDataLength, sampleRate);
-	alBufferData(bufferRight, AL_FORMAT_MONO16, rightChannelData, channelDataLength, sampleRate);
-	
-	delete[] leftChannelData;
-	delete[] rightChannelData;
 }

@@ -162,7 +162,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\audio\audiobuffer.cpp" />
+    <ClCompile Include="src\audio\audiofile.cpp" />
     <ClCompile Include="src\audio\audiosource.cpp" />
+    <ClCompile Include="src\audio\wavfile.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\graphics\camera.cpp" />
     <ClCompile Include="src\graphics\cameraortho.cpp" />
@@ -198,13 +200,14 @@
     <ClCompile Include="src\utilities\console.cpp" />
     <ClCompile Include="src\utilities\controls.cpp" />
     <ClCompile Include="src\utilities\file.cpp" />
-    <ClCompile Include="src\utilities\import_audio_wav.cpp" />
     <ClCompile Include="src\utilities\timer.cpp" />
     <ClCompile Include="src\utilities\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\audio\audiobuffer.h" />
+    <ClInclude Include="src\audio\audiofile.h" />
     <ClInclude Include="src\audio\audiosource.h" />
+    <ClInclude Include="src\audio\wavfile.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\cameraortho.h" />
@@ -243,7 +246,6 @@
     <ClInclude Include="src\utilities\console.h" />
     <ClInclude Include="src\utilities\controls.h" />
     <ClInclude Include="src\utilities\file.h" />
-    <ClInclude Include="src\utilities\import_audio_wav.h" />
     <ClInclude Include="src\utilities\timer.h" />
     <ClInclude Include="src\utilities\utility.h" />
   </ItemGroup>

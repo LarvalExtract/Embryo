@@ -16,6 +16,4 @@ public:
 
 private:
 	ALuint bufferLeft, bufferRight;
-
-	void Init(const std::string& filePath);
 };
