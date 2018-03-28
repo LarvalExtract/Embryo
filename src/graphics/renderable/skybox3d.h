@@ -1,7 +1,7 @@
 #pragma once
 
 #include "renderable.h"
-#include <graphics/texture.h>
+#include <graphics/cubemap.h>
 
 class Skybox3D : public Renderable
 {

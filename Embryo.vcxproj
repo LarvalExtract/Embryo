@@ -167,6 +167,7 @@
     <ClCompile Include="src\graphics\camera.cpp" />
     <ClCompile Include="src\graphics\cameraortho.cpp" />
     <ClCompile Include="src\graphics\campersp.cpp" />
+    <ClCompile Include="src\graphics\cubemap.cpp" />
     <ClCompile Include="src\graphics\indexbuffer.cpp" />
     <ClCompile Include="src\graphics\lightomni.cpp" />
     <ClCompile Include="src\graphics\lightsource.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="src\graphics\scenetest.cpp" />
     <ClCompile Include="src\graphics\shader.cpp" />
     <ClCompile Include="src\graphics\texture.cpp" />
+    <ClCompile Include="src\graphics\texture2d.cpp" />
     <ClCompile Include="src\graphics\vertexarray.cpp" />
     <ClCompile Include="src\graphics\vertexbuffer.cpp" />
     <ClCompile Include="src\graphics\window.cpp" />
@@ -197,7 +199,6 @@
     <ClCompile Include="src\utilities\controls.cpp" />
     <ClCompile Include="src\utilities\file.cpp" />
     <ClCompile Include="src\utilities\import_audio_wav.cpp" />
-    <ClCompile Include="src\utilities\import_bitmap.cpp" />
     <ClCompile Include="src\utilities\timer.cpp" />
     <ClCompile Include="src\utilities\utility.cpp" />
   </ItemGroup>
@@ -208,6 +209,7 @@
     <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\cameraortho.h" />
     <ClInclude Include="src\graphics\campersp.h" />
+    <ClInclude Include="src\graphics\cubemap.h" />
     <ClInclude Include="src\graphics\graphics.h" />
     <ClInclude Include="src\graphics\indexbuffer.h" />
     <ClInclude Include="src\graphics\lightomni.h" />
@@ -227,6 +229,7 @@
     <ClInclude Include="src\graphics\scenetest.h" />
     <ClInclude Include="src\graphics\shader.h" />
     <ClInclude Include="src\graphics\texture.h" />
+    <ClInclude Include="src\graphics\texture2d.h" />
     <ClInclude Include="src\graphics\vertexarray.h" />
     <ClInclude Include="src\graphics\vertexbuffer.h" />
     <ClInclude Include="src\graphics\window.h" />
@@ -241,7 +244,6 @@
     <ClInclude Include="src\utilities\controls.h" />
     <ClInclude Include="src\utilities\file.h" />
     <ClInclude Include="src\utilities\import_audio_wav.h" />
-    <ClInclude Include="src\utilities\import_bitmap.h" />
     <ClInclude Include="src\utilities\timer.h" />
     <ClInclude Include="src\utilities\utility.h" />
   </ItemGroup>

@@ -102,9 +102,6 @@
     <ClCompile Include="src\graphics\renderable\gyro3d.cpp">
       <Filter>Source Files\Graphics\Renderables</Filter>
     </ClCompile>
-    <ClCompile Include="src\utilities\import_bitmap.cpp">
-      <Filter>Source Files\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="src\utilities\import_audio_wav.cpp">
       <Filter>Source Files\Audio</Filter>
     </ClCompile>
@@ -192,6 +189,12 @@
     <ClCompile Include="src\graphics\renderable\modelobj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\texture2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\cubemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\campersp.h">
@@ -223,9 +226,6 @@
     </ClInclude>
     <ClInclude Include="src\utilities\import_audio_wav.h">
       <Filter>Header Files\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utilities\import_bitmap.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\screen.h">
       <Filter>Header Files\Game</Filter>
@@ -321,6 +321,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\modelobj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\texture2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\cubemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

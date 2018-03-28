@@ -1,24 +1,21 @@
 #pragma once
 #include <string>
-#include <utilities/import_bitmap.h>
+#include <GL/glew.h>
+#include <fstream>
 
 class Texture
 {
 public:
+	virtual ~Texture();
+
 	void Bind(unsigned int unit);
 
-	inline unsigned short GetWidth() { return width; }
-	inline unsigned short GetHeight() { return height; }
-	inline unsigned char GetBitDepth() { return bpp; }
-
-	void SetSpecularity(float value);
-	void SetGlossiness(float value);
-
-	float GetSpecularity();
-	float GetGlossiness();
+	unsigned short GetWidth() { return width; }
+	unsigned short GetHeight() { return height; }
+	unsigned char GetBitDepth() { return bpp; }
 
 protected:
-	Texture() : specularity(1), glossiness(10) {};
+	Texture();
 
 	unsigned int hTexture;
 	unsigned int target;
@@ -27,32 +24,14 @@ protected:
 	unsigned short height;
 	unsigned char  bpp;
 
-	float specularity;
-	float glossiness;
-};
+	void GetTGAInfo(
+		std::ifstream &tgaFile,
+		unsigned short &width,
+		unsigned short &height,
+		unsigned char &bpp);
 
-class Texture2D : public Texture
-{
-public:
-	Texture2D();
-	Texture2D(const std::string& filePath);
-	~Texture2D();
-
-	void Init(const std::string& filePath);
-private:
-
-};
-
-class Cubemap : public Texture
-{
-public:
-	Cubemap();
-	Cubemap(const std::string& filePath);
-	~Cubemap();
-
-	void Init(const std::string& filePath);
-
-	void SetCubemapFace(unsigned int face, const char*& imageData);
-private:
-
+	bool ImportTGAFile(
+		const std::string& filePath,
+		char*& imageData,
+		unsigned int& imageDataLength);
 };
