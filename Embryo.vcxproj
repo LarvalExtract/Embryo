@@ -162,7 +162,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\audio\audiobuffer.cpp" />
+    <ClCompile Include="src\audio\audiofile.cpp" />
     <ClCompile Include="src\audio\audiosource.cpp" />
+    <ClCompile Include="src\audio\wavfile.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\graphics\camera.cpp" />
     <ClCompile Include="src\graphics\cameraortho.cpp" />
@@ -204,7 +206,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\audio\audiobuffer.h" />
+    <ClInclude Include="src\audio\audiofile.h" />
     <ClInclude Include="src\audio\audiosource.h" />
+    <ClInclude Include="src\audio\wavfile.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\cameraortho.h" />

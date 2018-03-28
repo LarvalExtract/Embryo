@@ -35,22 +35,24 @@ Cubemap::Cubemap(const std::string &imageFileName) :
 	glGenTextures(1, &hTexture);
 	glBindTexture(target, hTexture);
 
-	ImportCubemapFace(file, faceData, (faceDataLength * 0) + ((faceWidth * bpp) * 1), faceWidth, faceHeight, Bpp, true);
+	file.seekg(18, std::ios::beg);
+
+	ImportCubemapFace(file, faceData, (faceDataLength * 0) + ((faceWidth * Bpp) * 1), faceWidth, faceHeight, Bpp, true);
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, faceWidth, faceHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, faceData);		// Bottom
 
-	ImportCubemapFace(file, faceData, (faceDataLength * 4) + ((faceWidth * bpp) * 0), faceWidth, faceHeight, Bpp, true);
+	ImportCubemapFace(file, faceData, (faceDataLength * 4) + ((faceWidth * Bpp) * 0), faceWidth, faceHeight, Bpp, true);
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, faceWidth, faceHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, faceData);		// Left
 
-	ImportCubemapFace(file, faceData, (faceDataLength * 4) + ((faceWidth * bpp) * 1), faceWidth, faceHeight, Bpp, true);
+	ImportCubemapFace(file, faceData, (faceDataLength * 4) + ((faceWidth * Bpp) * 1), faceWidth, faceHeight, Bpp, true);
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, faceWidth, faceHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, faceData);		// Front
 
-	ImportCubemapFace(file, faceData, (faceDataLength * 4) + ((faceWidth * bpp) * 2), faceWidth, faceHeight, Bpp, true);
+	ImportCubemapFace(file, faceData, (faceDataLength * 4) + ((faceWidth * Bpp) * 2), faceWidth, faceHeight, Bpp, true);
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, faceWidth, faceHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, faceData);		// Right
 
-	ImportCubemapFace(file, faceData, (faceDataLength * 4) + ((faceWidth * bpp) * 3), faceWidth, faceHeight, Bpp, true);
+	ImportCubemapFace(file, faceData, (faceDataLength * 4) + ((faceWidth * Bpp) * 3), faceWidth, faceHeight, Bpp, true);
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, faceWidth, faceHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, faceData);		// Back
 
-	ImportCubemapFace(file, faceData, (faceDataLength * 8) + ((faceWidth * bpp) * 1), faceWidth, faceHeight, Bpp, true);
+	ImportCubemapFace(file, faceData, (faceDataLength * 8) + ((faceWidth * Bpp) * 1), faceWidth, faceHeight, Bpp, true);
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, faceWidth, faceHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, faceData);		// Top
 
 	delete[] faceData;
