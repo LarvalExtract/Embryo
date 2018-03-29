@@ -35,8 +35,6 @@ Cubemap::Cubemap(const std::string &imageFileName) :
 	glGenTextures(1, &hTexture);
 	glBindTexture(target, hTexture);
 
-	file.seekg(18, std::ios::beg);
-
 	ImportCubemapFace(file, faceData, (faceDataLength * 0) + ((faceWidth * Bpp) * 1), faceWidth, faceHeight, Bpp, true);
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, faceWidth, faceHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, faceData);		// Bottom
 

@@ -2,6 +2,7 @@
 
 #include <audio/AudioBuffer.h>
 #include <maths/maths.h>
+#include <maths/vec2.h>
 
 #include <utilities/console.h>
 
@@ -12,19 +13,19 @@ public:
 
 	virtual ~AudioSource();
 
-	virtual void Attenuate() { Console::Log(LogType::Warning) << "Not attenuating!\n"; };
+	virtual void Attenuate(const Vec3<float> &cameraPosition) = 0;
 
 	void Play();
 	void Pause();
 	void Stop();
 
 	void SetName(const std::string& name);
-
 	void SetGain(float value);
 	void SetPitch(float value);
 	void SetLoop(const bool& value);
 
 	Vec3<float> GetPosition() { return soundPos; };
+	Vec2<float> GetGain();
 
 	std::string GetName();
 
@@ -43,7 +44,7 @@ class AudioSourceLocal : public AudioSource
 public:
 	AudioSourceLocal(const std::string& filePath);
 
-	void Attenuate() override; // Calculate audio volume from listener position
+	void Attenuate(const Vec3<float> &cameraPosition) override; // Calculate audio volume from listener position
 
 	void SetPosition(float x, float y, float z);
 
@@ -57,7 +58,7 @@ class AudioSourceGlobal : public AudioSource
 public:
 	AudioSourceGlobal(const std::string& filePath);
 
-	void Attenuate() override;
+	void Attenuate(const Vec3<float> &cameraPosition) override;
 
 private:
 

@@ -103,6 +103,8 @@ bool SceneTest::InitialiseScene(Window &window)
 	pRedLight->name = "light_red";
 	AddLight(pRedLight);
 
+	PrintSoundList();
+
 	return Scene::InitialiseScene(window);
 }
 
@@ -124,6 +126,8 @@ void SceneTest::UpdateScene(float deltaTime)
 	GetRenderable("teapot")->SetRotation3D(sin(counter * 10), 0.0f, cos(counter * 20));
 	GetLight("light_omni")->position = Vec3<float>(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
 	GetLight("light_red")->power = (sin(counter * 2) * 0.5f) + 0.5f;
+
+	Console::Log(LogType::None) << GetSound("sandtrap_wind_loop")->GetPosition() << "\n";
 
 	Scene::UpdateScene(deltaTime);
 }

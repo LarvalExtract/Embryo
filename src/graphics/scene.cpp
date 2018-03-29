@@ -48,6 +48,7 @@ bool Scene::InitialiseScene(Window &window)
 	//activeCameraID = 0;
 	sceneShaders["basicPhong"]->Bind();
 	sceneShaders["basicPhong"]->SetUniformInt("u_numLights", sceneLights.size());
+	sceneShaders["basicPhong"]->SetUniformFloat("ambience", 0.4f);
 
 	// Print a warning if the skybox does not exist
 	if (pSceneSky == nullptr)
@@ -80,15 +81,6 @@ void Scene::UpdateScene(float deltaTime)
 {
 	ProcessInput(deltaTime);
 
-	alListener3f(AL_POSITION, sceneCameras[activeCameraID]->position.x, sceneCameras[activeCameraID]->position.y, sceneCameras[activeCameraID]->position.z);
-
-	// Attenuate sounds in scene
-	for (auto sound : sceneSounds)
-		sound.second->Attenuate();
-
-	sceneShaders["basicPhong"]->Bind();
-	sceneShaders["basicPhong"]->SetUniformFloat("ambience", 0.4f);
-
 	// Update lights in shader
 	int i = 0;
 	for (auto light : sceneLights)
@@ -99,6 +91,10 @@ void Scene::UpdateScene(float deltaTime)
 		sceneShaders["basicPhong"]->SetUniformFloat("u_lightPower[" + std::to_string(i) + ']', light.second->power);
 		i++;
 	}
+
+	// Attenuate sounds in scene
+	for (auto sound : sceneSounds)
+		sound.second->Attenuate(sceneCameras[activeCameraID]->position);
 }
 
 void Scene::DrawScene()
@@ -156,7 +152,11 @@ LightSource* Scene::GetLight(const std::string &lightName)
 
 AudioSource* Scene::GetSound(const std::string &soundName)
 {
-	return sceneSounds.at(soundName);
+	if (sceneSounds.find(soundName) == sceneSounds.end())
+		Console::Log(LogType::Error) << "Couldn't find " << soundName << " in " << sceneName << "\n";
+
+	else
+		return sceneSounds.at(soundName);
 }
 
 Shader* Scene::GetShader(const std::string &shaderName)
