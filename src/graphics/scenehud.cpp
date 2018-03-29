@@ -52,9 +52,9 @@ void SceneHud::ProcessInput(float deltaTime)
 
 void SceneHud::UpdateScene(float deltaTime)
 {
-	Scene::UpdateScene(deltaTime);
-
 	counter += 1.0f * deltaTime;
+
+	Scene::UpdateScene(deltaTime);
 }
 
 void SceneHud::DrawScene()

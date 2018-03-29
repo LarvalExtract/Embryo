@@ -50,6 +50,14 @@ void AudioSource::SetLoop(const bool& value)
 	alSourcei(rightChannel, AL_LOOPING, value);
 }
 
+Vec2<float> AudioSource::GetGain()
+{
+	Vec2<float> gain;
+	alGetSourcef(leftChannel, AL_GAIN, &gain.x);
+	alGetSourcef(rightChannel, AL_GAIN, &gain.y);
+	return gain;
+}
+
 std::string AudioSource::GetName()
 {
 	return name;
@@ -80,14 +88,10 @@ AudioSourceLocal::AudioSourceLocal(const std::string& filePath) :
 	alSourcei(rightChannel, AL_SOURCE_RELATIVE, AL_TRUE);
 }
 
-void AudioSourceLocal::Attenuate()
+void AudioSourceLocal::Attenuate(const Vec3<float> &cameraPosition)
 {
-	alGetListener3f(AL_POSITION, &listenerPos.x, &listenerPos.y, &listenerPos.z);
-
-	//alGetSource3f(leftChannel, AL_POSITION, &soundPos.x, &soundPos.y, &soundPos.z);
-
-	alSourcef(leftChannel, AL_GAIN, AL_REFERENCE_DISTANCE / (AL_REFERENCE_DISTANCE + AL_ROLLOFF_FACTOR * (Maths::Distance(listenerPos, soundPos))));
-	alSourcef(rightChannel, AL_GAIN, AL_REFERENCE_DISTANCE / (AL_REFERENCE_DISTANCE + AL_ROLLOFF_FACTOR * (Maths::Distance(listenerPos, soundPos))));
+	alSourcef(leftChannel, AL_GAIN, AL_REFERENCE_DISTANCE / (AL_REFERENCE_DISTANCE + AL_ROLLOFF_FACTOR * (Maths::Distance(cameraPosition, soundPos))));
+	alSourcef(rightChannel, AL_GAIN, AL_REFERENCE_DISTANCE / (AL_REFERENCE_DISTANCE + AL_ROLLOFF_FACTOR * (Maths::Distance(cameraPosition, soundPos))));
 }
 
 void AudioSourceLocal::SetPosition(float x, float y, float z)
@@ -120,10 +124,7 @@ AudioSourceGlobal::AudioSourceGlobal(const std::string& filePath) :
 	alSourcei(rightChannel, AL_SOURCE_RELATIVE, AL_FALSE);
 }
 
-void AudioSourceGlobal::Attenuate()
+void AudioSourceGlobal::Attenuate(const Vec3<float> &cameraPosition)
 {
-	alGetListener3f(AL_POSITION, &listenerPos.x, &listenerPos.y, &listenerPos.z);
-
-	alSource3f(leftChannel,  AL_POSITION, listenerPos.x, listenerPos.y, listenerPos.z);
-	alSource3f(rightChannel, AL_POSITION, listenerPos.x, listenerPos.y, listenerPos.z);
+	// Empty function
 }
