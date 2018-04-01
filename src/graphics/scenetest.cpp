@@ -35,24 +35,24 @@ bool SceneTest::InitialiseScene(Window &window)
 
 	ModelMMF *pFloor = new ModelMMF("floor.mmf");
 	pFloor->SetPosition(0.0f, -1.0f, 0.0f);
-	pFloor->SetDiffuseTexture("models/floor.tga");
+	pFloor->material.diffuseMap = new Texture2D("models/floor.tga");
 	pFloor->SetShader(pShader);
 	AddRenderable(pFloor);
 
 	ModelMMF *pCube = new ModelMMF("cube.mmf");
 	pCube->SetScale(0.2f, 0.2f, 0.2f);
-	pCube->SetDiffuseTexture("models/cube.tga");
-	pCube->specularity = 0.2f;
-	pCube->glossiness = 20.0f;
+	pCube->material.diffuseMap = new Texture2D("models/cube.tga");
+	pCube->material.specularity = 0.2f;
+	pCube->material.glossiness = 20.0f;
 	pCube->SetShader(pShader);
 	AddRenderable(pCube);
 
 	ModelMMF *pTeapot = new ModelMMF("teapot.mmf");
 	pTeapot->SetPosition(1.2f, 0.0f, 0.0f);
 	pTeapot->SetScale(0.02f, 0.02f, 0.02f);
-	pTeapot->SetDiffuseTexture("models/test.tga");
-	pTeapot->specularity = 2.0f;
-	pTeapot->glossiness = 100.0f;
+	pTeapot->material.diffuseMap = new Texture2D("models/test.tga");
+	pTeapot->material.specularity = 2.0f;
+	pTeapot->material.glossiness = 100.0f;
 	pTeapot->SetShader(pShader);
 	AddRenderable(pTeapot);
 
@@ -60,9 +60,9 @@ bool SceneTest::InitialiseScene(Window &window)
 	pClone->SetPosition(-1.0f, 0.0f, 0.0f);
 	pClone->SetRotation3D(0.0f, 180.0f, 0.0f);
 	pClone->SetScale(0.02f, 0.02f, 0.02f);
-	pClone->SetDiffuseTexture("models/clone.tga");
-	pClone->specularity = 0.5f;
-	pClone->glossiness = 30.0f;
+	pClone->material.diffuseMap = new Texture2D("models/clone.tga");
+	pClone->material.specularity = 0.5f;
+	pClone->material.glossiness = 30.0f;
 	pClone->SetShader(pShader);
 	AddRenderable(pClone);
 
@@ -103,8 +103,6 @@ bool SceneTest::InitialiseScene(Window &window)
 	pRedLight->name = "light_red";
 	AddLight(pRedLight);
 
-	PrintSoundList();
-
 	return Scene::InitialiseScene(window);
 }
 
@@ -126,8 +124,6 @@ void SceneTest::UpdateScene(float deltaTime)
 	GetRenderable("teapot")->SetRotation3D(sin(counter * 10), 0.0f, cos(counter * 20));
 	GetLight("light_omni")->position = Vec3<float>(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
 	GetLight("light_red")->power = (sin(counter * 2) * 0.5f) + 0.5f;
-
-	Console::Log(LogType::None) << GetSound("sandtrap_wind_loop")->GetPosition() << "\n";
 
 	Scene::UpdateScene(deltaTime);
 }

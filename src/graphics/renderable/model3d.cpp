@@ -1,40 +1,14 @@
 #include "model3d.h"
 
-Texture2D* const Model3D::defaultTexture = new Texture2D("missingtexture2.tga");
-
 Model3D::Model3D() :
-	Renderable(GL_TRIANGLES),
-	specularity(0),
-	glossiness(1),
-	diffuseMap(defaultTexture),
-	normalMap(nullptr),
-	specularMap(nullptr)
+	Renderable(GL_TRIANGLES)
 {
 	
 }
 
 Model3D::~Model3D()
 {
-	if (diffuseMap != nullptr)
-		if (diffuseMap != defaultTexture)
-			delete diffuseMap;
-
-	if (normalMap != nullptr)
-		if (normalMap != defaultTexture)
-			delete normalMap;
-
-	if (specularMap != nullptr)
-		if (specularMap != defaultTexture)
-			delete specularMap;
-}
-
-void Model3D::SetDiffuseTexture(const std::string &fileName)
-{
-	if (diffuseMap != nullptr)
-		if (diffuseMap != defaultTexture)
-			delete diffuseMap;
-
-	diffuseMap = new Texture2D(fileName);
+	
 }
 
 void Model3D::Draw(Camera &camera, Mat4 &cameraMatrix)
@@ -48,10 +22,10 @@ void Model3D::Draw(Camera &camera, Mat4 &cameraMatrix)
 	shader->SetUniformMat4("u_mvpMatrix", GetTransformMatrix() * cameraMatrix);
 
 	// Update shader specular and gloss values
-	shader->SetUniformFloat("specularity", specularity);
-	shader->SetUniformFloat("glossiness", glossiness);
+	shader->SetUniformFloat("specularity", material.specularity);
+	shader->SetUniformFloat("glossiness", material.glossiness);
 
-	diffuseMap->Bind(0);
+	material.diffuseMap->Bind(0);
 
 	vao.DrawElements(renderMode);
 }

@@ -72,9 +72,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\graphics\campersp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\audio\audiobuffer.cpp">
       <Filter>Source Files\Audio</Filter>
     </ClCompile>
@@ -180,29 +177,32 @@
     <ClCompile Include="src\graphics\scenehud.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\modelmmf.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderable\modelobj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\texture2d.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\cubemap.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\audio\audiofile.cpp">
+      <Filter>Source Files\Audio</Filter>
     </ClCompile>
     <ClCompile Include="src\audio\wavfile.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\audio\audiofile.cpp">
+    <ClCompile Include="src\graphics\texture2d.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\campersp.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\cubemap.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\modelmmf.cpp">
+      <Filter>Source Files\Graphics\Renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\modelobj.cpp">
+      <Filter>Source Files\Graphics\Renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\graphics\campersp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\audio\audiobuffer.h">
       <Filter>Header Files\Audio</Filter>
     </ClInclude>
@@ -317,22 +317,28 @@
     <ClInclude Include="src\graphics\scenehud.h">
       <Filter>Header Files\Game\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderable\modelmmf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\modelobj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\texture2d.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\cubemap.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\audio\wavfile.h">
+      <Filter>Header Files\Audio</Filter>
     </ClInclude>
     <ClInclude Include="src\audio\audiofile.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="src\audio\wavfile.h">
+    <ClInclude Include="src\graphics\campersp.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\cubemap.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\texture2d.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\modelobj.h">
+      <Filter>Header Files\Graphics\Renderables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\modelmmf.h">
+      <Filter>Header Files\Graphics\Renderables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
