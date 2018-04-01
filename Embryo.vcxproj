@@ -173,6 +173,7 @@
     <ClCompile Include="src\graphics\indexbuffer.cpp" />
     <ClCompile Include="src\graphics\lightomni.cpp" />
     <ClCompile Include="src\graphics\lightsource.cpp" />
+    <ClCompile Include="src\graphics\material.cpp" />
     <ClCompile Include="src\graphics\renderable\box3d.cpp" />
     <ClCompile Include="src\graphics\renderable\gizmo3d.cpp" />
     <ClCompile Include="src\graphics\renderable\model3d.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="src\graphics\indexbuffer.h" />
     <ClInclude Include="src\graphics\lightomni.h" />
     <ClInclude Include="src\graphics\lightsource.h" />
+    <ClInclude Include="src\graphics\material.h" />
     <ClInclude Include="src\graphics\renderable\box3d.h" />
     <ClInclude Include="src\graphics\renderable\gizmo3d.h" />
     <ClInclude Include="src\graphics\renderable\gyro3d.h" />
