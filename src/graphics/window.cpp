@@ -35,7 +35,7 @@ bool Window::Init(std::string title, int width, int height)
 	// Initialise GLFW
 	if (glfwInit() != GLFW_TRUE)
 	{
-		Console::Log(LogType::Error) << "Failed to initialise GLFW!\n";
+		Console::Log(LogType::Error) << "Failed to initialise GLFW.\n";
 		return false;
 	}
 
@@ -44,21 +44,17 @@ bool Window::Init(std::string title, int width, int height)
 
 	if (!m_Window)
 	{
-		Console::Log(LogType::Error) << "Failed to create GLFW window!\n";
+		Console::Log(LogType::Error) << "Failed to create GLFW window.\n";
 		return false;
 	}
 
 	// Set key array to false
 	for (int i = 0; i < GLFW_KEY_LAST; i++)
-	{
 		m_Keys[i] = false;
-	}
 
 	// Set mouse button array to false
 	for (int i = 0; i < GLFW_MOUSE_BUTTON_LAST; i++)
-	{
 		m_Buttons[i] = false;
-	}
 
 	glfwMakeContextCurrent(m_Window);
 	glfwSetWindowUserPointer(m_Window, this);
@@ -68,13 +64,14 @@ bool Window::Init(std::string title, int width, int height)
 	glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 	glfwSetCursorPosCallback(m_Window, mouse_cursor_position_callback);
 
+	glfwSwapInterval(0);
+
+	// Initialise GLEW
 	if (glewInit() != GLEW_OK)
 	{
-		Console::Log(LogType::Error) << "Failed to initialise GLEW!\n";
+		Console::Log(LogType::Error) << "Failed to initialise GLEW.\n";
 		return false;
 	}
-
-	glfwSwapInterval(0);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);

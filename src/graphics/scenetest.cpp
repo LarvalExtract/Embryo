@@ -2,13 +2,13 @@
 
 #include <utilities/console.h>
 
-#include <graphics/renderable/box3d.h>
-#include <graphics/renderable/gizmo3d.h>
-#include <graphics/renderable/gyro3d.h>
+#include <graphics/renderable/Box.h>
+#include <graphics/renderable/Gizmo.h>
+#include <graphics/renderable/Gyro.h>
 #include <graphics/renderable/modelmmf.h>
-#include <graphics/renderable/skybox3d.h>
-#include <graphics/renderable/sprite2d.h>
-#include <graphics/renderable/sprite3d.h>
+#include <graphics/renderable/skyBox.h>
+#include <graphics/renderable/Sprite.h>
+#include <graphics/text.h>
 
 SceneTest::SceneTest() :
 	Scene(),
@@ -41,7 +41,7 @@ bool SceneTest::InitialiseScene(Window &window)
 
 	ModelMMF *pCube = new ModelMMF("cube.mmf");
 	pCube->SetScale(0.2f, 0.2f, 0.2f);
-	pCube->material.diffuseMap = new Texture2D("models/cube.tga");
+	//pCube->material.diffuseMap = new Texture2D("models/cube.tga");
 	pCube->material.specularity = 0.2f;
 	pCube->material.glossiness = 20.0f;
 	pCube->SetShader(pShader);
@@ -66,23 +66,23 @@ bool SceneTest::InitialiseScene(Window &window)
 	pClone->SetShader(pShader);
 	AddRenderable(pClone);
 
-	Sprite3D *pSprite = new Sprite3D("sprites/sprite_test3.tga");
+	Sprite *pSprite = new Sprite("sprites/sprite_test3.tga", true);
 	pSprite->SetPosition(1.7f, 0.0f, -1.0f);
 	pSprite->SetShader(pShader);
-	AddRenderable(pSprite);
+	//AddRenderable(pSprite);
 
-	Gyro3D *pSphere = new Gyro3D(2.0f, 4);
+	Gyro *pSphere = new Gyro(2.0f, 16);
 	pSphere->SetPosition(-5, 2, 3);
 	pSphere->SetColour(1.0f, 1.0f, 0.0f, 1.0f);
 	AddRenderable(pSphere);
 
-	Box3D *pBox = new Box3D(2, 3, 3);
+	Box *pBox = new Box(2, 3, 3);
 	pBox->SetPosition(13.3f, 3.0f, 5.0f);
 	pBox->SetRotation3D(0.0f, 23.0f, 0.0f);
 	pBox->SetColour(1.0f, 0.0f, 1.0f, 1.0f);
 	AddRenderable(pBox);
 
-	Gizmo3D *pPivot = new Gizmo3D();
+	Gizmo *pPivot = new Gizmo();
 	pPivot->SetPosition(0.0f, 2.0f, 0.0f);
 	AddRenderable(pPivot);
 

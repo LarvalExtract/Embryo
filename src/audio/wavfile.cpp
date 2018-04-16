@@ -1,7 +1,9 @@
 #include "wavfile.h"
 
+const char WavFile::bufferSize = 32;
+
 WavFile::WavFile(const std::string &wavFileName) :
-	AudioFile(wavFileName), bufferSize(64)
+	AudioFile(wavFileName)
 {
 	// Failed to open file
 	if (fileSize == 0)
@@ -13,7 +15,7 @@ WavFile::WavFile(const std::string &wavFileName) :
 
 	// Copy WAV file header to memory
 	char header[24];
-	hAudioFile.seekg(GetSubchunkOffset("fmt "), std::ios::beg);
+	hAudioFile.seekg(GetSubchunkOffset("fmt ", 12), std::ios::beg);
 	hAudioFile.read(header, 24);
 
 	// Get info from WAV file header
@@ -24,7 +26,7 @@ WavFile::WavFile(const std::string &wavFileName) :
 	const unsigned char bytesPerSample = bitsPerSample / 8;
 
 	// Get audio samples from WAV file
-	hAudioFile.seekg(GetSubchunkOffset("data") + 4, std::ios::beg);
+	hAudioFile.seekg(GetSubchunkOffset("data", 20) + 4, std::ios::beg);
 	char dataLengthBytes[4];
 	hAudioFile.read(&dataLengthBytes[0], 4);
 	memcpy(&channelDataLength, &dataLengthBytes[0], 4);
@@ -52,23 +54,17 @@ WavFile::WavFile(const std::string &wavFileName) :
 	}
 }
 
-int WavFile::GetSubchunkOffset(const std::string &subchunkID)
+int WavFile::GetSubchunkOffset(const std::string &subchunkID, const unsigned int startOffset)
 {
 	// Current byte offset in file
-	unsigned int curByteOffset = 12;
+	unsigned int curByteOffset = startOffset;
 
-	// Validation
+	// File is too small
 	if (fileSize - curByteOffset < bufferSize)
-	{
-		if (fileSize - curByteOffset == 0)
-			return -1;
-
-		else
-			bufferSize = fileSize - curByteOffset;
-	}
+		return -2;
 
 	// Allocate memory of bufferSize length as a temporary buffer to store a chunk of wav file for fast iteration
-	char* fileBlock = new char[bufferSize];
+	char fileBlock[bufferSize];
 
 	while (curByteOffset < fileSize)
 	{
@@ -93,9 +89,7 @@ int WavFile::GetSubchunkOffset(const std::string &subchunkID)
 						curByteOffset++;
 						if (fileBlock[i] == subchunkID[3])
 						{
-							// fmt subchunk found, clear memory and return offset of fmt subchunk
-							delete[] fileBlock;
-
+							// fmt subchunk found, return offset of subchunk
 							return curByteOffset - 3 - 4;
 						}
 					}

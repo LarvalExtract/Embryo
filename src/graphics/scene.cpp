@@ -263,7 +263,7 @@ void Scene::PrintCameraList()
 // TO-DO: Fix potential memory leak due to not cleaning up previous skyboxes
 void Scene::SetSkybox(const std::string &skyName)
 {
-	pSceneSky = new Skybox3D(skyName, 100.0f);
+	pSceneSky = new Skybox(skyName, 100.0f);
 }
 
 void Scene::SetActiveCamera(const char& cameraID)

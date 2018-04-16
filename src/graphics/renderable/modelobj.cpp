@@ -1,7 +1,8 @@
 #include "modelobj.h"
+#include <fstream>
 
 ModelOBJ::ModelOBJ(const std::string &objFileName) :
-	Model3D()
+	Model()
 {
 	name = objFileName.substr(0, objFileName.rfind("."));
 

@@ -5,7 +5,8 @@
 class Material
 {
 public:
-	Material() : specularity(0), glossiness(0), diffuseMap(nullptr), normalMap(nullptr), specularMap(nullptr) {}
+	Material();
+	~Material();
 
 	float specularity;
 	float glossiness;
@@ -14,10 +15,11 @@ public:
 	Texture2D *normalMap;
 	Texture2D *specularMap;
 
-	void SetDiffuseMap(const std::string &textureName);
+	void SetDiffuseMap(Texture2D* texture);
 	void SetNormalMap(const std::string &textureName);
 	void SetSpecularMap(const std::string &textureName);
 
 private:
 	static Texture2D* const diffuseMap_default;
+	static unsigned int materialCount;
 };

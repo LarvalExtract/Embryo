@@ -1,8 +1,8 @@
 #pragma once
 
-#include "model3d.h"
+#include "Model.h"
 
-class ModelOBJ : public Model3D
+class ModelOBJ : public Model
 {
 public:
 	ModelOBJ(const std::string &objFileName);

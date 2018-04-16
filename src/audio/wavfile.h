@@ -8,6 +8,6 @@ public:
 	WavFile(const std::string &wavFileName);
 
 private:
-	char bufferSize;
-	int GetSubchunkOffset(const std::string &subchunkID);
+	const static char bufferSize;
+	int GetSubchunkOffset(const std::string &subchunkID, const unsigned int startOffset);
 };

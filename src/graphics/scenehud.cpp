@@ -1,12 +1,12 @@
 #include "scenehud.h"
 
-#include <graphics/renderable/box3d.h>
-#include <graphics/renderable/gizmo3d.h>
-#include <graphics/renderable/gyro3d.h>
-#include <graphics/renderable/model3d.h>
-#include <graphics/renderable/skybox3d.h>
-#include <graphics/renderable/sprite2d.h>
-#include <graphics/renderable/sprite3d.h>
+#include <graphics/renderable/Box.h>
+#include <graphics/renderable/Gizmo.h>
+#include <graphics/renderable/Gyro.h>
+#include <graphics/renderable/Model.h>
+#include <graphics/renderable/skyBox.h>
+#include <graphics/renderable/Sprite.h>
+#include <graphics/text.h>
 
 #include <utilities/console.h>
 
@@ -30,10 +30,13 @@ bool SceneHud::InitialiseScene(Window &window)
 
 	SetActiveCamera(0);
 
-	Sprite2D *pCrosshair = new Sprite2D("sprites/crosshair.tga");
+	Sprite *pCrosshair = new Sprite("sprites/crosshair.tga", false);
 	pCrosshair->CentreLocalOrigin();
 	pCrosshair->SetPosition(window.GetWidth() / 2, window.GetHeight() / 2, 0.0f);
 	AddRenderable(pCrosshair);
+
+	Text *pText = new Text("T");
+	//AddRenderable(pText);
 
 	return Scene::InitialiseScene(window);
 }

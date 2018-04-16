@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <AL/alc.h>
 #include <AL/al.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #include <maths/Vec2.h>
 #include <maths/Vec4.h>

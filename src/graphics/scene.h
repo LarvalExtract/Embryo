@@ -6,7 +6,7 @@
 #include <utilities\controls.h>
 
 // Graphics
-#include "renderable/skybox3d.h"
+#include "renderable/Skybox.h"
 #include "renderable/renderable.h"
 #include "camera.h"
 #include "campersp.h"
@@ -80,7 +80,7 @@ protected:
 
 	char activeCameraID;
 
-	Skybox3D *pSceneSky;
+	Skybox *pSceneSky;
 
 	Mat4 vpMatrix;
 

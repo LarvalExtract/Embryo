@@ -8,12 +8,11 @@ public:
 	Cubemap(const std::string &imageFileName);
 
 private:
-	void ImportCubemapFace(
-		std::ifstream& file,
-		char*& face,
+	static void ImportCubemapFace(
+		char*& cubemapSrc,
+		char*& faceDst,
 		unsigned int offset,
-		unsigned short width,
-		unsigned short height,
-		unsigned short bpp,
+		unsigned int faceDataLength,
+		unsigned int faceLineLength,
 		const bool& flipVertical);
 };

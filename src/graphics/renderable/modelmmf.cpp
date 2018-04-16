@@ -1,7 +1,8 @@
 #include "modelmmf.h"
+#include <fstream>
 
 ModelMMF::ModelMMF(const std::string &mmfFileName) :
-	Model3D()
+	Model()
 {
 	name = mmfFileName.substr(0, mmfFileName.rfind("."));
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "model3d.h"
+#include "Model.h"
 
-class ModelMMF : public Model3D
+class ModelMMF : public Model
 {
 public:
 	ModelMMF(const std::string &mmfFileName);

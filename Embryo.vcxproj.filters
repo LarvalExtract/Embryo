@@ -90,15 +90,6 @@
     <ClCompile Include="src\game.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\box3d.cpp">
-      <Filter>Source Files\Graphics\Renderables</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderable\gizmo3d.cpp">
-      <Filter>Source Files\Graphics\Renderables</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderable\gyro3d.cpp">
-      <Filter>Source Files\Graphics\Renderables</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\indexbuffer.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
@@ -120,23 +111,11 @@
     <ClCompile Include="src\maths\mat4.cpp">
       <Filter>Source Files\Maths</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\model3d.cpp">
-      <Filter>Source Files\Graphics\Renderables</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\renderable\renderable.cpp">
       <Filter>Source Files\Graphics\Renderables</Filter>
     </ClCompile>
     <ClCompile Include="src\screen.cpp">
       <Filter>Source Files\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderable\skybox3d.cpp">
-      <Filter>Source Files\Graphics\Renderables</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderable\sprite2d.cpp">
-      <Filter>Source Files\Graphics\Renderables</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderable\sprite3d.cpp">
-      <Filter>Source Files\Graphics\Renderables</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\texture.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -201,6 +180,33 @@
     <ClCompile Include="src\graphics\material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\bitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\gyro.cpp">
+      <Filter>Source Files\Graphics\Renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\gizmo.cpp">
+      <Filter>Source Files\Graphics\Renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\box.cpp">
+      <Filter>Source Files\Graphics\Renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\skybox.cpp">
+      <Filter>Source Files\Graphics\Renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\model.cpp">
+      <Filter>Source Files\Graphics\Renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\sprite.cpp">
+      <Filter>Source Files\Graphics\Renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\include\picopng\decodepng.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\audio\audiobuffer.h">
@@ -218,23 +224,8 @@
     <ClInclude Include="src\graphics\campersp.h">
       <Filter>Header Files\Graphics\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderable\box3d.h">
-      <Filter>Header Files\Graphics\Renderables</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\gizmo3d.h">
-      <Filter>Header Files\Graphics\Renderables</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\gyro3d.h">
-      <Filter>Header Files\Graphics\Renderables</Filter>
-    </ClInclude>
     <ClInclude Include="src\screen.h">
       <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\model3d.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\skybox3d.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\texture.h">
       <Filter>Header Files\Graphics</Filter>
@@ -244,9 +235,6 @@
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\renderable.h">
       <Filter>Header Files\Graphics\Renderables</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\graphics.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\game.h">
       <Filter>Header Files\Game</Filter>
@@ -286,12 +274,6 @@
     </ClInclude>
     <ClInclude Include="src\graphics\indexbuffer.h">
       <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\sprite2d.h">
-      <Filter>Header Files\Graphics\Renderables</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\sprite3d.h">
-      <Filter>Header Files\Graphics\Renderables</Filter>
     </ClInclude>
     <ClInclude Include="src\utilities\file.h">
       <Filter>Header Files\Utility</Filter>
@@ -341,6 +323,33 @@
     <ClInclude Include="src\graphics\material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\gyro.h">
+      <Filter>Header Files\Graphics\Renderables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\gizmo.h">
+      <Filter>Header Files\Graphics\Renderables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\box.h">
+      <Filter>Header Files\Graphics\Renderables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\skybox.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\model.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\sprite.h">
+      <Filter>Header Files\Graphics\Renderables</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\picopng\decodepng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic2D.frag">
@@ -379,5 +388,7 @@
     <None Include="res\shaders\sky.vert">
       <Filter>Source Files\Graphics\Shaders</Filter>
     </None>
+    <None Include="res\shaders\basicText.vert" />
+    <None Include="res\shaders\basicText.frag" />
   </ItemGroup>
 </Project>
