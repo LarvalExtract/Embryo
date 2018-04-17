@@ -46,9 +46,6 @@ bool Scene::InitialiseScene(Window &window)
 	}
 
 	//activeCameraID = 0;
-	sceneShaders["basicPhong"]->Bind();
-	sceneShaders["basicPhong"]->SetUniformInt("u_numLights", sceneLights.size());
-	sceneShaders["basicPhong"]->SetUniformFloat("ambience", 0.4f);
 
 	// Print a warning if the skybox does not exist
 	if (pSceneSky == nullptr)
@@ -82,13 +79,10 @@ void Scene::UpdateScene(float deltaTime)
 	ProcessInput(deltaTime);
 
 	// Update lights in shader
-	int i = 0;
+	unsigned char i = 0;
 	for (auto light : sceneLights)
 	{
-		sceneShaders["basicPhong"]->Bind();
-		sceneShaders["basicPhong"]->SetUniformVec3f("u_lightPosition[" + std::to_string(i) + ']', light.second->position);
-		sceneShaders["basicPhong"]->SetUniformVec3f("u_lightColour[" + std::to_string(i) + ']', light.second->colour);
-		sceneShaders["basicPhong"]->SetUniformFloat("u_lightPower[" + std::to_string(i) + ']', light.second->power);
+		light.second->Attenuate(*sceneShaders[activeShaderName], i);
 		i++;
 	}
 
@@ -133,6 +127,9 @@ void Scene::AddSound(AudioSource *pSound)
 void Scene::AddShader(Shader *pShader)
 {
 	sceneShaders.insert(std::pair<std::string, Shader*>(pShader->GetName(), pShader));
+
+	if (sceneShaders.size() == 1)
+		activeShaderName = pShader->GetName();
 }
 
 void Scene::AddCamera(Camera *pCamera)
@@ -271,7 +268,17 @@ void Scene::SetActiveCamera(const char& cameraID)
 	activeCameraID = cameraID;
 }
 
+void Scene::SetActiveShader(const std::string &shaderName)
+{
+	activeShaderName = shaderName;
+}
+
 Camera& Scene::GetActiveCamera()
 {
 	return *sceneCameras[activeCameraID];
+}
+
+Shader& Scene::GetActiveShader()
+{
+	return *sceneShaders[activeShaderName];
 }

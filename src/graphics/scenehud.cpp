@@ -22,7 +22,7 @@ SceneHud::~SceneHud()
 
 bool SceneHud::InitialiseScene(Window &window)
 {
-	Shader *pShader = new Shader("basicPhong");
+	Shader *pShader = new Shader("basicUnlit");
 	AddShader(pShader);
 
 	Camera *pOrtho = new CamOrtho(0.0f, window.GetWidth(), 0.0f, window.GetHeight(), -1.0f, 1.0f);
@@ -33,9 +33,10 @@ bool SceneHud::InitialiseScene(Window &window)
 	Sprite *pCrosshair = new Sprite("sprites/crosshair.tga", false);
 	pCrosshair->CentreLocalOrigin();
 	pCrosshair->SetPosition(window.GetWidth() / 2, window.GetHeight() / 2, 0.0f);
+	pCrosshair->SetShader(pShader);
 	AddRenderable(pCrosshair);
 
-	Text *pText = new Text("T");
+	//Text *pText = new Text("T");
 	//AddRenderable(pText);
 
 	return Scene::InitialiseScene(window);

@@ -3,11 +3,17 @@
 #include <maths/Vec3.h>
 #include <maths/Vec4.h>
 #include <graphics/renderable/sprite.h>
+#include "shader.h"
 
 class LightSource
 {
 public:
 	virtual ~LightSource();
+
+	virtual void Attenuate(Shader &shader, const unsigned char index) = 0;
+
+	void SetPosition(float x, float y, float z);
+	void SetColour(float r, float g, float b);
 
 	std::string name;
 	Vec3<float> position;
@@ -15,6 +21,6 @@ public:
 	float power;
 
 protected:
-	LightSource(const Vec3<float> &position, const Vec3<float> &colour, float brightness);
+	LightSource();
 	
 };

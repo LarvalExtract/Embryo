@@ -18,9 +18,9 @@ Shader::Shader(const std::string& fileName) :
 	glAttachShader(hShaderProgram, hVertexShader);
 	glAttachShader(hShaderProgram, hFragmentShader);
 
-	glBindAttribLocation(hShaderProgram, 0, "in_position");	// Vertex position attribute
+	glBindAttribLocation(hShaderProgram, 0, "in_position");		// Vertex position attribute
 	glBindAttribLocation(hShaderProgram, 1, "in_normal");		// Vertex normal attribute
-	glBindAttribLocation(hShaderProgram, 2, "in_texCoord");	// Vertex UV co-ordinate attribute
+	glBindAttribLocation(hShaderProgram, 2, "in_texCoord");		// Vertex UV co-ordinate attribute
 	glBindAttribLocation(hShaderProgram, 3, "in_colour");		// Vertex colour attribute
 
 	glLinkProgram(hShaderProgram);

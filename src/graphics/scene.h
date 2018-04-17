@@ -58,8 +58,10 @@ public:
 	void SetSkybox(const std::string &skyName);
 
 	void SetActiveCamera(const char &cameraID);
+	void SetActiveShader(const std::string &shaderName);
 
 	Camera& GetActiveCamera();
+	Shader& GetActiveShader();
 
 protected:
 	Controls controls;
@@ -78,7 +80,8 @@ protected:
 	// Corresponds with MAX_LIGHT_SOURCES macro defined in basicPhong shader source
 	const int maxLightSources;
 
-	char activeCameraID;
+	char			activeCameraID;
+	std::string		activeShaderName;
 
 	Skybox *pSceneSky;
 

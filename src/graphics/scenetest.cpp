@@ -33,6 +33,9 @@ bool SceneTest::InitialiseScene(Window &window)
 	Shader *pShader = new Shader("basicPhong");
 	AddShader(pShader);
 
+	Shader *pUnlitShader = new Shader("basicUnlit");
+	AddShader(pUnlitShader);
+
 	ModelMMF *pFloor = new ModelMMF("floor.mmf");
 	pFloor->SetPosition(0.0f, -1.0f, 0.0f);
 	pFloor->material.diffuseMap = new Texture2D("models/floor.tga");
@@ -66,10 +69,10 @@ bool SceneTest::InitialiseScene(Window &window)
 	pClone->SetShader(pShader);
 	AddRenderable(pClone);
 
-	Sprite *pSprite = new Sprite("sprites/sprite_test3.tga", true);
+	Sprite *pSprite = new Sprite("sprites/hammer_light.tga", true);
 	pSprite->SetPosition(1.7f, 0.0f, -1.0f);
-	pSprite->SetShader(pShader);
-	//AddRenderable(pSprite);
+	pSprite->SetShader(pUnlitShader);
+	AddRenderable(pSprite);
 
 	Gyro *pSphere = new Gyro(2.0f, 16);
 	pSphere->SetPosition(-5, 2, 3);
@@ -96,12 +99,19 @@ bool SceneTest::InitialiseScene(Window &window)
 	pComputer->SetLoop(true);
 	AddSound(pComputer);
 
-	LightOmni *pLight = new LightOmni(Vec3<float>(0.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 1.0f, 1.0f), 1.0f);
+	LightOmni *pLight = new LightOmni();
+	pLight->SetPosition(0.0f, 2.0f, 0.0f);
 	AddLight(pLight);
 
-	LightOmni *pRedLight = new LightOmni(Vec3<float>(4.0f, 2.0f, 0.0f), Vec3<float>(1.0f, 0.0f, 0.0f), 1.0f);
+	LightOmni *pRedLight = new LightOmni();
 	pRedLight->name = "light_red";
+	pRedLight->SetPosition(4.0f, 2.0f, 0.0f);
+	pRedLight->SetColour(1.0f, 0.0f, 0.0f);
 	AddLight(pRedLight);
+
+	sceneShaders["basicPhong"]->Bind();
+	sceneShaders["basicPhong"]->SetUniformInt("u_numLights", sceneLights.size());
+	sceneShaders["basicPhong"]->SetUniformFloat("ambience", 0.4f);
 
 	return Scene::InitialiseScene(window);
 }
@@ -124,6 +134,8 @@ void SceneTest::UpdateScene(float deltaTime)
 	GetRenderable("teapot")->SetRotation3D(sin(counter * 10), 0.0f, cos(counter * 20));
 	GetLight("light_omni")->position = Vec3<float>(sin(counter) * 2.0f, 2.0f, cos(counter) * 2.0f);
 	GetLight("light_red")->power = (sin(counter * 2) * 0.5f) + 0.5f;
+
+	sceneShaders["basicPhong"]->Bind();
 
 	Scene::UpdateScene(deltaTime);
 }

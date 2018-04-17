@@ -35,8 +35,6 @@ Sprite::Sprite(const std::string &textureName, bool resize) :
 
 	vao.AddBuffer(positions, sizeof(positions), 0, 2);
 	vao.AddBuffer(texCoords, sizeof(texCoords), 2, 2);
-
-	shader = new Shader("basicSprite");
 }
 
 Sprite::Sprite(unsigned int width, unsigned int height, unsigned char* &data) :
@@ -73,7 +71,7 @@ void Sprite::Draw(Camera &camera, Mat4 &cameraMatrix)
 
 	vao.Bind();
 	shader->Bind();
-	shader->SetUniformMat4("mpMatrix", GetTransformMatrix() * camera.projectionMatrix);
+	shader->SetUniformMat4("u_mvpMatrix", GetTransformMatrix() * camera.viewMatrix * camera.projectionMatrix);
 	texture->Bind(0);
 	vao.DrawArrays(renderMode);
 

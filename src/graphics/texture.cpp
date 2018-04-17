@@ -25,3 +25,13 @@ void Texture::Bind(unsigned int unit)
 	glActiveTexture(GL_TEXTURE0 + unit);
 	glBindTexture(target, hTexture);
 }
+
+void Texture::SetParameterInt(unsigned int parameter, int value)
+{
+	glTexParameteri(target, parameter, value);
+}
+
+void Texture::SetParameterFloat(unsigned int parameter, float value)
+{
+	glTexParameterf(target, parameter, value);
+}

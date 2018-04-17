@@ -5,7 +5,9 @@
 class LightOmni : public LightSource
 {
 public:
-	LightOmni(const Vec3<float> &position, const Vec3<float> &colour, float brightness);
+	LightOmni();
+
+	void Attenuate(Shader &shader, const unsigned char index) override;
 
 private:
 	
